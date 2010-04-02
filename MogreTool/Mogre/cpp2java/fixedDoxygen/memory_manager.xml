@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6-NO">
+  <compounddef id="memory_manager" kind="page">
+    <compoundname>memory_manager</compoundname>
+    <title>The memory manager information page</title>
+    <detaileddescription>
+<para>The memory manager is a class that handles memory (de)allocation requests. <simplesect kind="par"><title></title><para>This class works like a wrapper between the actual C memory allocation functions (*alloc, free) and the memory (de)allocation requests of the application. </para></simplesect>
+<simplesect kind="par"><title></title><para>Why would such a class be needed? First of all, because we had some major issues with memory getting misued (read: deleted) over DLL boundaries. One thing this memory manager does is solve the problem by allocating all the memory in the OgreMain.dll/so process. </para></simplesect>
+<simplesect kind="par"><title></title><para>Another use would be leak detection and memory misuse detection. With a custom memory manager, calls to new/delete and *alloc/free could be overseed and logged. </para></simplesect>
+<simplesect kind="par"><title></title><para>Yet another use is the optimization of memory allocation for certain object types. One of the most common examples is a small object allocator. </para></simplesect>
+</para><para>There actually are two classes, one is the standard memory manager which only addresses memory allocation problems when deallocating across processes. <simplesect kind="par"><title></title><para>The other is a modified version of the debugging memory manager written by Paul &apos;MidNight&apos; Nettle (aka. the Fluid Studios Memory Manager). Obviously, the second one should be used only when debugging your application as it adds some visible overhead. </para></simplesect>
+<simplesect kind="par"><title></title><para>You can switch between the two memory managers by setting the value of the OGRE_DEBUG_MEMORY_MANAGER macro in <ref refid="OgreConfig_8h" kindref="compound">OgreConfig.h</ref> </para></simplesect>
+</para><para>The class contains a static member of type <ref refid="classOgre_1_1MemoryManager" kindref="compound">MemoryManager</ref>. That is because we want the memory manager to be created even before we override the new([])/delete([]) operators. </para><para><ulink url="http://www.flipcode.com/cgi-bin/msg.cgi">Paul Nettle&apos;s Memory Manager page at flipCode</ulink> - you can get the original source form here. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

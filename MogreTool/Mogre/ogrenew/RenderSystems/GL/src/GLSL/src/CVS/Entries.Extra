@@ -1,0 +1,7 @@
+/Makefile.am////*///
+/OgreGLSLExtSupport.cpp////*///
+/OgreGLSLGpuProgram.cpp////*///
+/OgreGLSLLinkProgram.cpp////*///
+/OgreGLSLLinkProgramManager.cpp////*///
+/OgreGLSLProgram.cpp////*///
+/OgreGLSLProgramFactory.cpp////*///
