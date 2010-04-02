@@ -1,0 +1,7 @@
+/Makefile.am////*///
+/OgreGLUtil.h////*///
+/OgreGLXContext.cpp////*///
+/OgreGLXGLSupport.cpp////*///
+/OgreGLXRenderTexture.cpp////*///
+/OgreGLXUtils.cpp////*///
+/OgreGLXWindow.cpp////*///

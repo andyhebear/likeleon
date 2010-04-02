@@ -1,0 +1,11 @@
+/Makefile.am////*///
+/OgreBspLevel.cpp////*///
+/OgreBspNode.cpp////*///
+/OgreBspResourceManager.cpp////*///
+/OgreBspSceneManager.cpp////*///
+/OgreBspSceneManagerDll.cpp////*///
+/OgreBspSceneManagerPlugin.cpp////*///
+/OgreBspSceneNode.cpp////*///
+/OgreQuake3Level.cpp////*///
+/OgreQuake3Shader.cpp////*///
+/OgreQuake3ShaderManager.cpp////*///
