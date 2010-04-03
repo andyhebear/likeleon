@@ -45,6 +45,9 @@ namespace MogreEditor.Windows
 
         private void ogreImage_Initialized(object sender, RoutedEventArgs e)
         {
+            // Loading done.
+            this.statusString.Text = "Ogre initialized";
+            this.statusProgress.Visibility = Visibility.Collapsed;
         }
 
         private void ogreImage_PreRender(object sender, EventArgs e)
@@ -53,7 +56,8 @@ namespace MogreEditor.Windows
 
         private void ogreImage_ResourceLoadItemProgress(object sender, MogreEditor.Controls.ResourceLoadEventArgs e)
         {
-
+            this.statusString.Text = "Loading resource: " + e.Name;
+            this.statusProgress.Value = e.Progress * 100.0;
         }
         #endregion
     }
