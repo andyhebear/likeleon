@@ -16,6 +16,13 @@ namespace MogreEditor.Windows
             InitializeComponent();
         }
 
+        #region Private Fields
+        private SceneNode ogreNode;
+        private Entity ogreMesh;
+        private SceneNode fountainNode;
+        private Viewport viewport;
+        #endregion
+
         #region Private Methods
 
         private void Current_Exit(object sender, ExitEventArgs e)
@@ -46,8 +53,32 @@ namespace MogreEditor.Windows
         private void ogreImage_Initialized(object sender, RoutedEventArgs e)
         {
             // Loading done.
-            this.statusString.Text = "Ogre initialized";
+            this.statusString.Text = "Ogre Initialized";
             this.statusProgress.Visibility = Visibility.Collapsed;
+
+            // get the Ogre scene manager
+            SceneManager sceneMgr = this.ogreImage.SceneManager;
+
+            // ceate a light
+            Light l = sceneMgr.CreateLight("MainLight");
+
+            // Accept default settings: point light, white diffuse, just set position
+            // NB I could attach the light to a SceneNode if I wanted it to move automatically with
+            //  other objects.
+            l.Position = new Vector3(20F, 80F, 50F);
+
+            // load the "ogre head mesh" resource.
+            this.ogreMesh = sceneMgr.CreateEntity("ogre", "ogrehead.mesh");
+
+            // create a node for the "ogre head mesh"
+            this.ogreNode = sceneMgr.RootSceneNode.CreateChildSceneNode("ogreNode");
+            this.ogreNode.AttachObject(this.ogreMesh);
+
+            // Create shared node for the particle effects
+            this.fountainNode = sceneMgr.RootSceneNode.CreateChildSceneNode();
+
+            // Set nonvisible timeout
+            ParticleSystem.DefaultNonVisibleUpdateTimeout = 5;
         }
 
         private void ogreImage_PreRender(object sender, EventArgs e)
@@ -56,7 +87,7 @@ namespace MogreEditor.Windows
 
         private void ogreImage_ResourceLoadItemProgress(object sender, MogreEditor.Controls.ResourceLoadEventArgs e)
         {
-            this.statusString.Text = "Loading resource: " + e.Name;
+            this.statusString.Text = "Loading Resource: " + e.Name;
             this.statusProgress.Value = e.Progress * 100.0;
         }
         #endregion
