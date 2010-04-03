@@ -43,10 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\$(Configuration)\Mogre.dll</HintPath>
     </Reference>
-    <Reference Include="MogreWpf.Interop, Version=1.0.3174.37366, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\$(Configuration)\MogreWpf.Interop.dll</HintPath>
-    </Reference>
     <Reference Include="MOIS, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\$(Configuration)\MOIS.dll</HintPath>
@@ -119,6 +115,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MogreWpf.Interop\MogreWpf.Interop.vcproj">
+      <Project>{B612CB51-8D9B-4BEB-AD8B-D03FAAF52B52}</Project>
+      <Name>MogreWpf.Interop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
