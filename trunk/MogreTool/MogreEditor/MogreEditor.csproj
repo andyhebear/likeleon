@@ -41,15 +41,15 @@
   <ItemGroup>
     <Reference Include="Mogre, Version=1.4.8.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Release\Mogre.dll</HintPath>
+      <HintPath>..\bin\$(Configuration)\Mogre.dll</HintPath>
     </Reference>
     <Reference Include="MogreWpf.Interop, Version=1.0.3174.37366, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Release\MogreWpf.Interop.dll</HintPath>
+      <HintPath>..\bin\$(Configuration)\MogreWpf.Interop.dll</HintPath>
     </Reference>
     <Reference Include="MOIS, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Release\MOIS.dll</HintPath>
+      <HintPath>..\bin\$(Configuration)\MOIS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
