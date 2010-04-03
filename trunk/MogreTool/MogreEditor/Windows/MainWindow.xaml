@@ -2,8 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:MogreCtrls="clr-namespace:MogreEditor.Controls"
-    Title="Mogre Editor" Width="600" Height="400" 
-    Loaded="Window_Loaded" Background="Transparent">
+    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+    Title="Mogre Editor" Width="1200" Height="800" 
+    Loaded="Window_Loaded">
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
@@ -14,16 +15,41 @@
             </StatusBarItem>
         </StatusBar>
         <Grid>
-            <Image x:Name="renderTargetControl" Stretch="Fill"
-               SizeChanged="renderTargetControl_SizeChanged"
-               MouseDown="renderTargetControl_MouseDown">
-                <Image.Source>
-                    <MogreCtrls:OgreImage x:Name="ogreImage"
-                                      Initialized="ogreImage_Initialized"
-                                      PreRender="ogreImage_PreRender"
-                                      ResourceLoadItemProgress="ogreImage_ResourceLoadItemProgress" />
-                </Image.Source>
-            </Image>
+            <ad:DockingManager x:Name="dockManager">
+                <ad:ResizingPanel Orientation="Vertical">
+                    <ad:ResizingPanel Orientation="Horizontal">
+                        <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
+                            <ad:DockableContent Title="Templates"></ad:DockableContent>
+                            <ad:DockableContent Title="Scene"></ad:DockableContent>
+                            <ad:DockableContent Title="Materials"></ad:DockableContent>
+                        </ad:DockablePane>
+                        <ad:DocumentPane>
+                            <ad:DockableContent Title="Render" DockableStyle="None" IsCloseable="False" Background="Black">
+                                <Image x:Name="renderTargetControl" Stretch="Fill"
+                                       SizeChanged="renderTargetControl_SizeChanged"
+                                       MouseDown="renderTargetControl_MouseDown">
+                                    <Image.Source>
+                                        <MogreCtrls:OgreImage x:Name="ogreImage"
+                                          Initialized="ogreImage_Initialized"
+                                          PreRender="ogreImage_PreRender"
+                                          ResourceLoadItemProgress="ogreImage_ResourceLoadItemProgress" />
+                                    </Image.Source>
+                                </Image>
+                            </ad:DockableContent>
+                        </ad:DocumentPane>
+                        <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
+                            <ad:DockableContent Title="Properties"></ad:DockableContent>
+                            <ad:DockableContent Title="Meshes"></ad:DockableContent>
+                            <ad:DockableContent Title="Objects"></ad:DockableContent>
+                        </ad:DockablePane>
+                    </ad:ResizingPanel>
+                    <ad:DockablePane ad:ResizingPanel.ResizeHeight="150">
+                        <ad:DockableContent Title="Output">
+                            <RichTextBox></RichTextBox>
+                        </ad:DockableContent>
+                    </ad:DockablePane>
+                </ad:ResizingPanel>
+            </ad:DockingManager>
         </Grid>
     </DockPanel>
 </Window>

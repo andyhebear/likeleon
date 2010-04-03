@@ -54,6 +54,23 @@ namespace MogreEditor.Controls
         public event EventHandler PostRender;
         #endregion
 
+        #region Public Properties
+        public Root Root
+        {
+            get { return this.root; }
+        }
+
+        public SceneManager SceneManager
+        {
+            get { return this.sceneMgr; }
+        }
+
+        public Camera Camera
+        {
+            get { return this.camera; }
+        }
+        #endregion
+
         #region Private Fields
         private Root root;
         private RenderWindow renderWindow;
