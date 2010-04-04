@@ -1,7 +1,7 @@
 ﻿using System;
 using Mogre;
 
-namespace MogreEditor.Controls
+namespace Mogitor.Controls
 {
     partial class OgreImage
     {

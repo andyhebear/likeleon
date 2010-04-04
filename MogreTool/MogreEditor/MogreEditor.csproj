@@ -8,7 +8,7 @@
     <ProjectGuid>{31849EF0-9546-48C3-A238-08DA1969F3A4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MogreEditor</RootNamespace>
+    <RootNamespace>Mogitor</RootNamespace>
     <AssemblyName>MogreEditor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -81,6 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\BaseResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,9 +95,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\LogControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />
     <Compile Include="Controls\OgreImage.Resources.cs" />
+    <Compile Include="Data\LogBuffer.cs" />
+    <Compile Include="MogitorsRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
