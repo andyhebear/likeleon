@@ -7,7 +7,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using Mogre;
 
-namespace MogreEditor.Controls
+namespace Mogitor.Controls
 {
     partial class OgreImage : D3DImage, ISupportInitialize
     {
@@ -115,6 +115,8 @@ namespace MogreEditor.Controls
 
         private bool InitOgreInternal()
         {
+            //== Creating and Acquiring Mogre Window == //
+
             lock (this)
             {
                 IntPtr hWnd = IntPtr.Zero;
@@ -134,13 +136,7 @@ namespace MogreEditor.Controls
 
                 CallResourceItemLoaded(new ResourceLoadEventArgs("Engine", 0));
 
-                // Load the ogre engine
-                this.root = new Root();
-
-                InitResources();
-
-                if (SetupDirectX() == false)
-                    return false;
+                this.root = Mogre.Root.Singleton;
 
                 CreateRenderWindow(hWnd);
 
@@ -172,58 +168,8 @@ namespace MogreEditor.Controls
             return true;
         }
 
-        private void InitResources()
-        {
-            // Configure resource paths from : "resources.cfg" file
-            ConfigFile cf = new ConfigFile();
-            cf.Load("resources.cfg", "\t:=", true);
-
-            // Go through all sections & settings in the file
-            ConfigFile.SectionIterator seci = cf.GetSectionIterator();
-            while (seci.MoveNext())
-            {
-                string secName = seci.CurrentKey;
-
-                ConfigFile.SettingsMultiMap settings = seci.Current;
-                foreach (var pair in settings)
-                {
-                    string typeName = pair.Key;
-                    string archName = pair.Value;
-                    ResourceGroupManager.Singleton.AddResourceLocation(archName, typeName, secName);
-                }
-            }
-        }
-
-        private bool SetupDirectX()
-        {
-            bool foundit = false;
-            foreach (RenderSystem rs in this.root.GetAvailableRenderers())
-            {
-                if (rs == null)
-                    continue;
-
-                this.root.RenderSystem = rs;
-                string rname = this.root.RenderSystem.Name;
-                if (rname == "Direct3D9 Rendering Subsystem")
-                {
-                    foundit = true;
-                    break;
-                }
-            }
-
-            if (!foundit)
-                return false;
-
-            this.root.RenderSystem.SetConfigOption("Full Screen", "No");
-            this.root.RenderSystem.SetConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
-
-            return true;
-        }
-
         private void CreateRenderWindow(IntPtr hWnd)
         {
-            this.root.Initialise(false);
-
             var misc = new NameValuePairList();
             misc["externalWindowHandle"] = hWnd.ToString();
             this.renderWindow = this.root.CreateRenderWindow("OgreImageSource Windows", 0, 0, false, misc);
@@ -409,7 +355,7 @@ namespace MogreEditor.Controls
             if ((this.camera != null) && (this.viewPort == null))
             {
                 this.viewPort = renTarget.AddViewport(this.camera);
-                this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 1.0f, 0.0f);
+                this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 0.0f, 0.0f);
             }
 
             if (PreRender != null)

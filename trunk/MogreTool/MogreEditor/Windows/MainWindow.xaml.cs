@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
+using System.Collections.ObjectModel;
 using Mogre;
+using Mogitor.Data;
 
-namespace MogreEditor.Windows
+namespace Mogitor.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -21,6 +23,7 @@ namespace MogreEditor.Windows
         private Entity ogreMesh;
         private SceneNode fountainNode;
         private Viewport viewport;
+        private LogBuffer logBuffer = new LogBuffer();
         #endregion
 
         #region Private Methods
@@ -34,6 +37,13 @@ namespace MogreEditor.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.logControl.LogBuffer = this.logBuffer;
+            Mogre.LogManager.Singleton.DefaultLog.MessageLogged +=
+                (message, lml, maskDebug, logName) =>
+                {
+                    Dispatcher.Invoke((Action)delegate() { this.logBuffer.Add(message); });
+                };
+
             this.ogreImage.InitOgreAsync();
         }
 
@@ -85,7 +95,7 @@ namespace MogreEditor.Windows
         {
         }
 
-        private void ogreImage_ResourceLoadItemProgress(object sender, MogreEditor.Controls.ResourceLoadEventArgs e)
+        private void ogreImage_ResourceLoadItemProgress(object sender, Mogitor.Controls.ResourceLoadEventArgs e)
         {
             this.statusString.Text = "Loading Resource: " + e.Name;
             this.statusProgress.Value = e.Progress * 100.0;
