@@ -7,7 +7,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MogitorControls:LogControl}">
-                    <ListBox x:Name="lbLogBuffer" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"  ItemsSource="{Binding Path=LogBuffer}" />
+                    <ListBox x:Name="PART_LogStringsDisplay" 
+                             DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"  
+                             ItemsSource="{Binding Path=LogBuffer}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
