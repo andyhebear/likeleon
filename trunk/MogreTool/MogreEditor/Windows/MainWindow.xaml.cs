@@ -44,7 +44,7 @@ namespace Mogitor.Windows
                     Dispatcher.Invoke((Action)delegate() { this.logBuffer.Add(message); });
                 };
 
-            this.ogreImage.InitOgreAsync();
+            //this.ogreImage.InitOgreAsync();
         }
 
         private void renderTargetControl_SizeChanged(object sender, SizeChangedEventArgs e)

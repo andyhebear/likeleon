@@ -99,6 +99,7 @@
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />
     <Compile Include="Controls\OgreImage.Resources.cs" />
+    <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\LogBuffer.cs" />
     <Compile Include="MogitorsRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -117,6 +118,7 @@
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MainWindowCommands.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -132,6 +134,23 @@
       <Project>{B612CB51-8D9B-4BEB-AD8B-D03FAAF52B52}</Project>
       <Name>MogreWpf.Interop</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\ogscene.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\fileclose.png" />
+    <Resource Include="Resources\Icons\fileopen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\exit.png" />
+    <Resource Include="Resources\Icons\filesaveas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\filesave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\about.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
