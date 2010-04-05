@@ -21,6 +21,16 @@ namespace Mogitor
         #region Protected Methods
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException +=
+                (object sender, UnhandledExceptionEventArgs excArgs) =>
+                {
+                    Exception ex = (Exception)excArgs.ExceptionObject;
+
+                    MessageBox.Show("Whops! Please contat the developer with the following information:\n\n" +
+                        ex.Message + ex.StackTrace,
+                        "Fatal Error",
+                        MessageBoxButton.OK, MessageBoxImage.Stop);
+                };
             base.OnStartup(e);
 
             SetupMogre("plugins.cfg", "ogre.cfg", "mogitor.log");

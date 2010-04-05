@@ -111,8 +111,20 @@ namespace Mogitor.Data
             if (fileName.Length > 0)
                 fileName = system.QualifyPath(fileName);
 
-            //ClearProjectOptions();
-            return BaseSerializer.SceneFileResult.Ok;
+            ClearProjectOptions();
+            SceneUpdated = null;
+
+            this.system.UpdateLoadProgress(-1, "Load in progress...");
+
+            MogitorsSceneSerializer defaultSerializer = new MogitorsSceneSerializer();
+            BaseSerializer.SceneFileResult ret = defaultSerializer.Import(fileName);
+
+            if (ret != BaseSerializer.SceneFileResult.Ok)
+            {
+                this.system.UpdateLoadProgress(-1, "Please load a Scene File...");
+            }
+
+            return ret;
 
         }
         #endregion
@@ -120,9 +132,22 @@ namespace Mogitor.Data
         #region Private Methods
         private bool SaveScene(bool saveAs)
         {
-            // Serialize xml
-            return false;
+            MogitorsSceneSerializer defaultSerializer = new MogitorsSceneSerializer();
+            return (defaultSerializer.Export(saveAs) == BaseSerializer.SceneFileResult.Ok);
         }
+
+        private void ClearProjectOptions()
+        {
+            ProjectOptions.IsNewProject = false;
+            ProjectOptions.ProjectDir = "";
+            ProjectOptions.ProjectName = "";
+            ProjectOptions.SceneManagerName = "";
+            ProjectOptions.TerrainDirectory = "";
+        }
+        #endregion
+
+        #region Events
+        public event EventHandler<EventArgs> SceneUpdated;
         #endregion
     }
 }

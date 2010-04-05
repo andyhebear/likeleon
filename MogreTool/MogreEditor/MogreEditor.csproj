@@ -103,6 +103,7 @@
     <Compile Include="Data\BaseSerializer.cs" />
     <Compile Include="Data\LogBuffer.cs" />
     <Compile Include="Data\MogitorsRoot.cs" />
+    <Compile Include="Data\MogitorsSceneSerializer.cs" />
     <Compile Include="Data\ProjectOptions.cs" />
     <Compile Include="MogitorsSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
