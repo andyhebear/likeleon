@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using Mogitor.Data;
 
 namespace Mogitor
 {
@@ -41,7 +42,7 @@ namespace Mogitor
             // Initialize without creating window
             this.mogreRoot.Initialise(false);   // don't create a window
 
-            this.mogitorsRoot = new MogitorsRoot();
+            this.mogitorsRoot = MogitorsRoot.Instance;
         }
 
         private static void SetupMogreResources()
