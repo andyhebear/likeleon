@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Mogitor.Data
 {
-    class BaseSerializer
+    /// <summary>
+    /// A class that is responsible for serialization/deserialization of scene file
+    /// </summary>
+    public abstract class BaseSerializer
     {
         public enum SceneFileResult
         {
@@ -16,5 +19,21 @@ namespace Mogitor.Data
             ErrParse = -3,
             ErrOgre = -4
         }
+
+        public BaseSerializer(string typeName)
+        {
+            TypeName = typeName;
+        }
+
+        public abstract SceneFileResult Export(bool saveAs);
+        public abstract SceneFileResult Import(string importFile);
+
+        #region Properties
+        public string TypeName
+        {
+            get;
+            private set;
+        }
+        #endregion
     }
 }

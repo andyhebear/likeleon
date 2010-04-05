@@ -39,6 +39,10 @@ namespace Mogitor
         {
             return fileName;
         }
+
+        public void UpdateLoadProgress(float percentage, string msg)
+        {
+        }
         #endregion
     }
 }
