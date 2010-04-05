@@ -100,8 +100,11 @@
     <Compile Include="Controls\OgreImage.Properties.cs" />
     <Compile Include="Controls\OgreImage.Resources.cs" />
     <Compile Include="CustomCommands.cs" />
+    <Compile Include="Data\BaseSerializer.cs" />
     <Compile Include="Data\LogBuffer.cs" />
-    <Compile Include="MogitorsRoot.cs" />
+    <Compile Include="Data\MogitorsRoot.cs" />
+    <Compile Include="Data\ProjectOptions.cs" />
+    <Compile Include="MogitorsSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
