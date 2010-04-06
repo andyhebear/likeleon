@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Mogitor
 {
@@ -42,6 +43,56 @@ namespace Mogitor
 
         public void UpdateLoadProgress(float percentage, string msg)
         {
+        }
+
+        public string ExtractFileName(string fileName)
+        {
+            return Path.GetFileNameWithoutExtension(fileName);
+        }
+
+        public string ExtractFilePath(string fileName)
+        {
+            return Path.GetDirectoryName(fileName);
+        }
+
+        public bool MakeDirectory(string dirName)
+        {
+            DirectoryInfo di = new DirectoryInfo(dirName);
+            try
+            {
+                if (di.Exists)
+                {
+                    // Already exists
+                    return true;
+                }
+                di.Create();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool CopyFilesEx(string source, string destination)
+        {
+            // TODO: Copy, not move.
+            Directory.Move(source, destination);
+            return true;
+        }
+
+        public void DeleteFile(string file)
+        {
+            if (!File.Exists(file))
+                return;
+            try
+            {
+                File.Delete(file);
+            }
+            catch (IOException)
+            {
+            }
+            return;
         }
         #endregion
     }

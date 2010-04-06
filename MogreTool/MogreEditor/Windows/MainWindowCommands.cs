@@ -25,6 +25,7 @@ namespace Mogitor.Windows
             opt.TerrainDirectory = "Terrain";
 
             // TODO: Open settings dialog
+            mogRoot.ProjectOptions.ProjectName = "test_project";
             if (MessageBox.Show("New project?", "Project Settings", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 string fileName = mogRoot.ProjectOptions.ProjectDir + "/" + mogRoot.ProjectOptions.ProjectName + ".mogscene";
@@ -77,7 +78,7 @@ namespace Mogitor.Windows
         #region Save
         private void CommandBinding_SaveCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(e.ToString());
+            MogitorsRoot.Instance.SaveScene(false);
         }
 
         private void CommandBinding_SaveCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -89,7 +90,7 @@ namespace Mogitor.Windows
         #region SaveAs
         private void CommandBinding_SaveAsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(e.ToString());
+            MogitorsRoot.Instance.SaveScene(true);
         }
 
         private void CommandBinding_SaveAsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)

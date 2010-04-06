@@ -16,7 +16,6 @@ namespace Mogitor.Data
         /// The current instance of the MogitorsRoot
         /// </summary>
         private static MogitorsRoot instance;
-        private readonly ProjectOptions projectOptions = new ProjectOptions();
         private readonly MogitorsSystem system;
         #endregion
 
@@ -49,12 +48,13 @@ namespace Mogitor.Data
         public bool IsSceneModified
         {
             get;
-            private set;
+            set;
         }
 
         public ProjectOptions ProjectOptions
         {
-            get { return this.projectOptions; }
+            get;
+            private set;
         }
         #endregion
 
@@ -66,6 +66,7 @@ namespace Mogitor.Data
             RenderWindow = null;
             IsSceneLoaded = false;
             IsSceneModified = false;
+            ProjectOptions = new ProjectOptions();
         }
         #endregion
 
@@ -106,6 +107,26 @@ namespace Mogitor.Data
             serializer.Serialize(writer, ProjectOptions);
         }
 
+        public bool LoadProjectOptions(XmlTextReader reader)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ProjectOptions));
+            try
+            {
+                ProjectOptions = (ProjectOptions)serializer.Deserialize(reader);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool SaveScene(bool saveAs)
+        {
+            MogitorsSceneSerializer defaultSerializer = new MogitorsSceneSerializer();
+            return (defaultSerializer.Export(saveAs) == BaseSerializer.SceneFileResult.Ok);
+        }
+
         public BaseSerializer.SceneFileResult LoadScene(string fileName)
         {
             if (fileName.Length > 0)
@@ -127,15 +148,18 @@ namespace Mogitor.Data
             return ret;
 
         }
+
+        public void AdjustUserResourceDirectories(string oldPath)
+        {
+            throw new NotImplementedException("AdjustUserResourceDirectories");
+        }
+
+        public void PrepareProjectResources()
+        {
+        }
         #endregion
 
         #region Private Methods
-        private bool SaveScene(bool saveAs)
-        {
-            MogitorsSceneSerializer defaultSerializer = new MogitorsSceneSerializer();
-            return (defaultSerializer.Export(saveAs) == BaseSerializer.SceneFileResult.Ok);
-        }
-
         private void ClearProjectOptions()
         {
             ProjectOptions.IsNewProject = false;
