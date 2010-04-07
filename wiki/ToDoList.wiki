@@ -1,11 +1,25 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+= 목표 =
+  * 데드라인 : *2010.05.09*
+  * Ogre 엔진 기반 scene 구성 툴
+  * 필수 기능
+   * 프로젝트 관리 (새 프로젝트, 저장, 불러오기)
+   * Sky, Terrain, Mesh
+   * 설정 대화상자
+  * 추가 기능
+   * Ogre 엔진에서 사용가능한 exporter
+   * Effect, Camera 등
 
-Add your content here.
+= 작업 목록 =
+  * 프로젝트 생성, 저장, 로드 기본 골격
+  * Mesh 추가 기능
+  * 카메라 이동
+  * Properties 대화상자
 
 
-= Details =
+
+= Help =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
