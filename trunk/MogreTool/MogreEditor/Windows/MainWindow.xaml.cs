@@ -44,7 +44,7 @@ namespace Mogitor.Windows
                     Dispatcher.Invoke((Action)delegate() { this.logBuffer.Add(message); });
                 };
 
-            //this.ogreImage.InitOgreAsync();
+            this.ogreImage.InitOgreAsync();
         }
 
         private void renderTargetControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -65,30 +65,6 @@ namespace Mogitor.Windows
             // Loading done.
             this.statusString.Text = "Ogre Initialized";
             this.statusProgress.Visibility = Visibility.Collapsed;
-
-            // get the Ogre scene manager
-            SceneManager sceneMgr = this.ogreImage.SceneManager;
-
-            // ceate a light
-            Light l = sceneMgr.CreateLight("MainLight");
-
-            // Accept default settings: point light, white diffuse, just set position
-            // NB I could attach the light to a SceneNode if I wanted it to move automatically with
-            //  other objects.
-            l.Position = new Vector3(20F, 80F, 50F);
-
-            // load the "ogre head mesh" resource.
-            this.ogreMesh = sceneMgr.CreateEntity("ogre", "ogrehead.mesh");
-
-            // create a node for the "ogre head mesh"
-            this.ogreNode = sceneMgr.RootSceneNode.CreateChildSceneNode("ogreNode");
-            this.ogreNode.AttachObject(this.ogreMesh);
-
-            // Create shared node for the particle effects
-            this.fountainNode = sceneMgr.RootSceneNode.CreateChildSceneNode();
-
-            // Set nonvisible timeout
-            ParticleSystem.DefaultNonVisibleUpdateTimeout = 5;
         }
 
         private void ogreImage_PreRender(object sender, EventArgs e)

@@ -28,7 +28,7 @@ namespace Mogitor.Data
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
                 dlg.FileName = "";
                 dlg.DefaultExt = ".mogscene";
-                dlg.FileName = "Mogitor Scene File (.mogscene)|*.mogscene";
+                dlg.Filter = "Mogitor Scene File (.mogscene)|*.mogscene";
 
                 Nullable<bool> result = dlg.ShowDialog();
                 if (result != true)
@@ -130,7 +130,7 @@ namespace Mogitor.Data
 
             // TODO: Load objects.
 
-            // TODO: AfterLoadScene
+            mogRoot.AfterLoadScene();
 
             return SceneFileResult.Ok;
         }
