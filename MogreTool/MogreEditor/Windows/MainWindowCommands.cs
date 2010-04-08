@@ -107,6 +107,18 @@ namespace Mogitor.Windows
         }
         #endregion
 
+        #region Settings
+        private void CommandBinding_SettingsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(sender.ToString());
+        }
+
+        private void CommandBinding_SettingsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
         #region About
         private void CommandBinding_AboutCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
