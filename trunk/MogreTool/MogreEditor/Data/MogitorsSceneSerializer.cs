@@ -49,7 +49,7 @@ namespace Mogitor.Data
                 system.MakeDirectory(newDir);
                 system.CopyFilesEx(oldProjDir, newDir);
 
-                string delFileStr = system.QualifyPath(opt.ProjectDir + "/" + oldProjName + ".mogscene");
+                string delFileStr = system.QualifyPath(opt.ProjectDir + "\\" + oldProjName + ".mogscene");
                 system.DeleteFile(delFileStr);
             }
 

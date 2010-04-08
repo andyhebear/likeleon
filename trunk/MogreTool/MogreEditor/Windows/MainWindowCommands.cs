@@ -24,11 +24,10 @@ namespace Mogitor.Windows
             opt.SceneManagerName = "OctreeSceneManager";
             opt.TerrainDirectory = "Terrain";
 
-            // TODO: Open settings dialog
-            mogRoot.ProjectOptions.ProjectName = "test_project";
-            if (MessageBox.Show("New project?", "Project Settings", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            SettingsDialog dlg = new SettingsDialog(opt);
+            if (dlg.ShowDialog() == true)
             {
-                string fileName = mogRoot.ProjectOptions.ProjectDir + "/" + mogRoot.ProjectOptions.ProjectName + ".mogscene";
+                string fileName = mogRoot.ProjectOptions.ProjectDir + "\\" + mogRoot.ProjectOptions.ProjectName + ".mogscene";
                 fileName = MogitorsSystem.Instance.QualifyPath(fileName);
 
                 XmlTextWriter textWriter = new XmlTextWriter(fileName, System.Text.Encoding.Unicode);
@@ -119,8 +118,7 @@ namespace Mogitor.Windows
 
         private void CommandBinding_SettingsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            //e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
-            e.CanExecute = true;    // temp
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
         }
         #endregion
 
