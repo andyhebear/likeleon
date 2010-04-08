@@ -19,11 +19,7 @@ namespace Mogitor.Controls
         public string OverlayText
         {
             get { return (string)GetValue(OverlayTextProperty); }
-            set
-            {
-                SetValue(OverlayTextProperty, value);
-                this.overlayTextBlock.Text = value;
-            }
+            set { SetValue(OverlayTextProperty, value); }
         }
         #endregion
 
