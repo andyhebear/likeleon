@@ -85,12 +85,12 @@
             <TabItem Header="Assets">
                 <StackPanel>
                     <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" />
-                    <ListBox MinWidth="400" MinHeight="160">
+                    <ListBox x:Name="lbResources" Width="400" Height="200">
                         <ListBox.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="_Add Directory" />
-                                <MenuItem Header="Add Directories _Recursively" />
-                                <MenuItem Header="Remove _Entry" />
+                                <MenuItem Header="_Add Directory" x:Name="menuAddDir" Click="menuAddDir_Click" />
+                                <MenuItem Header="Add Directories _Recursively" x:Name="menuAddDirRecursive" Click="menuAddDirRecursive_Click" />
+                                <MenuItem Header="Remove _Entry" x:Name="menuRemoveEntry" Click="menuRemoveEntry_Click" />
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </ListBox>

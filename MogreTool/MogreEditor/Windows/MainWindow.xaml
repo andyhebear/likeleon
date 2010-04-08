@@ -58,7 +58,8 @@
                             <ad:DockableContent Title="Render" IsCloseable="False" Background="Black">
                                 <MogitorControls:OgreControl x:Name="ogreControl" 
                                           OgreInitialized="ogreControl_OgreInitialized"
-                                          ResourceLoadItemProgress="ogreControl_ResourceLoadItemProgress" />
+                                          ResourceLoadItemProgress="ogreControl_ResourceLoadItemProgress"
+                                          ResourceReloaded="ogreControl_ResourceReloaded"/>
                             </ad:DockableContent>
                         </ad:DocumentPane>
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">

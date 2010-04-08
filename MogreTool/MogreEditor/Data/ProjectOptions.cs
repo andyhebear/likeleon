@@ -17,6 +17,14 @@ namespace Mogitor.Data
         public string ProjectName { get; set; }
         public string SceneManagerName { get; set; }
         public string TerrainDirectory { get; set; }
+        public List<string> ResourceDirectories { get; set; }
+        #endregion
+
+        #region Constructor
+        public ProjectOptions()
+        {
+            ResourceDirectories = new List<string>();
+        }
         #endregion
     }
 }
