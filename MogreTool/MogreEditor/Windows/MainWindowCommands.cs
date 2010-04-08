@@ -110,12 +110,17 @@ namespace Mogitor.Windows
         #region Settings
         private void CommandBinding_SettingsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(sender.ToString());
+            ProjectOptions opt = MogitorsRoot.Instance.ProjectOptions;
+            SettingsDialog dlg = new SettingsDialog(opt);
+            if (dlg.ShowDialog() == true)
+            {
+            }
         }
 
         private void CommandBinding_SettingsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+            //e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+            e.CanExecute = true;    // temp
         }
         #endregion
 

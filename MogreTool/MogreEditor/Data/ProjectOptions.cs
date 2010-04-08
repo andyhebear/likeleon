@@ -11,6 +11,7 @@ namespace Mogitor.Data
     public class ProjectOptions
     {
         #region Public Properties
+        [System.Xml.Serialization.XmlIgnore]
         public bool IsNewProject { get; set; }
         public string ProjectDir { get; set; }
         public string ProjectName { get; set; }
