@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Mogitor="clr-namespace:Mogitor"
     xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
-    Title="SettingsDialog" SizeToContent="WidthAndHeight">
+    Title="Project Settings" SizeToContent="WidthAndHeight">
     <DockPanel Margin="10">
         <StackPanel Margin="0,10" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" Width="60" x:Name="btnOk" Click="btnOk_Click" IsDefault="True" />
@@ -83,7 +83,18 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Assets">
-                Content for Assets
+                <StackPanel>
+                    <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" />
+                    <ListBox MinWidth="400" MinHeight="160">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="_Add Directory" />
+                                <MenuItem Header="Add Directories _Recursively" />
+                                <MenuItem Header="Remove _Entry" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </DockPanel>

@@ -46,7 +46,7 @@ namespace Mogitor
         public void UpdateLoadProgress(float percentage, string msg)
         {
             if (percentage > 0)
-                renderViewControl.OverlayText = "Loading %" + percentage + "\n" + msg;
+                renderViewControl.OverlayText = "Loading " + percentage + "%\n" + msg;
             else
                 renderViewControl.OverlayText = msg;
         }
