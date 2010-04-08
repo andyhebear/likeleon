@@ -64,7 +64,9 @@
                         </ad:DocumentPane>
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
                             <ad:DockableContent Title="Properties"></ad:DockableContent>
-                            <ad:DockableContent Title="Meshes"></ad:DockableContent>
+                            <ad:DockableContent Title="Meshes">
+                                <MogitorControls:EntityViewControl x:Name="entityViewControl"/>
+                            </ad:DockableContent>
                             <ad:DockableContent Title="Objects"></ad:DockableContent>
                         </ad:DockablePane>
                     </ad:ResizingPanel>

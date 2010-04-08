@@ -35,6 +35,7 @@ namespace Mogitor.Windows
             MogitorsRoot.Instance.SceneLoaded += (s, args) =>
                 {
                     this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                    entityViewControl.PrepareView();
                 };
         }
 
@@ -63,7 +64,7 @@ namespace Mogitor.Windows
 
         private void ogreControl_ResourceReloaded(object sender, EventArgs e)
         {
-            MessageBox.Show("Call EntityViewControl.PrepareView");
+            entityViewControl.PrepareView();
         }
         #endregion
     }
