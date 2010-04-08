@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:MogitorControls="clr-namespace:Mogitor.Controls"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
     xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
     xmlns:local="clr-namespace:Mogitor"
     Title="Mogre Editor" Width="1200" Height="800" 
@@ -23,6 +24,9 @@
                         CanExecute="CommandBinding_SaveAsCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.Exit}"
                         Executed="CommandBinding_ExitCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Settings}"
+                        Executed="CommandBinding_SettingsCmdExecuted"
+                        CanExecute="CommandBinding_SettingsCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.About}"
                         Executed="CommandBinding_AboutCmdExecuted" />
     </Window.CommandBindings>
@@ -32,69 +36,7 @@
                     Command="{x:Static local:CustomCommands.Exit}" />
     </Window.InputBindings>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <Menu.Resources>
-                <Style TargetType="{x:Type Image}">
-                    <Setter Property="Width" Value="16" />
-                    <Setter Property="Height" Value="16" />
-                </Style>
-            </Menu.Resources>
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" 
-                          Command="ApplicationCommands.New"
-                          ToolTip="Create a new Mogitor scene">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/ogscene.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Open" 
-                          Command="ApplicationCommands.Open"
-                          ToolTip="Open an Mogitor scene">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/fileopen.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Save"
-                          Command="ApplicationCommands.Save"
-                          ToolTip="Save Mogitor scene">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/filesave.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save _As"
-                          Command="ApplicationCommands.SaveAs"
-                          ToolTip="Save Mogitor scene As">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/filesaveas.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Close"
-                          Command="ApplicationCommands.Close"
-                          ToolTip="Close Mogitor scene">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/fileclose.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="E_xit"
-                          Command="{x:Static local:CustomCommands.Exit}"
-                          ToolTip="Exit Application"
-                          InputGestureText="Ctrl+F4">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/exit.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About"
-                          Command="{x:Static local:CustomCommands.About}"
-                          ToolTip="Mogitor Help">
-                    <MenuItem.Icon>
-                        <Image Source="../Resources/Icons/about.png"></Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
+        <MogitorWindows:MainWindowMenu DockPanel.Dock="Top"/>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
                 <ProgressBar x:Name="statusProgress" Height="15" Width="100" />
