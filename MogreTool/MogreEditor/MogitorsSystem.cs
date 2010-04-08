@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Mogitor.Controls;
 
 namespace Mogitor
 {
@@ -10,6 +11,7 @@ namespace Mogitor
         /// The current instance of the MogitorsRoot
         /// </summary>
         private static MogitorsSystem instance;
+        private OgreControl renderViewControl;
         #endregion
 
         #region Public Properties
@@ -43,6 +45,10 @@ namespace Mogitor
 
         public void UpdateLoadProgress(float percentage, string msg)
         {
+            if (percentage > 0)
+                renderViewControl.OverlayText = "Loading %" + percentage + "\n" + msg;
+            else
+                renderViewControl.OverlayText = msg;
         }
 
         public string ExtractFileName(string fileName)
@@ -93,6 +99,11 @@ namespace Mogitor
             {
             }
             return;
+        }
+
+        public void SetWindows(OgreControl renderViewControl)
+        {
+            this.renderViewControl = renderViewControl;
         }
         #endregion
     }

@@ -14,5 +14,25 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <!-- Ogre Control Template -->
+    <Style TargetType="{x:Type MogitorControls:OgreControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MogitorControls:OgreControl}">
+                    <Grid>
+                        <Image x:Name="PART_RenderTargetControl" Stretch="Fill">
+                            <Image.Source>
+                                <MogitorControls:OgreImage x:Name="PART_OgreImage" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock x:Name="PART_OverlayTextBlock" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                   Foreground="White" 
+                                   Text="{Binding Path=OverlayText}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

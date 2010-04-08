@@ -114,16 +114,9 @@
                         </ad:DockablePane>
                         <ad:DocumentPane>
                             <ad:DockableContent Title="Render" IsCloseable="False" Background="Black">
-                                <Image x:Name="renderTargetControl" Stretch="Fill"
-                                       SizeChanged="renderTargetControl_SizeChanged"
-                                       MouseDown="renderTargetControl_MouseDown">
-                                    <Image.Source>
-                                        <MogitorControls:OgreImage x:Name="ogreImage"
-                                          Initialized="ogreImage_Initialized"
-                                          PreRender="ogreImage_PreRender"
-                                          ResourceLoadItemProgress="ogreImage_ResourceLoadItemProgress" />
-                                    </Image.Source>
-                                </Image>
+                                <MogitorControls:OgreControl x:Name="ogreControl" 
+                                          OgreInitialized="ogreControl_OgreInitialized"
+                                          ResourceLoadItemProgress="ogreControl_ResourceLoadItemProgress" />
                             </ad:DockableContent>
                         </ad:DocumentPane>
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
