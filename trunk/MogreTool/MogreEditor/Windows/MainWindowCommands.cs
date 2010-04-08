@@ -2,6 +2,7 @@
 using Mogitor.Data;
 using System.IO;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace Mogitor.Windows
 {
@@ -111,8 +112,37 @@ namespace Mogitor.Windows
         {
             ProjectOptions opt = MogitorsRoot.Instance.ProjectOptions;
             SettingsDialog dlg = new SettingsDialog(opt);
+
+            List<string> directories = new List<string>();
+            opt.ResourceDirectories.ForEach(s => directories.Add(s));
+
             if (dlg.ShowDialog() == true)
             {
+                bool identical = true;
+                if (directories.Count == opt.ResourceDirectories.Count)
+                {
+                    foreach (string orgStr in directories)
+                    {
+                        bool found = false;
+                        foreach (string newStr in opt.ResourceDirectories)
+                        {
+                            if (orgStr == newStr)
+                                found = true;
+                        }
+                        if (!found)
+                        {
+                            identical = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    identical = false;
+                }
+
+                if (!identical)
+                    ogreControl.ReloadUserResources();
             }
         }
 

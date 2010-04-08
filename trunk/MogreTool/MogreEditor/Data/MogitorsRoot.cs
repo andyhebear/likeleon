@@ -96,7 +96,7 @@ namespace Mogitor.Data
             RenderWindow.RemoveAllViewports();
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
-            //mngr.DestroyResourceGroup("ProjectResources");
+            mngr.DestroyResourceGroup("ProjectResources");
 
             return true;
         }
@@ -156,6 +156,19 @@ namespace Mogitor.Data
 
         public void PrepareProjectResources()
         {
+            try
+            {
+                Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
+                mngr.CreateResourceGroup("ProjectResources");
+
+                FillResourceGroup(mngr, ProjectOptions.ResourceDirectories, ProjectOptions.ProjectDir, "ProjectResources");
+
+                mngr.InitialiseResourceGroup("ProjectResources");
+            }
+            catch
+            {
+                Mogre.LogManager.Singleton.DefaultLog.LogMessage("MOGITOR EXCEPTION: Can not prepare project resources!!", Mogre.LogMessageLevel.LML_CRITICAL);
+            }
         }
 
         public void AfterLoadScene()
@@ -173,6 +186,24 @@ namespace Mogitor.Data
 
             if (SceneLoaded != null)
                 SceneLoaded(this, EventArgs.Empty);
+        }
+
+        public void FillResourceGroup(Mogre.ResourceGroupManager mngr, IList<string> list, string path, string group)
+        {
+            foreach (string str in list)
+            {
+                string stype = "";
+
+                if (str.Substring(0, 3) == "FS:")
+                    stype = "FileSystem";
+                else if (str.Substring(0, 3) == "ZP:")
+                    stype = "Zip";
+
+                string resource = str.Remove(0, 3);
+                resource = system.QualifyPath(resource);
+
+                mngr.AddResourceLocation(resource, stype, group);
+            }
         }
         #endregion
 

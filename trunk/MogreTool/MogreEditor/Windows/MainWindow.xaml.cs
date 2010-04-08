@@ -41,15 +41,29 @@ namespace Mogitor.Windows
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
         {
             this.statusString.Text = "Ready";
-            this.statusProgress.Visibility = Visibility.Collapsed;
-
             this.ogreControl.OverlayText = "Please load a Scene File...";
         }
 
         private void ogreControl_ResourceLoadItemProgress(object sender, Mogitor.Controls.ResourceLoadEventArgs e)
         {
-            this.statusString.Text = "Loading Resource: " + e.Name;
-            this.statusProgress.Value = e.Progress * 100.0;
+            if (this.statusProgress.Visibility != Visibility.Visible)
+                this.statusProgress.Visibility = Visibility.Visible;
+
+            if (e.Progress != 1.0)
+            {
+                this.statusString.Text = "Loading Resource: " + e.Name;
+                this.statusProgress.Value = e.Progress * 100.0;
+            }
+            else
+            {
+                this.statusString.Text = "Resource Loaded";
+                this.statusProgress.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ogreControl_ResourceReloaded(object sender, EventArgs e)
+        {
+            MessageBox.Show("Call EntityViewControl.PrepareView");
         }
         #endregion
     }

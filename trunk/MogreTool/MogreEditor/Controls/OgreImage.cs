@@ -146,10 +146,6 @@ namespace Mogitor.Controls
                 this.Dispatcher.Invoke(
                     (MethodInvoker)delegate
                     {
-                        //CreateSceneManager();
-                        //CreateCamera();
-                        //CreateViewport();
-
                         IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
 
                         if (Initialized != null)
@@ -163,7 +159,6 @@ namespace Mogitor.Controls
                         this.currentThread = null;
                     });
 
-                //CreateInputHandler();
 
                 this.root.RenderSystem.EventOccurred += (string eventName, Const_NameValuePairList parameters) =>
                     {
@@ -197,29 +192,6 @@ namespace Mogitor.Controls
             InitResourceLoad();
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
         }
-
-        //private void CreateSceneManager()
-        //{
-        //    this.sceneMgr = this.root.CreateSceneManager(SceneType.ST_GENERIC, "Main SceneManager");
-        //}
-
-        //private void CreateCamera()
-        //{
-        //    this.camera = this.sceneMgr.CreateCamera("MainCamera");
-        //    this.camera.NearClipDistance = 1;
-        //    this.camera.Position = new Vector3(0, 0, 300);
-        //    this.camera.LookAt(Vector3.ZERO);
-        //}
-
-        //private void CreateViewport()
-        //{
-        //    this.viewPort = this.renderWindow.AddViewport(this.camera);
-        //    this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 0.0f, 1.0f);
-        //}
-
-        //private void CreateInputHandler()
-        //{
-        //}
 
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

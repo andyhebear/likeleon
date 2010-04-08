@@ -27,11 +27,13 @@ namespace Mogitor.Controls
         private Image renderTargetControl;
         private OgreImage ogreImage;
         private TextBlock overlayTextBlock;
+        private bool initialized;
         #endregion
 
         #region Constructor
         public OgreControl()
         {
+            initialized = false;
             this.Loaded += OgreControl_Loaded;
         }
         #endregion
@@ -45,45 +47,63 @@ namespace Mogitor.Controls
             this.ogreImage = this.Template.FindName("PART_OgreImage", this) as OgreImage;
             this.overlayTextBlock = this.Template.FindName("PART_OverlayTextBlock", this) as TextBlock;
         }
+
+        public void ReloadUserResources()
+        {
+            Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
+            mngr.ClearResourceGroup("ProjectResources");
+            MogitorsRoot.Instance.FillResourceGroup(mngr, MogitorsRoot.Instance.ProjectOptions.ResourceDirectories, MogitorsRoot.Instance.ProjectOptions.ProjectDir, "ProjectResources");
+            mngr.InitialiseResourceGroup("ProjectResources");
+
+            MogitorsRoot.Instance.IsSceneModified = true;
+
+            if (ResourceReloaded != null)
+                ResourceReloaded(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Private Methods
         private void OgreControl_Loaded(object sender, RoutedEventArgs args)
         {
-            App.Current.Exit += (s, e) =>
+            if (!this.initialized)
             {
-                this.renderTargetControl.Source = null;
+                App.Current.Exit += (s, e) =>
+                {
+                    this.renderTargetControl.Source = null;
 
-                this.ogreImage.Dispose();
-            };
+                    this.ogreImage.Dispose();
+                };
 
-            this.SizeChanged += (s, e) =>
-            {
-                if (this.ogreImage == null)
-                    return;
+                this.SizeChanged += (s, e) =>
+                {
+                    if (this.ogreImage == null)
+                        return;
 
-                this.ogreImage.ViewportSize = e.NewSize;
-            };
+                    this.ogreImage.ViewportSize = e.NewSize;
+                };
 
-            this.ogreImage.Initialized += (s, e) =>
-            {
-                if (OgreInitialized != null)
-                    OgreInitialized(s, e);
-            };
+                this.ogreImage.Initialized += (s, e) =>
+                {
+                    if (OgreInitialized != null)
+                        OgreInitialized(s, e);
+                    this.initialized = true;
+                };
 
-            this.ogreImage.ResourceLoadItemProgress += (s, e) =>
-            {
-                if (ResourceLoadItemProgress != null)
-                    ResourceLoadItemProgress(s, e);
-            };
+                this.ogreImage.ResourceLoadItemProgress += (s, e) =>
+                {
+                    if (ResourceLoadItemProgress != null)
+                        ResourceLoadItemProgress(s, e);
+                };
 
-            this.ogreImage.InitOgreAsync();
+                this.ogreImage.InitOgreAsync();
+            }
         }
         #endregion
 
         #region Public Events
         public event RoutedEventHandler OgreInitialized;
         public event EventHandler<ResourceLoadEventArgs> ResourceLoadItemProgress;
+        public event EventHandler ResourceReloaded;
         #endregion
     }
 }
