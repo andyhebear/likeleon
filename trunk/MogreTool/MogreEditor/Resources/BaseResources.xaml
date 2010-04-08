@@ -28,7 +28,8 @@
                         </Image>
                         <TextBlock x:Name="PART_OverlayTextBlock" 
                                    VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                   Foreground="White" 
+                                   Foreground="White"
+                                   DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                    Text="{Binding Path=OverlayText}" />
                     </Grid>
                 </ControlTemplate>
