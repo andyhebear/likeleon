@@ -33,7 +33,7 @@ namespace Mogitor.Data
             }
         }
 
-        Mogre.RenderWindow RenderWindow 
+        public Mogre.RenderWindow RenderWindow 
         { 
             get; 
             set;
@@ -157,6 +157,23 @@ namespace Mogitor.Data
         public void PrepareProjectResources()
         {
         }
+
+        public void AfterLoadScene()
+        {
+            system.UpdateLoadProgress(60, "Loading scene objects");
+
+            if (SceneUpdated != null)
+                SceneUpdated(this, EventArgs.Empty);
+            SceneUpdated = null;
+
+            system.UpdateLoadProgress(100, "Rendering...");
+
+            IsSceneLoaded = true;
+            IsSceneModified = false;
+
+            if (SceneLoaded != null)
+                SceneLoaded(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Private Methods
@@ -172,6 +189,7 @@ namespace Mogitor.Data
 
         #region Events
         public event EventHandler<EventArgs> SceneUpdated;
+        public event EventHandler<EventArgs> SceneLoaded;
         #endregion
     }
 }
