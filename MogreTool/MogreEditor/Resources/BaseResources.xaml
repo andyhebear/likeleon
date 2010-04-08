@@ -36,4 +36,32 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!-- Entity View Control Template -->
+    <Style TargetType="{x:Type MogitorControls:EntityViewControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MogitorControls:EntityViewControl}">
+                    <Grid>
+                        <ListBox ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icons}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="55" Margin="3,8">
+                                        <Image Source="{Binding Path=ImgFile}" ToolTip="{Binding Path=ImgFile}" Width="55" />
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

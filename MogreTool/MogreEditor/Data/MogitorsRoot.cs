@@ -146,7 +146,6 @@ namespace Mogitor.Data
             }
 
             return ret;
-
         }
 
         public void AdjustUserResourceDirectories(string oldPath)

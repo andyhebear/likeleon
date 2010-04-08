@@ -104,6 +104,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\EntityViewControl.cs" />
     <Compile Include="Controls\LogControl.cs" />
     <Compile Include="Controls\OgreControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
