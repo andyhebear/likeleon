@@ -6,7 +6,7 @@
     xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
     xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
     xmlns:local="clr-namespace:Mogitor"
-    Title="Mogre Editor" Width="1200" Height="800" 
+    Title="Mogitor" Width="1200" Height="800" 
     Loaded="Window_Loaded">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New"

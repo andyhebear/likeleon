@@ -31,11 +31,16 @@ namespace Mogitor.Windows
                 {
                     Dispatcher.Invoke((Action)delegate() { this.logBuffer.Add(message); });
                 };
+
+            MogitorsRoot.Instance.SceneLoaded += (s, args) =>
+                {
+                    this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                };
         }
 
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
         {
-            this.statusString.Text = "Ogre Initialized";
+            this.statusString.Text = "Ready";
             this.statusProgress.Visibility = Visibility.Collapsed;
 
             this.ogreControl.OverlayText = "Please load a Scene File...";
