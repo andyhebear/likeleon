@@ -96,7 +96,7 @@ namespace Mogitor.Data
             RenderWindow.RemoveAllViewports();
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
-            mngr.DestroyResourceGroup("ProjectResources");
+            //mngr.DestroyResourceGroup("ProjectResources");
 
             return true;
         }
