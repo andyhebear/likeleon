@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using Mogre;
+using Mogitor.Data;
 
 namespace Mogitor.Controls
 {
@@ -145,9 +146,9 @@ namespace Mogitor.Controls
                 this.Dispatcher.Invoke(
                     (MethodInvoker)delegate
                     {
-                        CreateSceneManager();
-                        CreateCamera();
-                        CreateViewport();
+                        //CreateSceneManager();
+                        //CreateCamera();
+                        //CreateViewport();
 
                         IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
 
@@ -162,7 +163,22 @@ namespace Mogitor.Controls
                         this.currentThread = null;
                     });
 
-                CreateInputHandler();
+                //CreateInputHandler();
+
+                this.root.RenderSystem.EventOccurred += (string eventName, Const_NameValuePairList parameters) =>
+                    {
+                        if (eventName == "DeviceLost")
+                            RestoreLostDevice();
+                    };
+                MogitorsRoot.Instance.RenderWindow = this.renderWindow;
+                Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
+                    {
+                        return true;
+                    };
+                Mogre.Root.Singleton.FrameEnded += (FrameEvent evt) =>
+                    {
+                        return true;
+                    };
             }
 
             return true;
@@ -182,28 +198,28 @@ namespace Mogitor.Controls
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
         }
 
-        private void CreateSceneManager()
-        {
-            this.sceneMgr = this.root.CreateSceneManager(SceneType.ST_GENERIC, "Main SceneManager");
-        }
+        //private void CreateSceneManager()
+        //{
+        //    this.sceneMgr = this.root.CreateSceneManager(SceneType.ST_GENERIC, "Main SceneManager");
+        //}
 
-        private void CreateCamera()
-        {
-            this.camera = this.sceneMgr.CreateCamera("MainCamera");
-            this.camera.NearClipDistance = 1;
-            this.camera.Position = new Vector3(0, 0, 300);
-            this.camera.LookAt(Vector3.ZERO);
-        }
+        //private void CreateCamera()
+        //{
+        //    this.camera = this.sceneMgr.CreateCamera("MainCamera");
+        //    this.camera.NearClipDistance = 1;
+        //    this.camera.Position = new Vector3(0, 0, 300);
+        //    this.camera.LookAt(Vector3.ZERO);
+        //}
 
-        private void CreateViewport()
-        {
-            this.viewPort = this.renderWindow.AddViewport(this.camera);
-            this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 0.0f, 1.0f);
-        }
+        //private void CreateViewport()
+        //{
+        //    this.viewPort = this.renderWindow.AddViewport(this.camera);
+        //    this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 0.0f, 1.0f);
+        //}
 
-        private void CreateInputHandler()
-        {
-        }
+        //private void CreateInputHandler()
+        //{
+        //}
 
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -282,13 +298,9 @@ namespace Mogitor.Controls
 
             if (IsFrontBufferAvailable)
             {
-                if (MogreWpf.Interop.D3D9RenderSystem.IsDeviceLost(this.renderWindow))
+                if (MogreWpf.Interop.D3D9RenderSystem.IsDeviceLost(this.renderWindow) && !RestoreLostDevice())
                 {
-                    this.renderWindow.Update(); // try restore
-                    this.reloadRenderTargetTime = -1;
-
-                    if (MogreWpf.Interop.D3D9RenderSystem.IsDeviceLost(this.renderWindow))
-                        return;
+                    return;
                 }
 
                 long durationTicks = ResizeRenderTargetDelay.TimeSpan.Ticks;
@@ -308,6 +320,16 @@ namespace Mogitor.Controls
                 AddDirtyRect(new Int32Rect(0, 0, PixelWidth, PixelHeight));
                 Unlock();
             }
+        }
+
+        private bool RestoreLostDevice()
+        {
+            this.renderWindow.Update(); // try restore
+            this.reloadRenderTargetTime = -1;
+
+            if (MogreWpf.Interop.D3D9RenderSystem.IsDeviceLost(this.renderWindow))
+                return false;
+            return true;
         }
 
         private void ReInitRenderTarget()

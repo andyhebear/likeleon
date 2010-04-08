@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\LogControl.cs" />
+    <Compile Include="Controls\OgreControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />
     <Compile Include="Controls\OgreImage.Resources.cs" />
