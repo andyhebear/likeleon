@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
+using System.Windows.Data;
 using Mogitor.Data;
 
 namespace Mogitor.Controls
@@ -22,6 +24,11 @@ namespace Mogitor.Controls
         };
         #endregion
 
+        #region Fields
+        public static readonly DependencyProperty FilterProperty =
+            DependencyProperty.Register("Filter", typeof(string), typeof(EntityViewControl), new PropertyMetadata(OnFilterChanged));
+        #endregion
+
         #region Public Methods
         public void PrepareView()
         {
@@ -38,6 +45,11 @@ namespace Mogitor.Controls
 
         #region Public Properties
         public ObservableCollection<ImageEntry> Icons { get; private set; }
+        public string Filter
+        {
+            get { return (string)GetValue(FilterProperty); }
+            set { SetValue(FilterProperty, value); }
+        }
         #endregion
 
         #region Private Methods
@@ -117,6 +129,26 @@ namespace Mogitor.Controls
 
             list = null;
         }
+
+        private static void OnFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            EntityViewControl entityView = d as EntityViewControl;
+            string filter = e.NewValue as string;
+
+            ICollectionView view = CollectionViewSource.GetDefaultView(entityView.Icons);
+            view.Filter = (object o) =>
+                {
+                    filter = filter.Trim();
+                    if (filter.Length == 0)
+                    {
+                        return true;
+                    }
+
+                    ImageEntry imageEntry = o as ImageEntry;
+                    return imageEntry.Name.ToLower().Contains(filter.ToLower());
+                };
+        }
+
         #endregion
 
         internal void ClearView()
