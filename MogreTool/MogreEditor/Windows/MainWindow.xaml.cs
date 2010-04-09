@@ -37,6 +37,12 @@ namespace Mogitor.Windows
                     this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
                     entityViewControl.PrepareView();
                 };
+
+            MogitorsRoot.Instance.SceneTerminated += (s, args) =>
+                {
+                    entityViewControl.ClearView();
+                    this.Title = "Mogitor";
+                };
         }
 
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)

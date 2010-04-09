@@ -75,8 +75,6 @@ namespace Mogitor.Controls
         #region Private Fields
         private Root root;
         private RenderWindow renderWindow;
-        private SceneManager sceneMgr;
-        private Camera camera;
         private Viewport viewPort;
         private RenderTarget renTarget;
         private TexturePtr texture;

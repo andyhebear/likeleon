@@ -103,7 +103,7 @@ namespace Mogitor.Controls
                 string addstrFile = MogitorsRoot.Instance.ProjectOptions.ProjectDir + "\\Temp\\MeshIcons\\" + addstr + ".png";
                 rttTex.WriteContentsToFile(addstrFile);
 
-                addstr.Remove(addstr.Length - 5, 5);
+                addstr = addstr.Remove(addstr.Length - 5, 5);
                 retlist.Add(new ImageEntry(addstr, addstrFile));
 
                 entity.ParentSceneNode.DetachObject(entity);
@@ -119,5 +119,10 @@ namespace Mogitor.Controls
             list = null;
         }
         #endregion
+
+        internal void ClearView()
+        {
+            Icons.Clear();
+        }
     }
 }

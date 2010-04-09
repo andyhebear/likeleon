@@ -93,6 +93,9 @@ namespace Mogitor.Data
 
             IsSceneLoaded = false;
 
+            if (SceneTerminated != null)
+                SceneTerminated(this, EventArgs.Empty);
+
             RenderWindow.RemoveAllViewports();
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
@@ -220,6 +223,7 @@ namespace Mogitor.Data
         #region Events
         public event EventHandler<EventArgs> SceneUpdated;
         public event EventHandler<EventArgs> SceneLoaded;
+        public event EventHandler<EventArgs> SceneTerminated;
         #endregion
     }
 }
