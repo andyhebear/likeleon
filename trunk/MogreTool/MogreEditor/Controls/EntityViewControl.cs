@@ -100,11 +100,10 @@ namespace Mogitor.Controls
                 RTTCam.LookAt(vCenter.x, vCenter.y, vCenter.z);
 
                 rttTex.Update();
-                string addstrFile = MogitorsRoot.Instance.ProjectOptions.ProjectDir + "\\Temp\\MeshIcons\\" + addstr + ".png";
+                string addstrFile = MogitorsRoot.Instance.ProjectOptions.ProjectDir + addstr + ".png";
                 rttTex.WriteContentsToFile(addstrFile);
 
-                addstr = addstr.Remove(addstr.Length - 5, 5);
-                retlist.Add(new ImageEntry(addstr, addstrFile));
+                retlist.Add(new ImageEntry(addstr.Remove(addstr.Length - 5, 5), addstrFile));
 
                 entity.ParentSceneNode.DetachObject(entity);
                 sceneMgr.DestroyEntity(entity);
