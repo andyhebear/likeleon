@@ -42,7 +42,18 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MogitorControls:EntityViewControl}">
-                    <Grid>
+                    <DockPanel>
+                        <DockPanel.Resources>
+                            <ScaleTransform x:Key="transform" ScaleX="1" ScaleY="{Binding Path=ScaleX, RelativeSource={RelativeSource Self}}"/>
+                        </DockPanel.Resources>
+                        <TextBox DockPanel.Dock="Top"
+                                   Margin="3,2"
+                                   ToolTip="Entity View Search"
+                                 Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Filter, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider DockPanel.Dock="Top"
+                                Margin="3,1" Minimum="1" Maximum="10"
+                                Value="{Binding Path=ScaleX, Source={StaticResource transform}, Mode=TwoWay}"
+                                ToolTip="Scale Transform"/>
                         <ListBox ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icons}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
@@ -52,14 +63,17 @@
                             </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Width="55" Margin="3,8">
-                                        <Image Source="{Binding Path=ImgFile}" ToolTip="{Binding Path=ImgFile}" Width="55" />
+                                    <StackPanel Margin="3,8">
+                                        <Image Source="{Binding Path=ImgFile}" 
+                                               ToolTip="{Binding Path=ImgFile}"
+                                               Width="55" 
+                                               LayoutTransform="{StaticResource transform}" />
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Name}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                    </Grid>
+                    </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
