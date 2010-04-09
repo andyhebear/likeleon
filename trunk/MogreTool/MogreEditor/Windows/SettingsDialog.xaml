@@ -15,7 +15,7 @@
             </TabControl.Resources>
             <TabItem Header="General" 
                      DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MogitorWindows:SettingsDialog}}, Path=Options}">
-                <Grid>
+                <Grid VerticalAlignment="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -83,9 +83,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Assets">
-                <StackPanel>
-                    <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" />
-                    <ListBox x:Name="lbResources" Width="400" Height="200">
+                <DockPanel>
+                    <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" DockPanel.Dock="Top" />
+                    <ListBox x:Name="lbResources" Margin="0,5" MinWidth="400" MinHeight="200">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="_Add Directory" x:Name="menuAddDir" Click="menuAddDir_Click" />
@@ -94,7 +94,7 @@
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </DockPanel>
