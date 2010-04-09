@@ -35,13 +35,19 @@ namespace Mogitor.Windows
             MogitorsRoot.Instance.SceneLoaded += (s, args) =>
                 {
                     this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+
                     entityViewControl.PrepareView();
+
+                    this.ogreControl.OverlayText = "";
                 };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
                 {
                     entityViewControl.ClearView();
+
                     this.Title = "Mogitor";
+
+                    this.ogreControl.OverlayText = "Please load a Scene File...";
                 };
         }
 
