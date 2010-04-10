@@ -63,6 +63,13 @@
                     <Image Source="../Resources/Icons/settings.png" />
                 </MenuItem.Icon>
             </MenuItem>
+            <MenuItem Header="_Preferences"
+                      Command="{x:Static local:CustomCommands.Preferences}"
+                      ToolTip="Preferences">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/preferences.png" />
+                </MenuItem.Icon>
+            </MenuItem>
         </MenuItem>
         <MenuItem Header="_Help">
             <MenuItem Header="_About"

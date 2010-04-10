@@ -13,6 +13,7 @@ namespace Mogitor
             exitCommand = new RoutedCommand("Exit", typeof(CustomCommands));
             aboutCommand = new RoutedCommand("About", typeof(CustomCommands));
             settingsCommand = new RoutedCommand("Settings", typeof(CustomCommands));
+            preferencesCommand = new RoutedCommand("Preferences", typeof(CustomCommands));
         }
 
         public static RoutedCommand Exit
@@ -30,8 +31,14 @@ namespace Mogitor
             get { return settingsCommand; }
         }
 
+        public static RoutedCommand Preferences
+        {
+            get { return preferencesCommand; }
+        }
+
         static readonly RoutedCommand exitCommand;
         static readonly RoutedCommand aboutCommand;
         static readonly RoutedCommand settingsCommand;
+        static readonly RoutedCommand preferencesCommand;
     }
 }

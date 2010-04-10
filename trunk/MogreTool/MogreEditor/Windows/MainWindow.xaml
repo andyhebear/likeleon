@@ -27,6 +27,8 @@
         <CommandBinding Command="{x:Static local:CustomCommands.Settings}"
                         Executed="CommandBinding_SettingsCmdExecuted"
                         CanExecute="CommandBinding_SettingsCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Preferences}"
+                        Executed="CommandBinding_PreferencesCmdExecuted" />
         <CommandBinding Command="{x:Static local:CustomCommands.About}"
                         Executed="CommandBinding_AboutCmdExecuted" />
     </Window.CommandBindings>
