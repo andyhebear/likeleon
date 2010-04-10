@@ -102,30 +102,10 @@ namespace Mogitor.Controls
             };
             #endregion
 
-            #region Drag&Drop delegates
-            this.PreviewDragEnter += (s, e) =>
-            {
-                e.Effects = DragDropEffects.Copy;
-            };
-
-            this.PreviewDrop += (s, e) =>
-            {
-                e.Handled = true;
-
-                String dataFormats = "";
-                dataFormats = "The following data formats are present:\n";
-                foreach (string format in e.Data.GetFormats(true))
-                {
-                    if (e.Data.GetDataPresent(format, false)) 
-                        dataFormats += "\t- " + format + " (native)\n";
-                    else 
-                        dataFormats += "\t- " + format + " (autoconvert)\n";
-                }
-                dataFormats += "\n";
-
-                MessageBox.Show(dataFormats);
-            };
-            #endregion
+            this.PreviewDragEnter += new DragEventHandler(OgreControl_PreviewDragEnter);
+            this.PreviewDragLeave += new DragEventHandler(OgreControl_PreviewDragLeave);
+            this.PreviewDragOver += new DragEventHandler(OgreControl_PreviewDragOver);
+            this.PreviewDrop += new DragEventHandler(OgreControl_PreviewDrop);
 
             this.ogreImage.InitOgreAsync();
         }
@@ -135,6 +115,45 @@ namespace Mogitor.Controls
         public event RoutedEventHandler OgreInitialized;
         public event EventHandler<ResourceLoadEventArgs> ResourceLoadItemProgress;
         public event EventHandler ResourceReloaded;
+        #endregion
+
+        #region Drag&Drop helper
+        private void OgreControl_PreviewDragEnter(object sender, DragEventArgs args)
+        {
+            if (!MogitorsRoot.Instance.OnDragEnter(args.Data))
+            {
+                args.Effects = DragDropEffects.None;
+                args.Handled = true;
+                return;
+            }
+
+            args.Effects = DragDropEffects.Copy;
+        }
+
+        private void OgreControl_PreviewDragLeave(object sender, DragEventArgs args)
+        {
+            MogitorsRoot.Instance.OnDragLeave(args.Data);
+        }
+
+        private void OgreControl_PreviewDragOver(object sender, DragEventArgs args)
+        {
+            if (!IsFocused)
+                Focus();
+
+            if (!MogitorsRoot.Instance.OnDragOver(args.Data, args.GetPosition(this)))
+            {
+                args.Effects = DragDropEffects.None;
+                args.Handled = true;
+                return;
+            }
+
+            args.Effects = DragDropEffects.Copy;
+        }
+
+        private void OgreControl_PreviewDrop(object sender, DragEventArgs args)
+        {
+            MogitorsRoot.Instance.OnDragDrop(args.Data, args.GetPosition(this));
+        }
         #endregion
     }
 }
