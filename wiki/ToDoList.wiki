@@ -13,10 +13,12 @@
 
 = 작업 목록 =
   * (완료) 프로젝트 생성, 저장, 로드 기본 골격 
-  * Mesh 추가 기능
+  * (완료) Mesh 추가 기능
   * 카메라 이동
   * Properties 대화상자
-
+  * EntityViewControl의 CreatImage 내부 구현 공부
+  * Mesh 이미지 이미 존재시 스킵하도록 (먼저 로딩 속도 병목 확인)
+  * ProjectOption에 Mesh 이미지 생성 디렉토리 추가
 
 
 = Help =
