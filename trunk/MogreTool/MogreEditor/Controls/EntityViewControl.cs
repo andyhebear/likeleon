@@ -5,10 +5,12 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using Mogitor.Data;
 
 namespace Mogitor.Controls
 {
+    [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
     class EntityViewControl : Control
     {
         #region Inner Class
@@ -27,6 +29,8 @@ namespace Mogitor.Controls
         #region Fields
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(string), typeof(EntityViewControl), new PropertyMetadata(OnFilterChanged));
+        private ListBox iconsListBox;
+        private bool initialized;
         #endregion
 
         #region Public Methods
@@ -34,12 +38,27 @@ namespace Mogitor.Controls
         {
             CreateImages(Icons);
         }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            this.iconsListBox = this.Template.FindName("PART_ListBox", this) as ListBox;
+        }
+
+        public void ClearView()
+        {
+            Icons.Clear();
+        }
         #endregion
 
         #region Constructor
         public EntityViewControl()
         {
+            initialized = false;
             Icons = new ObservableCollection<ImageEntry>();
+
+            this.Loaded += EntityViewControl_Loaded;
         }
         #endregion
 
@@ -53,7 +72,23 @@ namespace Mogitor.Controls
         #endregion
 
         #region Private Methods
-        void CreateImages(ObservableCollection<ImageEntry> retlist)
+        private void EntityViewControl_Loaded(object sender, RoutedEventArgs args)
+        {
+            if (this.initialized)
+                return;
+
+            this.iconsListBox.PreviewMouseLeftButtonDown += (s, e) =>
+                {
+                    ListBox listBox = s as ListBox;
+                    object data = GetObjectDataFromPoint(listBox, e.GetPosition(listBox));
+                    if (data != null)
+                        DragDrop.DoDragDrop(listBox, data, DragDropEffects.Copy);
+                };
+
+            this.initialized = true;
+        }
+
+        private void CreateImages(ObservableCollection<ImageEntry> retlist)
         {
             retlist.Clear();
 
@@ -148,12 +183,39 @@ namespace Mogitor.Controls
                     return imageEntry.Name.ToLower().Contains(filter.ToLower());
                 };
         }
-
         #endregion
 
-        internal void ClearView()
+        #region Helpers
+        //gets the object for the element selected (from the point) in the listbox (source)
+        private static object GetObjectDataFromPoint(ListBox source, Point point)
         {
-            Icons.Clear();
+            UIElement element = source.InputHitTest(point) as UIElement;
+            if (element != null)
+            {
+                //get the object from the element
+                object data = DependencyProperty.UnsetValue;
+                while (data == DependencyProperty.UnsetValue)
+                {
+                    // try to get the object value for the corresponding element
+                    data = source.ItemContainerGenerator.ItemFromContainer(element);
+
+                    //get the parent and we will iterate again
+                    if (data == DependencyProperty.UnsetValue)
+                        element = VisualTreeHelper.GetParent(element) as UIElement;
+
+                    //if we reach the actual listbox then we must break to avoid an infinite loop
+                    if (element == source)
+                        return null;
+                }
+
+                //return the data that we fetched only if it is not Unset value, 
+                //which would mean that we did not find the data
+                if (data != DependencyProperty.UnsetValue)
+                    return data;
+            }
+
+            return null;
         }
+        #endregion
     }
 }

@@ -54,7 +54,8 @@
                                 Margin="3,1" Minimum="1" Maximum="10"
                                 Value="{Binding Path=ScaleX, Source={StaticResource transform}, Mode=TwoWay}"
                                 ToolTip="Scale Transform"/>
-                        <ListBox ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icons}"
+                        <ListBox x:Name="PART_ListBox" 
+                                 ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icons}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
