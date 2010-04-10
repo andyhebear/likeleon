@@ -153,6 +153,13 @@ namespace Mogitor.Windows
         }
         #endregion
 
+        #region Preferences
+        private void CommandBinding_PreferencesCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("awefawefaweF");
+        }
+        #endregion
+
         #region About
         private void CommandBinding_AboutCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
