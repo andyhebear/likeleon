@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Mogitor.Data
 {
-    class MogitorsRoot
+    partial class MogitorsRoot
     {
         #region Fields
         /// <summary>

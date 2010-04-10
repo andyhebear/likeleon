@@ -11,7 +11,7 @@ using Mogitor.Data;
 namespace Mogitor.Controls
 {
     [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
-    class EntityViewControl : Control
+    class EntityViewControl : Control, MogitorsRoot.IDragDropHandler
     {
         #region Inner Class
         public class ImageEntry
@@ -59,6 +59,8 @@ namespace Mogitor.Controls
             Icons = new ObservableCollection<ImageEntry>();
 
             this.Loaded += EntityViewControl_Loaded;
+
+            MogitorsRoot.Instance.RegisterDragDropHandler(this, this);
         }
         #endregion
 
@@ -82,7 +84,9 @@ namespace Mogitor.Controls
                     ListBox listBox = s as ListBox;
                     object data = GetObjectDataFromPoint(listBox, e.GetPosition(listBox));
                     if (data != null)
-                        DragDrop.DoDragDrop(listBox, data, DragDropEffects.Copy);
+                    {
+                        DragDrop.DoDragDrop(listBox, new DragData(this, data), DragDropEffects.Copy);
+                    }
                 };
 
             this.initialized = true;
@@ -182,6 +186,26 @@ namespace Mogitor.Controls
                     ImageEntry imageEntry = o as ImageEntry;
                     return imageEntry.Name.ToLower().Contains(filter.ToLower());
                 };
+        }
+        #endregion
+
+        #region Implements IDragDropHandler
+        bool MogitorsRoot.IDragDropHandler.OnDrageEnter(DragData dragData)
+        {
+            return true;
+        }
+
+        void MogitorsRoot.IDragDropHandler.OnDragLeave(DragData dragData)
+        { 
+        }
+
+        bool MogitorsRoot.IDragDropHandler.OnDragOver(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position)
+        {
+            return true;
+        }
+
+        void MogitorsRoot.IDragDropHandler.OnDragDrop(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position)
+        {
         }
         #endregion
 
