@@ -48,6 +48,27 @@ namespace Mogitor.Controls
             this.renderTargetControl = this.Template.FindName("PART_RenderTargetControl", this) as Image;
             this.ogreImage = this.Template.FindName("PART_OgreImage", this) as OgreImage;
             this.overlayTextBlock = this.Template.FindName("PART_OverlayTextBlock", this) as TextBlock;
+
+            // Events require ogreImage.
+            this.SizeChanged += (s, e) =>
+            {
+                this.ogreImage.ViewportSize = e.NewSize;
+            };
+
+            this.ogreImage.Initialized += (s, e) =>
+            {
+                if (OgreInitialized != null)
+                    OgreInitialized(s, e);
+                this.initialized = true;
+            };
+
+            this.ogreImage.ResourceLoadItemProgress += (s, e) =>
+            {
+                if (ResourceLoadItemProgress != null)
+                    ResourceLoadItemProgress(s, e);
+            };
+
+            this.ogreImage.InitOgreAsync();
         }
 
         public void ReloadUserResources()
@@ -79,35 +100,10 @@ namespace Mogitor.Controls
                 this.ogreImage.Dispose();
             };
 
-            this.SizeChanged += (s, e) =>
-            {
-                if (this.ogreImage == null)
-                    return;
-
-                this.ogreImage.ViewportSize = e.NewSize;
-            };
-
-            #region OgreImage delegates
-            this.ogreImage.Initialized += (s, e) =>
-            {
-                if (OgreInitialized != null)
-                    OgreInitialized(s, e);
-                this.initialized = true;
-            };
-
-            this.ogreImage.ResourceLoadItemProgress += (s, e) =>
-            {
-                if (ResourceLoadItemProgress != null)
-                    ResourceLoadItemProgress(s, e);
-            };
-            #endregion
-
             this.PreviewDragEnter += new DragEventHandler(OgreControl_PreviewDragEnter);
             this.PreviewDragLeave += new DragEventHandler(OgreControl_PreviewDragLeave);
             this.PreviewDragOver += new DragEventHandler(OgreControl_PreviewDragOver);
             this.PreviewDrop += new DragEventHandler(OgreControl_PreviewDrop);
-
-            this.ogreImage.InitOgreAsync();
         }
         #endregion
 

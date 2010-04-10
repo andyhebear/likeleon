@@ -30,7 +30,6 @@ namespace Mogitor.Controls
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(string), typeof(EntityViewControl), new PropertyMetadata(OnFilterChanged));
         private ListBox iconsListBox;
-        private bool initialized;
         #endregion
 
         #region Public Methods
@@ -44,6 +43,15 @@ namespace Mogitor.Controls
             base.OnApplyTemplate();
 
             this.iconsListBox = this.Template.FindName("PART_ListBox", this) as ListBox;
+            this.iconsListBox.PreviewMouseLeftButtonDown += (s, e) =>
+                {
+                    ListBox listBox = s as ListBox;
+                    object data = GetObjectDataFromPoint(listBox, e.GetPosition(listBox));
+                    if (data != null)
+                    {
+                        DragDrop.DoDragDrop(listBox, new DragData(this, data), DragDropEffects.Copy);
+                    }
+                };
         }
 
         public void ClearView()
@@ -55,10 +63,7 @@ namespace Mogitor.Controls
         #region Constructor
         public EntityViewControl()
         {
-            initialized = false;
             Icons = new ObservableCollection<ImageEntry>();
-
-            this.Loaded += EntityViewControl_Loaded;
 
             MogitorsRoot.Instance.RegisterDragDropHandler(this, this);
         }
@@ -74,24 +79,6 @@ namespace Mogitor.Controls
         #endregion
 
         #region Private Methods
-        private void EntityViewControl_Loaded(object sender, RoutedEventArgs args)
-        {
-            if (this.initialized)
-                return;
-
-            this.iconsListBox.PreviewMouseLeftButtonDown += (s, e) =>
-                {
-                    ListBox listBox = s as ListBox;
-                    object data = GetObjectDataFromPoint(listBox, e.GetPosition(listBox));
-                    if (data != null)
-                    {
-                        DragDrop.DoDragDrop(listBox, new DragData(this, data), DragDropEffects.Copy);
-                    }
-                };
-
-            this.initialized = true;
-        }
-
         private void CreateImages(ObservableCollection<ImageEntry> retlist)
         {
             retlist.Clear();
