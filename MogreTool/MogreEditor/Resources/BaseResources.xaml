@@ -7,9 +7,34 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MogitorControls:LogControl}">
-                    <ListBox x:Name="PART_LogStringsDisplay" 
+                    <ListView x:Name="PART_LogStringsDisplay" 
                              DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"  
-                             ItemsSource="{Binding Path=LogBuffer}" />
+                             ItemsSource="{Binding Path=LogBuffer}"
+                             Background="White">
+                        <ListView.Resources>
+                            <DataTemplate x:Key="messageTemplate">
+                                <TextBlock x:Name="tboxMessage" Text="{Binding Path=Message}" />
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Level}" Value="1">
+                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="DarkGray" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Level}" Value="2">
+                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="Black" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Level}" Value="3">
+                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="Red" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Time" DisplayMemberBinding="{Binding DateTime.TimeOfDay}"/>
+                                <GridViewColumn Header="Message" CellTemplate="{StaticResource messageTemplate}"/>
+                                <GridViewColumn Header="Log Name" DisplayMemberBinding="{Binding LogName}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
