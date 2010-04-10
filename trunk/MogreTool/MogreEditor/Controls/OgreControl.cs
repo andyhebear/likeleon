@@ -33,6 +33,8 @@ namespace Mogitor.Controls
         #region Constructor
         public OgreControl()
         {
+            // Postpone any other initilize routines to Loaded event
+            // because our TemplateParts become valid *after* OnApplyTemplate called.
             initialized = false;
             this.Loaded += OgreControl_Loaded;
         }
@@ -65,38 +67,67 @@ namespace Mogitor.Controls
         #region Private Methods
         private void OgreControl_Loaded(object sender, RoutedEventArgs args)
         {
-            if (!this.initialized)
+            // Loaded event occurs many times... why?
+            // Anyway... protect from this strange behavior.
+            if (this.initialized)
+                return;
+
+            App.Current.Exit += (s, e) =>
             {
-                App.Current.Exit += (s, e) =>
+                this.renderTargetControl.Source = null;
+
+                this.ogreImage.Dispose();
+            };
+
+            this.SizeChanged += (s, e) =>
+            {
+                if (this.ogreImage == null)
+                    return;
+
+                this.ogreImage.ViewportSize = e.NewSize;
+            };
+
+            #region OgreImage delegates
+            this.ogreImage.Initialized += (s, e) =>
+            {
+                if (OgreInitialized != null)
+                    OgreInitialized(s, e);
+                this.initialized = true;
+            };
+
+            this.ogreImage.ResourceLoadItemProgress += (s, e) =>
+            {
+                if (ResourceLoadItemProgress != null)
+                    ResourceLoadItemProgress(s, e);
+            };
+            #endregion
+
+            #region Drag&Drop delegates
+            this.PreviewDragEnter += (s, e) =>
+            {
+                e.Effects = DragDropEffects.Copy;
+            };
+
+            this.PreviewDrop += (s, e) =>
+            {
+                e.Handled = true;
+
+                String dataFormats = "";
+                dataFormats = "The following data formats are present:\n";
+                foreach (string format in e.Data.GetFormats(true))
                 {
-                    this.renderTargetControl.Source = null;
+                    if (e.Data.GetDataPresent(format, false)) 
+                        dataFormats += "\t- " + format + " (native)\n";
+                    else 
+                        dataFormats += "\t- " + format + " (autoconvert)\n";
+                }
+                dataFormats += "\n";
 
-                    this.ogreImage.Dispose();
-                };
+                MessageBox.Show(dataFormats);
+            };
+            #endregion
 
-                this.SizeChanged += (s, e) =>
-                {
-                    if (this.ogreImage == null)
-                        return;
-
-                    this.ogreImage.ViewportSize = e.NewSize;
-                };
-
-                this.ogreImage.Initialized += (s, e) =>
-                {
-                    if (OgreInitialized != null)
-                        OgreInitialized(s, e);
-                    this.initialized = true;
-                };
-
-                this.ogreImage.ResourceLoadItemProgress += (s, e) =>
-                {
-                    if (ResourceLoadItemProgress != null)
-                        ResourceLoadItemProgress(s, e);
-                };
-
-                this.ogreImage.InitOgreAsync();
-            }
+            this.ogreImage.InitOgreAsync();
         }
         #endregion
 

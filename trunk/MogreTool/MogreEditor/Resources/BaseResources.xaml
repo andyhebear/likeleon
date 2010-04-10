@@ -21,7 +21,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MogitorControls:OgreControl}">
                     <Grid>
-                        <Image x:Name="PART_RenderTargetControl" Stretch="Fill">
+                        <Image x:Name="PART_RenderTargetControl" Stretch="Fill" AllowDrop="True">
                             <Image.Source>
                                 <MogitorControls:OgreImage x:Name="PART_OgreImage" />
                             </Image.Source>
