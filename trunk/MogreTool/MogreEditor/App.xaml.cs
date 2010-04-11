@@ -31,14 +31,20 @@ namespace Mogitor
                         "Fatal Error",
                         MessageBoxButton.OK, MessageBoxImage.Stop);
                 };
-            base.OnStartup(e);
 
-            SetupMogre("plugins.cfg", "ogre.cfg", "mogitor.log");
+            Initialize();
+            base.OnStartup(e);
         }
         #endregion
 
         #region Private Methods
-        void SetupMogre(string pluginFileName, string configFileName, string logFileName)
+        private void Initialize()
+        {
+            MogitorSettings.Initialize(new MogitorSettings());
+            SetupMogre("plugins.cfg", "ogre.cfg", "mogitor.log");
+        }
+
+        private void SetupMogre(string pluginFileName, string configFileName, string logFileName)
         {
             // Create the main mogre object
             this.mogreRoot = new Mogre.Root(pluginFileName);

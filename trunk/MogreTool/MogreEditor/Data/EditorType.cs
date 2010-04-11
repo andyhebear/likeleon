@@ -20,6 +20,8 @@ namespace Mogitor.Data
         BillboardSet,
         Movable,
         Multisel,
-        Material
+        Material,
+
+        LastEditor
     };
 }
