@@ -40,6 +40,8 @@ namespace Mogitor
         #region Private Methods
         private void Initialize()
         {
+            System.Windows.Forms.Application.EnableVisualStyles();
+
             MogitorSettings.Initialize(new MogitorSettings());
             SetupMogre("plugins.cfg", "ogre.cfg", "mogitor.log");
         }
