@@ -36,14 +36,14 @@ namespace Mogitor.Windows
                 {
                     this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
 
-                    entityViewControl.PrepareView();
+                    entityView.PrepareView();
 
                     this.ogreControl.OverlayText = "";
                 };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
                 {
-                    entityViewControl.ClearView();
+                    entityView.ClearView();
 
                     this.Title = "Mogitor";
 
@@ -76,7 +76,7 @@ namespace Mogitor.Windows
 
         private void ogreControl_ResourceReloaded(object sender, EventArgs e)
         {
-            entityViewControl.PrepareView();
+            entityView.PrepareView();
         }
         #endregion
     }

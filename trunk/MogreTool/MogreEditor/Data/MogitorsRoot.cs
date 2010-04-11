@@ -174,7 +174,6 @@ namespace Mogitor.Data
             {
                 this.system.UpdateLoadProgress(-1, "Please load a Scene File...");
             }
-
             return ret;
         }
 

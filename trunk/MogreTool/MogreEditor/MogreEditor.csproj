@@ -76,6 +76,9 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WindowsFormsIntegration">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -104,12 +107,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\EntityViewControl.cs" />
+    <Compile Include="Controls\EntityView.cs" />
     <Compile Include="Controls\LogControl.cs" />
     <Compile Include="Controls\OgreControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />
     <Compile Include="Controls\OgreImage.Resources.cs" />
+    <Compile Include="Controls\PropertiesView.cs">
+    </Compile>
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
