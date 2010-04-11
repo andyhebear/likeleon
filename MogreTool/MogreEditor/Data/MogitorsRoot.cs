@@ -20,8 +20,8 @@ namespace Mogitor.Data
         private readonly MogitorsSystem system;
         private int objCounter = 0;
         private readonly Hashtable nameList = new Hashtable();
-        private readonly List<Hashtable> namesByType = new List<Hashtable>();
-        private readonly List<Hashtable> namesByTypeID = new List<Hashtable>();
+        private readonly List<Hashtable> namesByType = new List<Hashtable>((int)EditorType.LastEditor);
+        private readonly List<Hashtable> namesByTypeID = new List<Hashtable>(MogitorSettings.Instance.MaxObjectType);
         private BaseEditor sceneManagerEditor = null;
         private Mogre.SceneManager sceneManager = null;
         #endregion
