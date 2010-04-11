@@ -30,7 +30,7 @@ namespace Mogitor.Data
                 return false;
 
             DragData dragData = data.GetData(typeof(DragData)) as DragData;
-            IDragDropHandler handler = this.dragDropHandlers[dragData.DragSource];
+            IDragDropHandler handler = this.dragDropHandlers[dragData.Source];
             if (handler == null)
                 return false;
 
@@ -43,7 +43,7 @@ namespace Mogitor.Data
                 return;
 
             DragData dragData = data.GetData(typeof(DragData)) as DragData;
-            IDragDropHandler handler = this.dragDropHandlers[dragData.DragSource];
+            IDragDropHandler handler = this.dragDropHandlers[dragData.Source];
             if (handler == null)
                 return;
 

@@ -1,14 +1,22 @@
-﻿namespace Mogitor.Data
+﻿using System.Collections.Generic;
+
+namespace Mogitor.Data
 {
     class DragData
     {
-        public DragData(object dragSource, object innerObject)
+        public DragData(object source, object sourceObject)
         {
-            DragSource = dragSource;
-            Object = innerObject;
+            Source = source;
+            SourceObject = sourceObject;
+
+            Parameters = new Mogre.NameValuePairList();
         }
 
-        public object DragSource { get; private set; }
-        public object Object { get; private set; }
+        public object Source { get; private set; }
+        public object SourceObject { get; private set; }
+
+        public BaseEditor Object { get; set; }
+        public string ObjectType { get; set; }
+        public Mogre.NameValuePairList Parameters { get; private set; }
     }
 }
