@@ -46,10 +46,10 @@ namespace Mogitor.Controls
             this.iconsListBox.PreviewMouseLeftButtonDown += (s, e) =>
                 {
                     ListBox listBox = s as ListBox;
-                    object data = GetObjectDataFromPoint(listBox, e.GetPosition(listBox));
-                    if (data != null)
+                    ImageEntry imageEntry = GetObjectDataFromPoint(listBox, e.GetPosition(listBox)) as ImageEntry;
+                    if (imageEntry != null)
                     {
-                        DragDrop.DoDragDrop(listBox, new DragData(this, data), DragDropEffects.Copy);
+                        DragDrop.DoDragDrop(listBox, new DragData(this, imageEntry), DragDropEffects.Copy);
                     }
                 };
         }
@@ -179,11 +179,31 @@ namespace Mogitor.Controls
         #region Implements IDragDropHandler
         bool MogitorsRoot.IDragDropHandler.OnDrageEnter(DragData dragData)
         {
+            ImageEntry imageEntry = dragData.SourceObject as ImageEntry;
+            if (imageEntry == null)
+                return false;
+
+            dragData.ObjectType = "Entity Object";
+            dragData.Parameters["init"] = "true";
+            dragData.Parameters["meshfile"] = imageEntry.Name + ".mesh";
+            dragData.Parameters["position"] = "999999 999999 999999";
+
+            BaseEditor parent = MogitorsRoot.Instance.SceneManagerEditor;
+            dragData.Object = EntityEditor.Factory.CreateObject(ref parent, dragData.Parameters);
+            dragData.Object.Load();
+
+            ((dragData.Object.Handle) as Mogre.Entity).SetMaterialName("scbMATWIREFRAME");
+            ((dragData.Object.Handle) as Mogre.Entity).QueryFlags = 0;
+
             return true;
         }
 
         void MogitorsRoot.IDragDropHandler.OnDragLeave(DragData dragData)
-        { 
+        {
+            if (dragData.Object != null)
+                dragData.Object.Destroy(false);
+
+            dragData.Object = null;
         }
 
         bool MogitorsRoot.IDragDropHandler.OnDragOver(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Mogitor.Controls;
+using System.Windows;
 
 namespace Mogitor
 {
@@ -104,6 +105,11 @@ namespace Mogitor
         public void SetWindows(OgreControl renderViewControl)
         {
             this.renderViewControl = renderViewControl;
+        }
+
+        public MessageBoxResult DisplayMessageDialog(string msg, MessageBoxButton messageBoxButton)
+        {
+            return MessageBox.Show(msg, "MogitorsSystem", messageBoxButton);
         }
         #endregion
     }
