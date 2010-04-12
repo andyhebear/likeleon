@@ -35,8 +35,26 @@ namespace Mogitor.Windows
                 XmlTextWriter textWriter = new XmlTextWriter(fileName, System.Text.Encoding.Unicode);
                 textWriter.Formatting = Formatting.Indented;
                 textWriter.WriteStartDocument();
+
+                // XML Root
                 textWriter.WriteStartElement("MogitorScene");
+
+                // Write project options
                 mogRoot.WriteProjectOptions(textWriter, true);
+
+                // Write new scene definition
+                textWriter.WriteStartElement("Object");
+                textWriter.WriteStartAttribute("Type");
+                textWriter.WriteValue(mogRoot.ProjectOptions.SceneManagerName);
+                textWriter.WriteEndAttribute();
+                textWriter.WriteStartAttribute("SceneManagerType");
+                textWriter.WriteValue(mogRoot.ProjectOptions.SceneManagerName);
+                textWriter.WriteEndAttribute();
+                textWriter.WriteStartAttribute("Ambient");
+                textWriter.WriteValue("1.000 1.000 1.000");
+                textWriter.WriteEndAttribute();
+                textWriter.WriteEndElement();
+
                 textWriter.WriteEndElement();
                 textWriter.WriteEndDocument();
                 textWriter.Close();

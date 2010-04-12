@@ -109,6 +109,7 @@ namespace Mogitor.Data
             if (!textReader.ReadToFollowing("MogitorScene"))
                 return SceneFileResult.ErrParse;
 
+            // Check version
             string fileVersion = textReader.GetAttribute("version");
             if (fileVersion != null)
             {
@@ -116,6 +117,7 @@ namespace Mogitor.Data
                     return SceneFileResult.ErrParse;
             }
 
+            // Read project options
             if (textReader.ReadToFollowing("ProjectOptions") == true)
             {
                 system.UpdateLoadProgress(15, "Parsing project options");
@@ -123,12 +125,27 @@ namespace Mogitor.Data
                 mogRoot.PrepareProjectResources();
             }
 
-            // Moves the reader back to the "MogitorScene" element node.
-            textReader.MoveToElement();
+            //// Moves the reader back to the "MogitorScene" element node.
+            //textReader.MoveToElement();
 
-            system.UpdateLoadProgress(30, "Createing scene objects");
+            system.UpdateLoadProgress(30, "Creating scene objects");
 
-            // TODO: Load objects.
+            // Load objects
+            Mogre.NameValuePairList param = new Mogre.NameValuePairList();
+            while (textReader.ReadToNextSibling("Object"))
+            {
+                string objectType = textReader.GetAttribute("Type");
+                if (objectType == "")
+                    continue;
+
+                param.Clear();
+                while (textReader.MoveToNextAttribute())
+                {
+                    param.Insert(textReader.Name, textReader.Value);
+                }
+
+                BaseEditor result = MogitorsRoot.CreateEditorObject(0, objectType, param, false, false);
+            }
 
             mogRoot.AfterLoadScene();
 
