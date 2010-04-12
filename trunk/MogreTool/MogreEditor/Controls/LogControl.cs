@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Mogitor.Controls
 {
-    [TemplatePart(Name = "PART_LogStringsDisplay", Type = typeof(ListBox))]
+    [TemplatePart(Name = "PART_LogStringsDisplay", Type = typeof(ListView))]
     class LogControl : Control
     {
         #region Dependency Properties
@@ -17,7 +17,7 @@ namespace Mogitor.Controls
         #endregion
 
         #region Private Fields
-        private ListBox logStringsDisplay;
+        private ListView logStringsDisplay;
         #endregion
 
         #region Public Properties
@@ -42,7 +42,7 @@ namespace Mogitor.Controls
         {
             base.OnApplyTemplate();
 
-            this.logStringsDisplay = this.Template.FindName("PART_LogStringsDisplay", this) as ListBox;
+            this.logStringsDisplay = this.Template.FindName("PART_LogStringsDisplay", this) as ListView;
         }
         #endregion
     }
