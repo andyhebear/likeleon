@@ -102,6 +102,12 @@ namespace Mogitor.Data
         public void DestroyBoundingBox()
         {
         }
+
+        public void AddChild(BaseEditor child)
+        {
+            this.children.Add(child.Name, child);
+            child.Parent = this;
+        }
         #endregion
 
         #region Constructor
@@ -181,6 +187,10 @@ namespace Mogitor.Data
             get { return EditorType.Base; }
         }
 
+        public virtual void Init()
+        {
+        }
+
         public virtual BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)
         {
             this.instanceCount++;
@@ -212,6 +222,12 @@ namespace Mogitor.Data
         {
             get;
             set; 
+        }
+
+        public string TypeName
+        {
+            get;
+            protected set;
         }
         #endregion
     }

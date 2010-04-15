@@ -9,12 +9,14 @@ namespace Mogitor.Data
     partial class MogitorsRoot
     {
         #region Fields
-        private int objCounter = 0;
+        private int objCounter;
         private readonly Hashtable nameList = new Hashtable();
         private readonly List<Hashtable> namesByType = new List<Hashtable>((int)EditorType.LastEditor);
         private readonly List<Hashtable> namesByTypeID = new List<Hashtable>(MogitorSettings.Instance.MaxObjectType);
-        private BaseEditor sceneManagerEditor = null;
-        private readonly BaseEditor rootEditor;
+        private BaseEditor sceneManagerEditor;
+        private BaseEditor rootEditor;
+        private readonly EditorObjectFactoryMap editorObjectFactories = new EditorObjectFactoryMap();
+        private uint editorObjectTypeIDCounter;
         #endregion
 
         #region Properties
@@ -40,9 +42,7 @@ namespace Mogitor.Data
 
         public BaseEditor RootEditor
         {
-            get
-            {
-            }
+            get { return this.rootEditor; }
         }
         #endregion
 
@@ -88,7 +88,7 @@ namespace Mogitor.Data
                 this.namesByTypeID[(int)obj.ObjectTypeID].Remove(name);
         }
 
-        BaseEditor CreateEditorObject(BaseEditor parent, string objectTypeString, Mogre.NameValuePairList param, bool addToTreeList, bool display)
+        public BaseEditor CreateEditorObject(BaseEditor parent, string objectTypeString, Mogre.NameValuePairList param, bool addToTreeList, bool display)
         {
             if (parent == null)
             {
@@ -102,7 +102,7 @@ namespace Mogitor.Data
                 if (parent == null)
                 {
                     if (SceneManager == null)
-                        parent = RootEditor;
+                        parent = this.rootEditor;
                     else
                         parent = SceneManagerEditor;
                 }
@@ -124,12 +124,10 @@ namespace Mogitor.Data
             if (addToTreeList)
                 throw new NotImplementedException("addToTreeList");
 
-            obj.Locked = true;
-
             if (display)
             {
                 obj.Load();
-                obj.UpdateTreeView();
+                //obj.UpdateTreeView();
             }
 
             IsSceneModified = true;
@@ -164,6 +162,41 @@ namespace Mogitor.Data
 
         private void RegisterAllEditorObjects()
         {
+            editorObjectTypeIDCounter = 0;
+
+            RegisterEditorFactory(BaseEditor.Factory);
+            RegisterEditorFactory(Mogitor.Data.SceneManagerEditor.Factory);
+            RegisterEditorFactory(EntityEditor.Factory);
+            RegisterEditorFactory(NodeEditor.Factory);
+
+            foreach (KeyValuePair<string, BaseEditorFactory> factory in this.editorObjectFactories)
+            {
+                if (factory.Value != null)
+                    factory.Value.Init();
+            }
+        }
+
+        private void RegisterEditorFactory(BaseEditorFactory factory)
+        {
+            if (this.editorObjectFactories.ContainsKey(factory.TypeName) == false)
+            {
+                this.editorObjectFactories.Add(factory.TypeName, factory);
+                factory.TypeID = this.editorObjectTypeIDCounter++;
+            }
+        }
+
+        private BaseEditorFactory GetEditorObjectFactory(string typeName)
+        {
+            if (this.editorObjectFactories.ContainsKey(typeName) == false)
+                return null;
+            return this.editorObjectFactories[typeName];
+        }
+
+        private void RegisterObjectName(string name, BaseEditor obj)
+        {
+            this.nameList.Add(name, obj);
+            this.namesByType[(int)obj.EditorType].Add(name, obj);
+            this.namesByTypeID[(int)obj.ObjectTypeID].Add(name, obj);
         }
         #endregion
     }

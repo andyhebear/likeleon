@@ -144,7 +144,7 @@ namespace Mogitor.Data
                     param.Insert(textReader.Name, textReader.Value);
                 }
 
-                BaseEditor result = MogitorsRoot.CreateEditorObject(0, objectType, param, false, false);
+                BaseEditor result = MogitorsRoot.Instance.CreateEditorObject(null, objectType, param, false, false);
             }
 
             mogRoot.AfterLoadScene();
