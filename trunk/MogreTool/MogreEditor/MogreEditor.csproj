@@ -119,6 +119,7 @@
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
     <Compile Include="Data\BaseSerializer.cs" />
+    <Compile Include="Data\Definitions.cs" />
     <Compile Include="Data\DragData.cs" />
     <Compile Include="Data\EditorType.cs" />
     <Compile Include="Data\EntityEditor.cs" />
