@@ -50,6 +50,9 @@ namespace Mogitor.Windows
                 textWriter.WriteStartAttribute("SceneManagerType");
                 textWriter.WriteValue(mogRoot.ProjectOptions.SceneManagerName);
                 textWriter.WriteEndAttribute();
+                textWriter.WriteStartAttribute("Name");
+                textWriter.WriteValue("SceneManager");
+                textWriter.WriteEndAttribute();
                 textWriter.WriteStartAttribute("Ambient");
                 textWriter.WriteValue("1.000 1.000 1.000");
                 textWriter.WriteEndAttribute();
