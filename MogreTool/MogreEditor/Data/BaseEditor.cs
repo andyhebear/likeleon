@@ -63,6 +63,34 @@ namespace Mogitor.Data
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        protected virtual void SetNameImpl(string name)
+        {
+            if (name == this.name)
+                return;
+
+            if (MogitorsRoot.Instance.FindObject(name, 0) != null)
+                return;
+
+            if (IsLoaded)
+            {
+                UnLoadAllChildren();
+                UnLoad();
+                UnRegisterObjectName();
+                this.name = name;
+                RegisterObjectName();
+                Load();
+                LoadAllChildren();
+            }
+            else
+            {
+                UnRegisterObjectName();
+                this.name = name;
+                RegisterObjectName();
+            }
+
+            Modified = true;
+        }
         #endregion
 
         #region Public Methods
@@ -84,7 +112,7 @@ namespace Mogitor.Data
 
         public void UnLoadAllChildren()
         {
-            foreach (DictionaryEntry child in this.children)
+            foreach (KeyValuePair<string, BaseEditor> child in this.children)
             {
                 (child.Value as BaseEditor).UnLoad();
             }
@@ -92,7 +120,7 @@ namespace Mogitor.Data
 
         public void DestroyAllChildren()
         {
-            foreach (DictionaryEntry child in this.children)
+            foreach (KeyValuePair<string, BaseEditor> child in this.children)
             {
                 (child.Value as BaseEditor).Destroy(false);
             }
@@ -107,6 +135,27 @@ namespace Mogitor.Data
         {
             this.children.Add(child.Name, child);
             child.Parent = this;
+        }
+        #endregion
+
+        #region Private Methods
+        private void RegisterObjectName()
+        {
+            MogitorsRoot.Instance.RegisterObjectName(this.name, this);
+        }
+
+        private void UnRegisterObjectName()
+        {
+            MogitorsRoot.Instance.UnRegisterObjectName(this.name, this);
+        }
+
+        private void LoadAllChildren()
+        {
+            foreach (KeyValuePair<string, BaseEditor> child in this.children)
+            {
+                if (child.Value.Load())
+                    child.Value.LoadAllChildren();
+            }
         }
         #endregion
 
@@ -128,10 +177,11 @@ namespace Mogitor.Data
         #region Fields
         private bool modified = false;
         private static readonly BaseEditorFactory baseEditorFactory = new BaseEditorFactory();
-        private readonly Hashtable children = new Hashtable();
+        private readonly NameObjectPairList children = new NameObjectPairList();
 
         protected static MogitorsSystem system = null;
         protected static bool initialized = false;
+        private string name = "";
         #endregion
 
         #region Properties
@@ -155,8 +205,23 @@ namespace Mogitor.Data
 
         public string Name
         {
-            get;
-            protected set;
+            get { return this.name; }
+            protected set
+            {
+                string oldName = this.name;
+                SetNameImpl(name);
+                if (oldName != this.name)
+                {
+                    BaseEditor parent = Parent;
+                    if (parent != null)
+                    {
+                        parent.RemoveChild(oldName);
+                        parent.AddChild(this);
+                    }
+                }
+
+                OnPropertyChanged("Name");
+            }
         }
 
         public static BaseEditorFactory Factory
@@ -211,6 +276,7 @@ namespace Mogitor.Data
         public BaseEditorFactory()
         {
             this.instanceCount = 0;
+            TypeName = "";
         }
 
         #region Fields

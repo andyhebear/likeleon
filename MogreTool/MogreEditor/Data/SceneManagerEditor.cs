@@ -231,11 +231,61 @@ namespace Mogitor.Data
             IsLoaded = false;
             return true;
         }
+
+        public override void ProcessParameters(Mogre.NameValuePairList parameters)
+        {
+            Mogre.NameValuePairList.Iterator ni;
+
+            if ((ni = parameters.Find("Name")) != parameters.End())
+                this.Name = ni.Value;
+
+            if ((ni = parameters.Find("SkyBoxMaterial")) != parameters.End())
+                this.skyBoxMaterial = ni.Value;
+
+            if ((ni = parameters.Find("Ambient")) != parameters.End())
+                this.ambient = Mogre.StringConverter.ParseColourValue(ni.Value);
+
+            if ((ni = parameters.Find("FogColour")) != parameters.End())
+                this.fogColour = Mogre.StringConverter.ParseColourValue(ni.Value);
+
+            if ((ni = parameters.Find("SkyBoxActive")) != parameters.End())
+                this.skyBoxActive = Mogre.StringConverter.ParseBool(ni.Value);
+
+            if ((ni = parameters.Find("SkyBoxDistance")) != parameters.End())
+                this.skyBoxDistance = Mogre.StringConverter.ParseReal(ni.Value);
+
+            if ((ni = parameters.Find("FogStart")) != parameters.End())
+                this.fogStart = Mogre.StringConverter.ParseReal(ni.Value);
+
+            if ((ni = parameters.Find("FogEnd")) != parameters.End())
+                this.fogEnd = Mogre.StringConverter.ParseReal(ni.Value);
+
+            if ((ni = parameters.Find("FogDensity")) != parameters.End())
+                this.fogDensity = Mogre.StringConverter.ParseReal(ni.Value);
+
+            if ((ni = parameters.Find("FogMode")) != parameters.End())
+            {
+                string val = ni.Value.ToLower();
+                if (val == "none")
+                    this.fogMode = Mogre.FogMode.FOG_NONE;
+                else if (val == "linear")
+                    this.fogMode = Mogre.FogMode.FOG_LINEAR;
+                else if (val == "exp")
+                    this.fogMode = Mogre.FogMode.FOG_EXP;
+                else if (val == "exp2")
+                    this.fogMode = Mogre.FogMode.FOG_EXP2;
+            }
+        }
         #endregion
     }
 
     class SceneMangerEditorFactory : BaseEditorFactory
     {
+        public SceneMangerEditorFactory()
+        {
+            TypeName = "OctreeSceneManager";
+        }
+
         public override EditorType EditorType
         {
             get
@@ -255,6 +305,5 @@ namespace Mogitor.Data
             this.instanceCount++;
             return editor;
         }
-
     }
 }

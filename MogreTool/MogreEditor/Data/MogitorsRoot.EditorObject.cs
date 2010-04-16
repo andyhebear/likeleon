@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
 
 namespace Mogitor.Data
 {
@@ -10,9 +9,9 @@ namespace Mogitor.Data
     {
         #region Fields
         private int objCounter;
-        private readonly Hashtable nameList = new Hashtable();
-        private readonly List<Hashtable> namesByType = new List<Hashtable>((int)EditorType.LastEditor);
-        private readonly List<Hashtable> namesByTypeID = new List<Hashtable>(MogitorSettings.Instance.MaxObjectType);
+        private readonly NameObjectPairList nameList = new NameObjectPairList();
+        private readonly NameObjectPairList[] namesByType;
+        private readonly NameObjectPairList[] namesByTypeID;
         private BaseEditor sceneManagerEditor;
         private BaseEditor rootEditor;
         private readonly EditorObjectFactoryMap editorObjectFactories = new EditorObjectFactoryMap();
@@ -133,10 +132,8 @@ namespace Mogitor.Data
             IsSceneModified = true;
             return obj;
         }
-        #endregion
 
-        #region Private Methods
-        private BaseEditor FindObject(string name, uint type)
+        public BaseEditor FindObject(string name, uint type)
         {
             if (type == 0)
             {
@@ -151,11 +148,19 @@ namespace Mogitor.Data
             return null;
         }
 
+        public void RegisterObjectName(string name, BaseEditor obj)
+        {
+            this.nameList.Add(name, obj);
+            this.namesByType[(int)obj.EditorType].Add(name, obj);
+            this.namesByTypeID[(int)obj.ObjectTypeID].Add(name, obj);
+        }
+        #endregion
+
+        #region Private Methods
         private Mogre.SceneManager GetFirstSceneManager()
         {
-            IDictionaryEnumerator i = this.namesByType[(int)EditorType.SceneManager].GetEnumerator();
-            if (i != null)
-                return (i.Value as SceneManagerEditor).SceneManager;
+            if (this.namesByType[(int)EditorType.SceneManager].Count > 0)
+                return this.namesByType[(int)EditorType.SceneManager].First().Value.SceneManager;
             else
                 return null;
         }
@@ -190,13 +195,6 @@ namespace Mogitor.Data
             if (this.editorObjectFactories.ContainsKey(typeName) == false)
                 return null;
             return this.editorObjectFactories[typeName];
-        }
-
-        private void RegisterObjectName(string name, BaseEditor obj)
-        {
-            this.nameList.Add(name, obj);
-            this.namesByType[(int)obj.EditorType].Add(name, obj);
-            this.namesByTypeID[(int)obj.ObjectTypeID].Add(name, obj);
         }
         #endregion
     }

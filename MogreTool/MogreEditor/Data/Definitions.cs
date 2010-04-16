@@ -5,4 +5,8 @@ namespace Mogitor.Data
     class EditorObjectFactoryMap : Dictionary<string, BaseEditorFactory>
     {
     }
+
+    class NameObjectPairList : Dictionary<string, BaseEditor>
+    {
+    }
 }

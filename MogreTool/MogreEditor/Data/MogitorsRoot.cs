@@ -64,6 +64,16 @@ namespace Mogitor.Data
         MogitorsRoot()
         {
             this.system = MogitorsSystem.Instance;
+            this.namesByType = new NameObjectPairList[(int)EditorType.LastEditor];
+            for (int i = 0; i < this.namesByType.Count(); ++i)
+            {
+                this.namesByType[i] = new NameObjectPairList();
+            }
+            this.namesByTypeID = new NameObjectPairList[MogitorSettings.Instance.MaxObjectType];
+            for (int i = 0; i < this.namesByTypeID.Count(); ++i)
+            {
+                this.namesByTypeID[i] = new NameObjectPairList();
+            }
 
             RenderWindow = null;
             IsSceneLoaded = false;
