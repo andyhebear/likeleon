@@ -113,6 +113,8 @@ namespace Mogitor.Data
             if (SceneTerminated != null)
                 SceneTerminated(this, EventArgs.Empty);
 
+            ClearEditors();
+
             RenderWindow.RemoveAllViewports();
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;

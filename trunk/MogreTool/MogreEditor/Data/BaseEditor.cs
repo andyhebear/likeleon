@@ -258,7 +258,7 @@ namespace Mogitor.Data
 
         public virtual BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)
         {
-            this.instanceCount++;
+            InstanceCount++;
             return new BaseEditor();
         }
 
@@ -269,19 +269,15 @@ namespace Mogitor.Data
             if (_object.Name != "")
                 MogitorsRoot.Instance.UnRegisterObjectName(_object.Name, _object);
 
-            this.instanceCount--;
+            InstanceCount--;
         }
         #endregion
 
         public BaseEditorFactory()
         {
-            this.instanceCount = 0;
+            InstanceCount = 0;
             TypeName = "";
         }
-
-        #region Fields
-        protected int instanceCount;
-        #endregion
 
         #region Properties
         public uint TypeID
@@ -294,6 +290,12 @@ namespace Mogitor.Data
         {
             get;
             protected set;
+        }
+
+        public int InstanceCount
+        {
+            get;
+            set; 
         }
         #endregion
     }

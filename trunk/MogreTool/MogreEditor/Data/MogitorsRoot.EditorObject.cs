@@ -196,6 +196,42 @@ namespace Mogitor.Data
                 return null;
             return this.editorObjectFactories[typeName];
         }
+
+        private void ClearEditors()
+        {
+            foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
+                it.Value.UnLoad();
+
+            this.rootEditor.Destroy(false);
+            this.rootEditor = null;
+
+            this.sceneManager = null;
+            this.sceneManagerEditor = null;
+            this.objCounter = 0;
+            IsSceneModified = false;
+            IsSceneLoaded = false;
+            this.nameList.Clear();
+            
+            foreach (KeyValuePair<string, BaseEditorFactory> it in this.editorObjectFactories)
+            {
+                if (it.Value != null)
+                    it.Value.InstanceCount = 0;
+            }
+
+            foreach (NameObjectPairList it in this.namesByType)
+            {
+                it.Clear();
+            }
+
+            foreach (NameObjectPairList it in this.namesByTypeID)
+            {
+                it.Clear();
+            }
+
+            BaseEditor parent = null;
+            Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
+            this.rootEditor = BaseEditor.Factory.CreateObject(ref parent, parameters);
+        }
         #endregion
     }
 }
