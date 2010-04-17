@@ -159,6 +159,18 @@ namespace Mogitor.Data
         }
         #endregion
 
+        #region Protected Methods
+        protected void RegisterObjectName()
+        {
+            MogitorsRoot.Instance.RegisterObjectName(this.name, this);
+        }
+
+        protected void UnRegisterObjectName()
+        {
+            MogitorsRoot.Instance.UnRegisterObjectName(this.name, this);
+        }
+        #endregion
+
         #region Constructor
         public BaseEditor()
         {
@@ -181,7 +193,7 @@ namespace Mogitor.Data
 
         protected static MogitorsSystem system = null;
         protected static bool initialized = false;
-        private string name = "";
+        protected string name = "";
         #endregion
 
         #region Properties
@@ -206,7 +218,7 @@ namespace Mogitor.Data
         public string Name
         {
             get { return this.name; }
-            protected set
+            set
             {
                 string oldName = this.name;
                 SetNameImpl(name);

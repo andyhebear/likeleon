@@ -119,6 +119,7 @@
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
     <Compile Include="Data\BaseSerializer.cs" />
+    <Compile Include="Data\CameraEditor.cs" />
     <Compile Include="Data\Definitions.cs" />
     <Compile Include="Data\DragData.cs" />
     <Compile Include="Data\EntityEditor.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Data\NodeEditor.cs" />
     <Compile Include="Data\ProjectOptions.cs" />
     <Compile Include="Data\SceneManagerEditor.cs" />
+    <Compile Include="Data\ViewportEditor.cs" />
     <Compile Include="MogitorSettings.cs" />
     <Compile Include="Windows\MainWindowMenu.xaml.cs">
       <DependentUpon>MainWindowMenu.xaml</DependentUpon>

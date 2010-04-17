@@ -193,6 +193,16 @@ namespace Mogitor.Data
 
         public void AfterLoadScene()
         {
+            if (ActiveViewport == null)
+            {
+                Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
+                parameters.Clear();
+                parameters["Name"] = "Viewport1";
+                parameters["Colour"] = "0 0 0";
+                parameters["Index"] = "1";
+                ActiveViewport = CreateEditorObject(null, "Viewport Object", parameters, false, false) as ViewportEditor;
+            }
+
             system.UpdateLoadProgress(60, "Loading scene objects");
 
             if (SceneUpdated != null)
