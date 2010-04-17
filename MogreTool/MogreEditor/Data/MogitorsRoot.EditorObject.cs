@@ -43,6 +43,12 @@ namespace Mogitor.Data
         {
             get { return this.rootEditor; }
         }
+
+        public ViewportEditor ActiveViewport
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Public Methods

@@ -174,15 +174,15 @@ namespace Mogitor.Data
 
         #region Fields
         private static readonly SceneMangerEditorFactory sceneManagerEditorFactory = new SceneMangerEditorFactory();
-        protected Mogre.SceneManager handle = null;
+        protected Mogre.SceneManager handle;
         protected bool skyBoxActive = false;
         protected string skyBoxMaterial = "";
         protected float skyBoxDistance = 5000;
         protected Mogre.FogMode fogMode = Mogre.FogMode.FOG_NONE;
         protected Mogre.ColourValue fogColour = new Mogre.ColourValue(0.5f, 0.5f, 0.5f);
-        protected float fogStart = 0;
+        protected float fogStart;
         protected float fogEnd = 1000;
-        protected float fogDensity = 0;
+        protected float fogDensity;
         protected Mogre.ColourValue ambient = new Mogre.ColourValue(0.5f, 0.5f, 0.5f);
         #endregion
 
@@ -237,7 +237,7 @@ namespace Mogitor.Data
             Mogre.NameValuePairList.Iterator ni;
 
             if ((ni = parameters.Find("Name")) != parameters.End())
-                this.Name = ni.Value;
+                Name = ni.Value;
 
             if ((ni = parameters.Find("SkyBoxMaterial")) != parameters.End())
                 this.skyBoxMaterial = ni.Value;
