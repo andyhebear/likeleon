@@ -302,7 +302,7 @@ namespace Mogitor.Data
             editor.Parent = parent;
             editor.Load();
 
-            this.instanceCount++;
+            InstanceCount++;
             return editor;
         }
     }

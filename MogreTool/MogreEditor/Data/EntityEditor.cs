@@ -128,7 +128,7 @@ namespace Mogitor.Data
             editor.ProcessParameters(parameters);
             editor.Parent = parent;
 
-            this.instanceCount++;
+            InstanceCount++;
             return editor;
         }
 
