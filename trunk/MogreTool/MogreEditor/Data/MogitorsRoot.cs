@@ -58,6 +58,12 @@ namespace Mogitor.Data
             get;
             private set;
         }
+
+        public bool IsClearScreenNeeded
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Constructors

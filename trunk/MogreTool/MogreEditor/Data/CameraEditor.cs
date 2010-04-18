@@ -11,12 +11,13 @@ namespace Mogitor.Data
 
         public bool ShowHelper
         {
-            set;
+            set { this.showHelper = value; }
         }
         #endregion
 
         #region Fields
         private Mogre.Camera handle;
+        private bool showHelper;
         #endregion
 
         #region Overrides BaseEditor
