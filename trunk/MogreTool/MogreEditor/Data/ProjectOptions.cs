@@ -10,6 +10,12 @@ namespace Mogitor.Data
     /// </summary>
     public class ProjectOptions
     {
+        public class Camera
+        {
+            public Mogre.Vector3 Position;
+            public Mogre.Quaternion Orientation;
+        }
+
         #region Public Properties
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNewProject { get; set; }
@@ -18,6 +24,7 @@ namespace Mogitor.Data
         public string SceneManagerName { get; set; }
         public string TerrainDirectory { get; set; }
         public List<string> ResourceDirectories { get; set; }
+        public List<Camera> Cameras { get; set; }
         #endregion
 
         #region Constructor
