@@ -85,7 +85,7 @@
             <TabItem Header="Assets">
                 <DockPanel>
                     <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" DockPanel.Dock="Top" />
-                    <ListBox x:Name="lbResources" Margin="0,5" MinWidth="400" MinHeight="200">
+                    <ListBox x:Name="lbResources" Margin="0,5" MinWidth="400" MinHeight="200" MaxHeight="600">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="_Add Directory" x:Name="menuAddDir" Click="menuAddDir_Click" />
