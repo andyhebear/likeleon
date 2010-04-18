@@ -212,7 +212,7 @@ namespace Mogitor.Data
             system.UpdateLoadProgress(60, "Loading scene objects");
 
             if (SceneUpdated != null)
-                SceneUpdated(this, EventArgs.Empty);
+                SceneUpdated(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderWindow));
             SceneUpdated = null;
 
             system.UpdateLoadProgress(100, "Rendering...");
@@ -241,6 +241,14 @@ namespace Mogitor.Data
                 mngr.AddResourceLocation(resource, stype, group);
             }
         }
+
+        public void RegisterForPostSceneUpdates(BaseEditor obj)
+        {
+            if (IsSceneLoaded)
+                obj.PostSceneUpdate(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderWindow));
+            else
+                SceneUpdated += obj.PostSceneUpdate;
+        }
         #endregion
 
         #region Private Methods
@@ -255,7 +263,7 @@ namespace Mogitor.Data
         #endregion
 
         #region Events
-        public event EventHandler<EventArgs> SceneUpdated;
+        public event EventHandler<SceneUpdatedEventArgs> SceneUpdated;
         public event EventHandler<EventArgs> SceneLoaded;
         public event EventHandler<EventArgs> SceneTerminated;
         #endregion

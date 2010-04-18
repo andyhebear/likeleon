@@ -91,6 +91,10 @@ namespace Mogitor.Data
 
             Modified = true;
         }
+
+        public virtual void PostSceneUpdate(object sender, SceneUpdatedEventArgs args)
+        {
+        }
         #endregion
 
         #region Public Methods
@@ -158,6 +162,11 @@ namespace Mogitor.Data
         protected void UnRegisterObjectName()
         {
             MogitorsRoot.Instance.UnRegisterObjectName(this.name, this);
+        }
+
+        protected void RegisterForPostSceneUpdates()
+        {
+            MogitorsRoot.Instance.RegisterForPostSceneUpdates(this);
         }
         #endregion
 

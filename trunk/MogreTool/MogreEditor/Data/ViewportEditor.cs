@@ -146,6 +146,37 @@ namespace Mogitor.Data
                 OnPropertyChanged("CamClipDistance");
             }
         }
+
+        public CameraEditor CameraEditor
+        {
+            get { return this.ActiveCamera; }
+            set
+            {
+                if (ActiveCamera != null)
+                {
+                    ActiveCamera.ShowHelper = true;
+                    throw new NotImplementedException("CameraEditor set");
+                }
+
+                if (value != null)
+                    ActiveCamera = value;
+                else
+                    ActiveCamera = ViewCamera;
+
+                ActiveCamera.ShowHelper = false;
+
+                ActiveCamera.Camera.AspectRatio = (float)this.handle.ActualWidth / (float)this.handle.ActualHeight;
+                this.handle.Camera = ActiveCamera.Camera;
+
+                Mogre.PolygonMode polyMode = ActiveCamera.PolygonMode;
+                if (polyMode != Mogre.PolygonMode.PM_SOLID)
+                    this.handle.SetVisibilityMask(0x7F000000);
+                else
+                    this.handle.SetVisibilityMask(0xFFFFFFFF);
+
+                PopCompositors();
+            }
+        }
         #endregion
 
         #region Fields
