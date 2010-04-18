@@ -259,7 +259,7 @@ namespace Mogitor.Data
                 Name = ni.Value;
 
             if ((ni = parameters.Find("Dimensions")) != parameters.End())
-                this.dimensions = Mogre.StringConverter.ParseVector4(ni.Value);
+                this.dimensions = MogreX.StringConverter.ParseVector4(ni.Value);
 
             if ((ni = parameters.Find("Skies")) != parameters.End())
                 this.skies = Mogre.StringConverter.ParseBool(ni.Value);
@@ -277,7 +277,7 @@ namespace Mogitor.Data
                 this.camOrientation = Mogre.StringConverter.ParseQuaternion(ni.Value);
 
             if ((ni = parameters.Find("CamClipDistance")) != parameters.End())
-                this.camClipDistance = Mogre.StringConverter.ParseVector2(ni.Value);
+                this.camClipDistance = MogreX.StringConverter.ParseVector2(ni.Value);
 
             if ((ni = parameters.Find("CamPolyMode")) != parameters.End())
                 this.CamPolyMode = (Mogre.PolygonMode)Mogre.StringConverter.ParseInt(ni.Value);
