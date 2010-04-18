@@ -134,6 +134,7 @@
     <Compile Include="Data\SceneUpdatedEventArgs.cs" />
     <Compile Include="Data\ViewportEditor.cs" />
     <Compile Include="MogitorSettings.cs" />
+    <Compile Include="MogreX\StringConverter.cs" />
     <Compile Include="Windows\MainWindowMenu.xaml.cs">
       <DependentUpon>MainWindowMenu.xaml</DependentUpon>
     </Compile>
