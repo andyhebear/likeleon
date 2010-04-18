@@ -131,6 +131,7 @@
     <Compile Include="Data\NodeEditor.cs" />
     <Compile Include="Data\ProjectOptions.cs" />
     <Compile Include="Data\SceneManagerEditor.cs" />
+    <Compile Include="Data\SceneUpdatedEventArgs.cs" />
     <Compile Include="Data\ViewportEditor.cs" />
     <Compile Include="MogitorSettings.cs" />
     <Compile Include="Windows\MainWindowMenu.xaml.cs">
