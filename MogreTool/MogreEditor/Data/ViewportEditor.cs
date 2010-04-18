@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Mogitor.Data
 {
@@ -6,6 +7,13 @@ namespace Mogitor.Data
     {
         #region Properties
         public static new ViewportEditorFactory Factory { get { return viewportEditorFactory; } }
+
+        public uint ViewportIndex
+        {
+            get;
+            set;
+        }
+
         public CameraEditor ViewCamera
         {
             get;
@@ -141,7 +149,6 @@ namespace Mogitor.Data
         #endregion
 
         #region Fields
-        private uint viewportIndex;
         private Mogre.Viewport handle;
         private Mogre.Vector4 dimensions = new Mogre.Vector4(0, 0, 1, 1);
         private Mogre.ColourValue colour = new Mogre.ColourValue(0, 0, 0);
@@ -258,9 +265,7 @@ namespace Mogitor.Data
             if (name == this.name)
                 return;
 
-            if (MogitorsRoot.Instance.FindObject(name, 0) != null)
-                OnPropertyChanged("Name");
-            else
+            if (MogitorsRoot.Instance.FindObject(name, 0) == null)
             {
                 UnRegisterObjectName();
                 this.name = name;
@@ -276,21 +281,21 @@ namespace Mogitor.Data
         #region Private Methods
         private void CreateViewport()
         {
-            Mogre.NameValuePairList parameters;
+            Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
 
-            parameters["Name"] = "intViewCamera" + Mogre.StringConverter.ToString(this.viewportIndex);
+            parameters["Name"] = "intViewCamera" + Mogre.StringConverter.ToString(ViewportIndex);
             parameters["ClipDistance"] = "0.1 40000";
 
             BaseEditor scnMgr = MogitorsRoot.Instance.SceneManagerEditor;
             ViewCamera = CameraEditor.Factory.CreateObject(ref scnMgr, parameters) as CameraEditor;
             ViewCamera.Load();
 
-            this.handle = MogitorsRoot.Instance.RenderWindow.AddViewport(ViewCamera.Camera, (int)this.viewportIndex,
+            this.handle = MogitorsRoot.Instance.RenderWindow.AddViewport(ViewCamera.Camera, (int)ViewportIndex,
                 dimensions.x, dimensions.y, dimensions.z, dimensions.w);
 
             if (Name == "")
             {
-                Name = "Viewport" + Mogre.StringConverter.ToString(this.viewportIndex);
+                Name = "Viewport" + Mogre.StringConverter.ToString(ViewportIndex);
             }
 
             ViewCamera.Camera.AspectRatio = (float)this.handle.ActualWidth / (float)this.handle.ActualHeight;
@@ -319,5 +324,71 @@ namespace Mogitor.Data
 
     class ViewportEditorFactory : BaseEditorFactory
     {
+        private uint lastZOrder;
+
+        public ViewportEditorFactory()
+        {
+            TypeName = "Viewport Object";
+        }
+
+        public override EditorType EditorType
+        {
+            get
+            {
+                return EditorType.Viewport;
+            }
+        }
+
+        public override BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)
+        {
+            ViewportEditor obj = new ViewportEditor();
+
+            Mogre.NameValuePairList.Iterator ni;
+            if ((ni = parameters.Find("ViewportIndex")) != parameters.End())
+            {
+                obj.ViewportIndex = (uint)Mogre.StringConverter.ParseInt(ni.Value);
+                if (lastZOrder < obj.ViewportIndex)
+                    lastZOrder = obj.ViewportIndex;
+            }
+            else
+            {
+                obj.ViewportIndex = ++lastZOrder;
+            }
+
+            if (obj.ViewportIndex == 1)
+                MogitorsRoot.Instance.ActiveViewport = obj;
+
+            parent = MogitorsRoot.Instance.RootEditor;
+            obj.Parent = parent;
+            obj.ProcessParameters(parameters);
+            obj.Load();
+
+            InstanceCount++;
+            return obj;
+        }
+
+        public override void DestroyObject(BaseEditor _object)
+        {
+            ViewportEditor editor = _object as ViewportEditor;
+
+            MogitorsRoot.Instance.IsClearScreenNeeded = true;
+
+            editor.DestroyAllChildren();
+            editor.UnLoad();
+
+            if (editor.Name != "")
+                MogitorsRoot.Instance.UnRegisterObjectName(editor.Name, editor);
+
+            InstanceCount--;
+
+            NameObjectPairList viewports = MogitorsRoot.Instance.GetObjectsByType(EditorType.Viewport);
+
+            lastZOrder = 0;
+            foreach (ViewportEditor viewport in viewports.Values)
+            {
+                if (viewport.ViewportIndex > lastZOrder)
+                    lastZOrder = viewport.ViewportIndex;
+            }
+        }
     }
 }

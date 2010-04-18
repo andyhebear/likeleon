@@ -139,16 +139,6 @@ namespace Mogitor.Data
         #endregion
 
         #region Private Methods
-        private void RegisterObjectName()
-        {
-            MogitorsRoot.Instance.RegisterObjectName(this.name, this);
-        }
-
-        private void UnRegisterObjectName()
-        {
-            MogitorsRoot.Instance.UnRegisterObjectName(this.name, this);
-        }
-
         private void LoadAllChildren()
         {
             foreach (KeyValuePair<string, BaseEditor> child in this.children)

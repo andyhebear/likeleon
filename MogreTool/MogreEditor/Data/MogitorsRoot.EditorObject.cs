@@ -160,6 +160,14 @@ namespace Mogitor.Data
             this.namesByType[(int)obj.EditorType].Add(name, obj);
             this.namesByTypeID[(int)obj.ObjectTypeID].Add(name, obj);
         }
+
+        public NameObjectPairList GetObjectsByType(EditorType type)
+        {
+            if (type < EditorType.LastEditor)
+                return this.namesByType[(int)type];
+            else
+                return this.namesByType[0];
+        }
         #endregion
 
         #region Private Methods
