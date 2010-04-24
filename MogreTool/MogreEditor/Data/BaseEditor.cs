@@ -66,6 +66,7 @@ namespace Mogitor.Data
 
         protected virtual void SetNameImpl(string name)
         {
+            name = name.Trim();
             if (name == this.name)
                 return;
 
@@ -220,7 +221,7 @@ namespace Mogitor.Data
             set
             {
                 string oldName = this.name;
-                SetNameImpl(name);
+                SetNameImpl(value);
                 if (oldName != this.name)
                 {
                     BaseEditor parent = Parent;

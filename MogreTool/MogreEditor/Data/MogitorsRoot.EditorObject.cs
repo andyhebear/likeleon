@@ -98,7 +98,6 @@ namespace Mogitor.Data
             if (parent == null)
             {
                 Mogre.NameValuePairList.Iterator ni;
-
                 if ((ni = param.Find("ParentNode")) != param.End())
                 {
                     parent = FindObject(ni.Value, 0);
@@ -185,7 +184,9 @@ namespace Mogitor.Data
 
             RegisterEditorFactory(BaseEditor.Factory);
             RegisterEditorFactory(Mogitor.Data.SceneManagerEditor.Factory);
+            RegisterEditorFactory(ViewportEditor.Factory);
             RegisterEditorFactory(EntityEditor.Factory);
+            RegisterEditorFactory(CameraEditor.Factory);
             RegisterEditorFactory(NodeEditor.Factory);
 
             foreach (KeyValuePair<string, BaseEditorFactory> factory in this.editorObjectFactories)
