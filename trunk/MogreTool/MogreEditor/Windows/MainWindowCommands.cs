@@ -25,6 +25,7 @@ namespace Mogitor.Windows
             opt.SceneManagerName = "OctreeSceneManager";
             opt.TerrainDirectory = "Terrain";
             opt.ResourceDirectories.Clear();
+            opt.Cameras.Clear();
 
             SettingsDialog dlg = new SettingsDialog(opt);
             if (dlg.ShowDialog() == true)
