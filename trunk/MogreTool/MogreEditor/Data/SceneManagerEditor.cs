@@ -237,7 +237,7 @@ namespace Mogitor.Data
             Mogre.NameValuePairList.Iterator ni;
 
             if ((ni = parameters.Find("Name")) != parameters.End())
-                Name = ni.Value;
+                this.name = ni.Value;
 
             if ((ni = parameters.Find("SkyBoxMaterial")) != parameters.End())
                 this.skyBoxMaterial = ni.Value;
@@ -274,6 +274,23 @@ namespace Mogitor.Data
                     this.fogMode = Mogre.FogMode.FOG_EXP;
                 else if (val == "exp2")
                     this.fogMode = Mogre.FogMode.FOG_EXP2;
+            }
+        }
+
+        protected override void SetNameImpl(string name)
+        {
+            if (name == Name)
+                return;
+
+            name = name.Trim();
+
+            if (system.DisplayMessageDialog("Renaming a Scene Manager requires Save and Reload of the Scene.\nDo you want to continue?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                this.name = name;
+                MogitorsRoot.Instance.SaveScene(false);
+                string fileName = MogitorsRoot.Instance.ProjectOptions.ProjectDir + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                MogitorsRoot.Instance.TerminateScene();
+                MogitorsRoot.Instance.LoadScene(fileName);
             }
         }
         #endregion

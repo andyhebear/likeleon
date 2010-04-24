@@ -155,7 +155,8 @@ namespace Mogitor.Data
                 if (ActiveCamera != null)
                 {
                     ActiveCamera.ShowHelper = true;
-                    throw new NotImplementedException("CameraEditor set");
+
+                    PushCompositors(this.ActiveCamera.Camera);
                 }
 
                 if (value != null)
@@ -179,6 +180,14 @@ namespace Mogitor.Data
         }
         #endregion
 
+        #region Inner Classes
+        private class CompositorPush
+        {
+            public string Name { get; set; }
+            public bool Enabled { get; set; }
+        }
+        #endregion
+
         #region Fields
         private Mogre.Viewport handle;
         private Mogre.Vector4 dimensions = new Mogre.Vector4(0, 0, 1, 1);
@@ -192,6 +201,7 @@ namespace Mogitor.Data
         private Mogre.PolygonMode camPolyMode = Mogre.PolygonMode.PM_SOLID;
         private Mogre.Vector2 camClipDistance = new Mogre.Vector2(1, 1000);
         private static readonly ViewportEditorFactory viewportEditorFactory = new ViewportEditorFactory();
+        private readonly IList<CompositorPush> compositorStorage = new List<CompositorPush>();
         #endregion
 
         #region Overrides BaseEditor
@@ -256,7 +266,7 @@ namespace Mogitor.Data
             Mogre.NameValuePairList.Iterator ni;
 
             if ((ni = parameters.Find("Name")) != parameters.End())
-                Name = ni.Value;
+                this.name = ni.Value;
 
             if ((ni = parameters.Find("Dimensions")) != parameters.End())
                 this.dimensions = MogreX.StringConverter.ParseVector4(ni.Value);
@@ -288,13 +298,29 @@ namespace Mogitor.Data
             if ((ni = parameters.Find("Colour")) != parameters.End())
                 this.colour = Mogre.StringConverter.ParseColourValue(ni.Value);
 
-            throw new NotImplementedException("process compositor parameters");
+            this.compositorStorage.Clear();
+            for (int cx = 0; cx < 100; ++cx)
+            {
+                string searchstr = "Compositor" + Mogre.StringConverter.ToString(cx);
+                if ((ni = parameters.Find(searchstr + "Name")) != parameters.End())
+                {
+                    CompositorPush compData = new CompositorPush();
+                    compData.Name = ni.Value;
+                    ni = parameters.Find(searchstr + "Enabled");
+                    compData.Enabled = Mogre.StringConverter.ParseBool(ni.Value);
+                    this.compositorStorage.Add(compData);
+                }
+                else
+                    break;
+            }
         }
 
         protected override void SetNameImpl(string name)
         {
             if (name == this.name)
                 return;
+
+            name = name.Trim();
 
             if (MogitorsRoot.Instance.FindObject(name, 0) == null)
             {
@@ -326,7 +352,7 @@ namespace Mogitor.Data
 
             if (Name == "")
             {
-                Name = "Viewport" + Mogre.StringConverter.ToString(ViewportIndex);
+                this.name = "Viewport" + Mogre.StringConverter.ToString(ViewportIndex);
             }
 
             ViewCamera.Camera.AspectRatio = (float)this.handle.ActualWidth / (float)this.handle.ActualHeight;
@@ -337,18 +363,59 @@ namespace Mogitor.Data
 
             PopCompositors();
 
-            throw new NotImplementedException("Set camera position");
+            ProjectOptions opt = MogitorsRoot.Instance.ProjectOptions;
+            if (opt.Cameras.Count > 0)
+            {
+                ViewCamera.Position = opt.Cameras[opt.Cameras.Count - 1].Position;
+                ViewCamera.Orientation = opt.Cameras[opt.Cameras.Count - 1].Orientation;
+            }
+            
             LoadEditorObjects();
         }
 
         private void PopCompositors()
         {
-            throw new NotImplementedException("PopCompositors");
+            if (this.compositorStorage.Count == 0)
+                return;
+
+            Mogre.CompositorManager comMngr = Mogre.CompositorManager.Singleton;
+            if (comMngr.HasCompositorChain(this.handle))
+                comMngr.GetCompositorChain(this.handle).RemoveAllCompositors();
+
+            foreach (CompositorPush compData in this.compositorStorage)
+            {
+                comMngr.AddCompositor(this.handle, compData.Name);
+                comMngr.SetCompositorEnabled(this.handle, compData.Name, compData.Enabled);
+            }
+            this.compositorStorage.Clear();
+            Modified = true;
         }
 
         private void LoadEditorObjects()
         {
             throw new NotImplementedException("LoadEditorObjects");
+        }
+
+        private void PushCompositors(Mogre.Camera camera)
+        {
+            if (this.handle != null && this.handle.Camera == camera)
+            {
+                this.compositorStorage.Clear();
+
+                Mogre.CompositorManager comMngr = Mogre.CompositorManager.Singleton;
+                if (!comMngr.HasCompositorChain(this.handle))
+                    return;
+
+                Mogre.CompositorChain chain = comMngr.GetCompositorChain(this.handle);
+
+                foreach (Mogre.CompositorInstance compositor in chain.GetCompositors())
+                {
+                    CompositorPush compData = new CompositorPush();
+                    compData.Name = compositor.Compositor.Name;
+                    compData.Enabled = compositor.Enabled;
+                    this.compositorStorage.Add(compData);
+                }
+            }
         }
         #endregion
     }
