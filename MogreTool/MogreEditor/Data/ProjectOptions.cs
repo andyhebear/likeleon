@@ -12,8 +12,8 @@ namespace Mogitor.Data
     {
         public class Camera
         {
-            public Mogre.Vector3 Position;
-            public Mogre.Quaternion Orientation;
+            public Mogre.Vector3 Position { get; set; }
+            public Mogre.Quaternion Orientation { get; set; }
         }
 
         #region Public Properties
@@ -31,6 +31,7 @@ namespace Mogitor.Data
         public ProjectOptions()
         {
             ResourceDirectories = new List<string>();
+            Cameras = new List<Camera>();
         }
         #endregion
     }

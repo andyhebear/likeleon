@@ -259,6 +259,8 @@ namespace Mogitor.Data
             ProjectOptions.ProjectName = "";
             ProjectOptions.SceneManagerName = "";
             ProjectOptions.TerrainDirectory = "";
+            ProjectOptions.ResourceDirectories.Clear();
+            ProjectOptions.Cameras.Clear();
         }
         #endregion
 
