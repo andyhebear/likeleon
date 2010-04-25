@@ -19,7 +19,7 @@ namespace Mogitor.Data
             MogitorsSystem system = MogitorsSystem.Instance;
 
             ProjectOptions opt = mogRoot.ProjectOptions;
-            string fileName = opt.ProjectDir + opt.ProjectName + ".mogscene";
+            string fileName = system.CombinePath(opt.ProjectDir, opt.ProjectName + ".mogscene");
 
             // If saveAs is true, use the MogitorsSystem Function to retrieve
             // a FileName and also copy the contents of current scene to the new location
@@ -49,17 +49,53 @@ namespace Mogitor.Data
                 system.MakeDirectory(newDir);
                 system.CopyFilesEx(oldProjDir, newDir);
 
-                string delFileStr = system.QualifyPath(opt.ProjectDir + "\\" + oldProjName + ".mogscene");
+                string delFileStr = system.QualifyPath(system.CombinePath(opt.ProjectDir, oldProjName + ".mogscene"));
                 system.DeleteFile(delFileStr);
             }
 
             XmlTextWriter textWriter = new XmlTextWriter(fileName, System.Text.Encoding.Unicode);
             textWriter.Formatting = Formatting.Indented;
             textWriter.WriteStartDocument();
-            textWriter.WriteStartElement("MogitorScene version=\"1\"");
+            textWriter.WriteStartElement("MogitorScene");
             mogRoot.WriteProjectOptions(textWriter, true);
-            
-            // TODO: Write objects.
+
+            ObjectVector objectList = new ObjectVector();
+            for (EditorType type = 0; type < EditorType.LastEditor; ++type)
+            {
+                mogRoot.GetObjectList(type, objectList);
+                foreach (BaseEditor obj in objectList)
+                {
+                    // If object does not have a parent, then it is not part of the scene
+                    if (obj.Parent == null)
+                        continue;
+
+                    if (obj.IsSerializable)
+                    {
+                        textWriter.WriteStartElement("Object");
+                        textWriter.WriteStartAttribute("Type");
+                        textWriter.WriteValue(obj.ObjectTypeName);
+                        textWriter.WriteEndAttribute();
+                        
+                        // If obj's parent name is "" then the parent is this.rootEditor
+                        if (obj.Parent.Name != "")
+                        {
+                            textWriter.WriteStartAttribute("ParentNode");
+                            textWriter.WriteValue(obj.Parent.Name);
+                            textWriter.WriteEndAttribute();
+                        }
+                        Mogre.NameValuePairList theList = new Mogre.NameValuePairList();
+                        obj.GetObjectProperties(theList);
+                        foreach (KeyValuePair<string, string> it in theList)
+                        {
+                            textWriter.WriteStartAttribute(it.Key);
+                            textWriter.WriteValue(it.Value);
+                            textWriter.WriteEndAttribute();
+                        }
+                        textWriter.WriteEndElement();
+                    }
+                    obj.OnSave();
+                }
+            }
 
             textWriter.WriteEndElement();
             textWriter.WriteEndDocument();
@@ -110,7 +146,7 @@ namespace Mogitor.Data
                 return SceneFileResult.ErrParse;
 
             // Check version
-            string fileVersion = textReader.GetAttribute("version");
+            string fileVersion = textReader.GetAttribute("Version");
             if (fileVersion != null)
             {
                 if (int.Parse(fileVersion) != 1)

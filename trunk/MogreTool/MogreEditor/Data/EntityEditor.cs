@@ -18,25 +18,16 @@ namespace Mogitor.Data
 
         #region Properties
         public static new BaseEditorFactory Factory { get { return entityEditorFactory; } }
-        public override BaseEditorFactory FactoryDynamic { get { return entityEditorFactory; } }
 
         public string MeshFile
         {
-            get { return this.MeshFile; }
+            get { return this.meshFile; }
             set
             {
-                this.MeshFile = value;
+                this.meshFile = value;
                 Modified = true;
 
                 this.OnPropertyChanged("MeshFile");
-            }
-        }
-
-        public override object Handle
-        {
-            get
-            {
-                return this.entityHandle as object;
             }
         }
 
@@ -58,20 +49,69 @@ namespace Mogitor.Data
         #region Fields
         private static readonly EntityEditorFactory entityEditorFactory = new EntityEditorFactory();
         private string meshFile = "";
-        private Mogre.Entity entityHandle = null;  // actual mesh handle
+        private Mogre.Entity entityHandle;  // actual mesh handle
         private bool castShadows = true;
         private readonly List<SubMeshData> subMeshes = new List<SubMeshData>();
         #endregion
 
-        #region Methods
+        #region Private Methods
+        private SubMeshData GetSubMesh(int index)
+        {
+            while (index >= this.subMeshes.Count)
+            {
+                SubMeshData temp = new SubMeshData();
+                temp.Visible = true;
+                temp.Material = "";
+                this.subMeshes.Add(temp);
+            }
+            return this.subMeshes[index];
+        }
+        #endregion
+
+        #region Overrides BaseEditor
+        public override BaseEditorFactory FactoryDynamic { get { return entityEditorFactory; } }
+
+        public override object Handle
+        {
+            get
+            {
+                return this.entityHandle as object;
+            }
+        }
+
         public override void ProcessParameters(Mogre.NameValuePairList parameters)
         {
             base.ProcessParameters(parameters);
 
             Mogre.NameValuePairList.Iterator ni;
 
-            if ((ni = parameters.Find("meshfile")) != parameters.End())
+            if ((ni = parameters.Find("MeshFile")) != parameters.End())
                 this.meshFile = ni.Value;
+
+            if ((ni = parameters.Find("CastShadows")) != parameters.End())
+                this.castShadows = Mogre.StringConverter.ParseBool(ni.Value);
+
+            foreach (KeyValuePair<string, string> param in parameters)
+            {
+                if (param.Key.Substring(0, 9) != "SubEntity")
+                    continue;
+
+                string valStr = param.Key;
+                valStr = valStr.Remove(0, 9);
+
+                if (valStr.EndsWith("Visible"))
+                {
+                    valStr = valStr.Remove(valStr.Length - 8, 8);
+                    int ID = Mogre.StringConverter.ParseInt(valStr);
+                    GetSubMesh(ID).Visible = Mogre.StringConverter.ParseBool(param.Value);
+                }
+                else if (valStr.EndsWith("Material"))
+                {
+                    valStr = valStr.Remove(valStr.Length - 9, 9);
+                    int ID = Mogre.StringConverter.ParseInt(valStr);
+                    GetSubMesh(ID).Material = param.Value;
+                }
+            }
         }
 
         public override bool Load()
@@ -107,22 +147,57 @@ namespace Mogitor.Data
             }
             return true;
         }
+
+        public override bool UnLoad()
+        {
+            if (!IsLoaded)
+                return true;
+
+            if (this.entityHandle != null)
+            {
+                this.entityHandle.ParentSceneNode.DetachObject(this.entityHandle);
+                this.entityHandle._getManager().DestroyEntity(this.entityHandle);
+                this.entityHandle = null;
+            }
+
+            return base.UnLoad();
+        }
+
+        public override void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            base.GetObjectProperties(retList);
+
+            retList["MeshFile"] = this.meshFile;
+            retList["CastShadows"] = Mogre.StringConverter.ToString(this.castShadows);
+
+            for (int i = 0; i < this.subMeshes.Count; ++i)
+            {
+                string paramName = "SubEntity" + Mogre.StringConverter.ToString(i) + ".";
+                retList[paramName + "Visible"] = Mogre.StringConverter.ToString(this.subMeshes[i].Visible);
+                retList[paramName + "Material"] = this.subMeshes[i].Material;
+            }
+        }
         #endregion
     }
 
     class EntityEditorFactory : BaseEditorFactory
     {
+        public EntityEditorFactory()
+        {
+            TypeName = "Entity Object";
+        }
+
         public override BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)
         {
             EntityEditor editor = new EntityEditor();
 
-            if (parameters.Find("meshfile") == parameters.End())
-                parameters["meshfile"] = "scbCamera.mesh";
+            if (parameters.Find("MeshFile") == parameters.End())
+                parameters["MeshFile"] = "scbCamera.mesh";
 
-            if (parameters.Find("init") != parameters.End())
+            if (parameters.Find("Init") != parameters.End())
             {
-                string entName = Path.GetFileNameWithoutExtension(parameters["meshfile"]);
-                parameters["name"] = entName + MogitorsRoot.Instance.CreateUniqueID(entName, "", -1);
+                string entName = Path.GetFileNameWithoutExtension(parameters["Meshfile"]);
+                parameters["Name"] = entName + MogitorsRoot.Instance.CreateUniqueID(entName, "", -1);
             }
 
             editor.ProcessParameters(parameters);

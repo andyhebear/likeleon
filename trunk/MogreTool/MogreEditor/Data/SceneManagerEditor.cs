@@ -277,6 +277,38 @@ namespace Mogitor.Data
             }
         }
 
+        public override void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            retList.Clear();
+            retList["Name"] = this.name;
+            retList["SceneManagerType"] = SceneMangerType;
+            retList["Ambient"] = Mogre.StringConverter.ToString(this.ambient);
+            retList["SkyBoxActive"] = Mogre.StringConverter.ToString(this.skyBoxActive);
+            retList["SkyBoxMaterial"] = this.skyBoxMaterial;
+            retList["SkyBoxDistance"] = Mogre.StringConverter.ToString(this.skyBoxDistance);
+
+            switch (this.fogMode)
+            {
+                case Mogre.FogMode.FOG_NONE:
+                    retList["FogMode"] = "None";
+                    break;
+                case Mogre.FogMode.FOG_LINEAR:
+                    retList["FogMode"] = "Linear";
+                    break;
+                case Mogre.FogMode.FOG_EXP:
+                    retList["FogMode"] = "Exp";
+                    break;
+                case Mogre.FogMode.FOG_EXP2:
+                    retList["FogMode"] = "Exp2";
+                    break;
+            }
+
+            retList["FogColour"] = Mogre.StringConverter.ToString(this.fogColour);
+            retList["FogStart"] = Mogre.StringConverter.ToString(this.fogStart);
+            retList["FogEnd"] = Mogre.StringConverter.ToString(this.fogEnd);
+            retList["FogDensity"] = Mogre.StringConverter.ToString(this.fogDensity);
+        }
+
         protected override void SetNameImpl(string name)
         {
             if (name == Name)
@@ -288,7 +320,7 @@ namespace Mogitor.Data
             {
                 this.name = name;
                 MogitorsRoot.Instance.SaveScene(false);
-                string fileName = MogitorsRoot.Instance.ProjectOptions.ProjectDir + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                string fileName = system.CombinePath(MogitorsRoot.Instance.ProjectOptions.ProjectDir, MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene");
                 MogitorsRoot.Instance.TerminateScene();
                 MogitorsRoot.Instance.LoadScene(fileName);
             }

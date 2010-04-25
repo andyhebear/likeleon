@@ -159,6 +159,26 @@ namespace Mogitor.Data
             }
         }
 
+        public override void ProcessParameters(Mogre.NameValuePairList parameters)
+        {
+            Mogre.NameValuePairList.Iterator ni;
+
+            if ((ni = parameters.Find("Name")) != parameters.End())
+                this.name = ni.Value;
+
+            if ((ni = parameters.Find("Position")) != parameters.End())
+                this.position = Mogre.StringConverter.ParseVector3(ni.Value);
+
+            if ((ni = parameters.Find("Orientation")) != parameters.End())
+                this.orientation = Mogre.StringConverter.ParseQuaternion(ni.Value);
+
+            if ((ni = parameters.Find("ClipDistance")) != parameters.End())
+                this.clipDistance = MogreX.StringConverter.ParseVector2(ni.Value);
+
+            if ((ni = parameters.Find("FOV")) != parameters.End())
+                this.fov = Mogre.StringConverter.ParseReal(ni.Value);
+        }
+
         public override bool Load()
         {
             if (IsLoaded)
@@ -202,6 +222,16 @@ namespace Mogitor.Data
 
             IsLoaded = false;
             return true;
+        }
+
+        public override void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            retList.Clear();
+            retList["Name"] = this.name;
+            retList["Position"] = Mogre.StringConverter.ToString(this.position);
+            retList["Orientation"] = Mogre.StringConverter.ToString(this.orientation);
+            retList["ClipDistance"] = Mogre.StringConverter.ToString(this.clipDistance);
+            retList["FOV"] = Mogre.StringConverter.ToString(this.fov);
         }
         #endregion
     }

@@ -17,14 +17,6 @@ namespace Mogitor.Data
         #endregion
 
         #region Properties
-        public override object Handle
-        {
-            get
-            {
-                return this.handle as object;
-            }
-        }
-
         public string AutoTrackTarget
         {
             get { return this.autoTrackTarget; }
@@ -86,6 +78,16 @@ namespace Mogitor.Data
                 OnPropertyChanged("Scale");
             }
         }
+        #endregion
+
+        #region Overrides BaseEditor
+        public override object Handle
+        {
+            get
+            {
+                return this.handle as object;
+            }
+        }
 
         public override Mogre.SceneNode Node
         {
@@ -94,7 +96,6 @@ namespace Mogitor.Data
                 return this.handle;
             }
         }
-        #endregion
 
         public override bool Load()
         {
@@ -110,10 +111,64 @@ namespace Mogitor.Data
             IsLoaded = true;
             return true;
         }
+
+        public override bool UnLoad()
+        {
+            if (!IsLoaded)
+                return true;
+
+            UnLoadAllChildren();
+            DestroyBoundingBox();
+
+            if (this.handle != null)
+            {
+                this.handle.ParentSceneNode.RemoveAndDestroyChild(this.name);
+                this.handle = null;
+            }
+
+            IsLoaded = false;
+            return true;
+        }
+
+        public override void ProcessParameters(Mogre.NameValuePairList parameters)
+        {
+            Mogre.NameValuePairList.Iterator ni;
+
+            if ((ni = parameters.Find("Name")) != parameters.End())
+                this.name = ni.Value;
+
+            if ((ni = parameters.Find("Position")) != parameters.End())
+                this.position = Mogre.StringConverter.ParseVector3(ni.Value);
+
+            if ((ni = parameters.Find("Orientation")) != parameters.End())
+                this.orientation = Mogre.StringConverter.ParseQuaternion(ni.Value);
+
+            if ((ni = parameters.Find("Scale")) != parameters.End())
+                this.scale = Mogre.StringConverter.ParseVector3(ni.Value);
+
+            if ((ni = parameters.Find("AutoTrackTarget")) != parameters.End())
+                this.autoTrackTarget = ni.Value;
+        }
+
+        public override void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            retList.Clear();
+            retList["Name"] = this.name;
+            retList["Position"] = Mogre.StringConverter.ToString(this.position);
+            retList["Orientation"] = Mogre.StringConverter.ToString(this.orientation);
+            retList["Scale"] = Mogre.StringConverter.ToString(this.scale);
+            retList["AutoTrackTarget"] = this.autoTrackTarget;
+        }
+        #endregion
     }
 
     class NodeEditorFactory : BaseEditorFactory
     {
+        public NodeEditorFactory()
+        {
+            TypeName = "Node Object";
+        }
+
         public override EditorType EditorType
         {
             get

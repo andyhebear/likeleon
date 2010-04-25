@@ -96,6 +96,21 @@ namespace Mogitor.Data
         public virtual void PostSceneUpdate(object sender, SceneUpdatedEventArgs args)
         {
         }
+
+        public virtual bool IsSerializable
+        {
+            get { return true; }
+        }
+
+        public virtual void OnSave()
+        { 
+        }
+
+        public virtual void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            retList.Clear();
+            retList["Name"] = Name;
+        }
         #endregion
 
         #region Public Methods
@@ -140,6 +155,18 @@ namespace Mogitor.Data
         {
             this.children.Add(child.Name, child);
             child.Parent = this;
+        }
+
+        public void GetNodeList(ObjectVector list)
+        {
+            foreach (KeyValuePair<string, BaseEditor> it in this.children)
+            {
+                if (it.Value.EditorType == EditorType.Node)
+                {
+                    list.Add(it.Value);
+                }
+                it.Value.GetNodeList(list);
+            }
         }
         #endregion
 
@@ -249,6 +276,11 @@ namespace Mogitor.Data
         public uint ObjectTypeID
         {
             get { return FactoryDynamic.TypeID; }
+        }
+
+        public string ObjectTypeName
+        {
+            get { return this.FactoryDynamic.TypeName; }
         }
         #endregion
     }
