@@ -458,7 +458,7 @@ namespace Mogitor.Data
         #endregion
 
         #region Public Methods
-        public int GetRect(Mogre.Vector4 rect)
+        public int GetRect(ref Mogre.Vector4 rect)
         {
             if (this.handle != null)
             {

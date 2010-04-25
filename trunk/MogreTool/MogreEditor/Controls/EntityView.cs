@@ -176,7 +176,7 @@ namespace Mogitor.Controls
         }
         #endregion
 
-        #region Implements IDragDropHandler
+        #region Implements IDragDropHandlerref 
         bool MogitorsRoot.IDragDropHandler.OnDrageEnter(DragData dragData)
         {
             ImageEntry imageEntry = dragData.SourceObject as ImageEntry;
@@ -184,9 +184,9 @@ namespace Mogitor.Controls
                 return false;
 
             dragData.ObjectType = "Entity Object";
-            dragData.Parameters["init"] = "true";
-            dragData.Parameters["meshfile"] = imageEntry.Name + ".mesh";
-            dragData.Parameters["position"] = "999999 999999 999999";
+            dragData.Parameters["Init"] = "true";
+            dragData.Parameters["MeshFile"] = imageEntry.Name + ".mesh";
+            dragData.Parameters["Position"] = "999999 999999 999999";
 
             BaseEditor parent = MogitorsRoot.Instance.SceneManagerEditor;
             dragData.Object = EntityEditor.Factory.CreateObject(ref parent, dragData.Parameters);
@@ -208,6 +208,22 @@ namespace Mogitor.Controls
 
         bool MogitorsRoot.IDragDropHandler.OnDragOver(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position)
         {
+            if (dragData.Object == null)
+                return false;
+
+            Mogre.Ray mouseRay = vp.Camera.GetCameraToViewportRay(position.x, position.y);
+
+            EntityEditor entity = dragData.Object as EntityEditor;
+
+            bool hitFound = false;
+            if (!hitFound)
+            {
+                if (entity.Position.x == 999999 && entity.Position.y == 999999 && entity.Position.z == 999999)
+                    entity.Position = mouseRay.Origin + mouseRay.Direction * 40.0f;
+                //else
+                //    entity.Position = MogitorsRoot.Instance.GetGizmoIntersectCameraPlane(entity, mouseRay);
+            }
+
             return true;
         }
 

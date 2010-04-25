@@ -58,7 +58,7 @@ namespace Mogitor.Data
             int ZOrder = -1000;
             foreach (KeyValuePair<string, BaseEditor> it in GetObjectsByType(EditorType.Viewport))
             {
-                int order = ((it.Value) as ViewportEditor).GetRect(rect);
+                int order = ((it.Value) as ViewportEditor).GetRect(ref rect);
                 if ((rect.x <= pt.X) && (rect.y <= pt.Y) && ((rect.y + rect.w) >= pt.Y) && (order > ZOrder))
                 {
                     ZOrder = order;
@@ -69,7 +69,7 @@ namespace Mogitor.Data
             if (vp != null)
             {
                 ActiveViewport = vp;
-                ActiveViewport.GetRect(rect);
+                ActiveViewport.GetRect(ref rect);
 
                 DragData dragData = data.GetData(typeof(DragData)) as DragData;
 
@@ -89,7 +89,7 @@ namespace Mogitor.Data
         public void OnDragDrop(IDataObject data, Point pt)
         {
             Mogre.Vector4 drect = new Mogre.Vector4();
-            ActiveViewport.GetRect(drect);
+            ActiveViewport.GetRect(ref drect);
             Mogre.Vector2 dropPos = new Mogre.Vector2((float)(pt.X - drect.x) / drect.z, (float)(pt.Y - drect.y) / drect.w);
 
             DragData dragData = data.GetData(typeof(DragData)) as DragData;

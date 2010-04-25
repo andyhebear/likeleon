@@ -93,7 +93,7 @@ namespace Mogitor.Data
 
             foreach (KeyValuePair<string, string> param in parameters)
             {
-                if (param.Key.Substring(0, 9) != "SubEntity")
+                if (!param.Key.StartsWith("SubEntity"))
                     continue;
 
                 string valStr = param.Key;
@@ -196,7 +196,7 @@ namespace Mogitor.Data
 
             if (parameters.Find("Init") != parameters.End())
             {
-                string entName = Path.GetFileNameWithoutExtension(parameters["Meshfile"]);
+                string entName = Path.GetFileNameWithoutExtension(parameters["MeshFile"]);
                 parameters["Name"] = entName + MogitorsRoot.Instance.CreateUniqueID(entName, "", -1);
             }
 
