@@ -248,7 +248,7 @@ namespace Mogitor.Data
 
             if (this.handle != null)
             {
-                throw new NotImplementedException("this.viewGrid = null");
+                //throw new NotImplementedException("this.viewGrid = null");
 
                 ViewCamera.Destroy(false);
                 ViewCamera = null;
@@ -393,7 +393,7 @@ namespace Mogitor.Data
 
         private void LoadEditorObjects()
         {
-            throw new NotImplementedException("LoadEditorObjects");
+            //throw new NotImplementedException("LoadEditorObjects");
         }
 
         private void PushCompositors(Mogre.Camera camera)
