@@ -35,4 +35,8 @@ namespace Mogitor.Data
     class NameObjectPairList : Dictionary<string, BaseEditor>
     {
     }
+
+    class ObjectVector : List<BaseEditor>
+    {
+    }
 }

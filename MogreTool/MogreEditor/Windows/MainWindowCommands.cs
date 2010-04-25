@@ -30,7 +30,7 @@ namespace Mogitor.Windows
             SettingsDialog dlg = new SettingsDialog(opt);
             if (dlg.ShowDialog() == true)
             {
-                string fileName = mogRoot.ProjectOptions.ProjectDir + "\\" + mogRoot.ProjectOptions.ProjectName + ".mogscene";
+                string fileName = MogitorsSystem.Instance.CombinePath(mogRoot.ProjectOptions.ProjectDir, mogRoot.ProjectOptions.ProjectName + ".mogscene");
                 fileName = MogitorsSystem.Instance.QualifyPath(fileName);
 
                 XmlTextWriter textWriter = new XmlTextWriter(fileName, System.Text.Encoding.Unicode);

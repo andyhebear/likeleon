@@ -315,6 +315,44 @@ namespace Mogitor.Data
             }
         }
 
+        public override void GetObjectProperties(Mogre.NameValuePairList retList)
+        {
+            retList.Clear();
+            retList["Name"] = this.name;
+            retList["Colour"] = Mogre.StringConverter.ToString(this.colour);
+            retList["Index"] = Mogre.StringConverter.ToString(ViewportIndex);
+            retList["Dimensions"] = Mogre.StringConverter.ToString(this.dimensions);
+            retList["Overlays"] = Mogre.StringConverter.ToString(this.overlays);
+            retList["Skies"] = Mogre.StringConverter.ToString(this.skies);
+            retList["Shadows"] = Mogre.StringConverter.ToString(this.shadows);
+            retList["CamPosition"] = Mogre.StringConverter.ToString(ViewCamera.Position);
+            retList["CamOrientation"] = Mogre.StringConverter.ToString(ViewCamera.Orientation);
+            retList["CamFOV"] = Mogre.StringConverter.ToString(ViewCamera.FOV);
+            retList["CamPolyMode"] = Mogre.StringConverter.ToString((int)ViewCamera.Camera.PolygonMode);
+            retList["CamClipDistance"] = Mogre.StringConverter.ToString(ViewCamera.ClipDistance);
+
+            Mogre.CompositorManager comMngr = Mogre.CompositorManager.Singleton;
+            if (!comMngr.HasCompositorChain(this.handle))
+                return;
+
+            int count = 0;
+            Mogre.CompositorChain chain = comMngr.GetCompositorChain(this.handle);
+            foreach (Mogre.CompositorInstance compositor in chain.GetCompositors())
+            {
+                Mogre.Compositor sub = compositor.Compositor;
+                if (sub == null)
+                    continue;
+
+                if (sub.Name.Substring(1, 7) == "_Hydrax")
+                    continue;
+
+                string compId = "Compositor" + Mogre.StringConverter.ToString(count);
+                retList[compId + "Name"] = sub.Name;
+                retList[compId + "Enabled"] = Mogre.StringConverter.ToString(compositor.Enabled);
+                count++;
+            }
+        }
+
         protected override void SetNameImpl(string name)
         {
             if (name == this.name)
@@ -416,6 +454,31 @@ namespace Mogitor.Data
                     this.compositorStorage.Add(compData);
                 }
             }
+        }
+        #endregion
+
+        #region Public Methods
+        public int GetRect(Mogre.Vector4 rect)
+        {
+            if (this.handle != null)
+            {
+                int left, top, width, height;
+                this.handle.GetActualDimensions(out left, out top, out width, out height);
+                rect.x = left;
+                rect.y = top;
+                rect.z = width;
+                rect.w = height;
+            }
+            else
+            {
+                float width = MogitorsRoot.Instance.RenderWindow.Width;
+                float height = MogitorsRoot.Instance.RenderWindow.Height;
+                rect.x = width * this.dimensions.x;
+                rect.y = height * this.dimensions.y;
+                rect.z = width * this.dimensions.z;
+                rect.w = height * this.dimensions.w;
+            }
+            return (int)ViewportIndex;
         }
         #endregion
     }

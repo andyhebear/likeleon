@@ -52,11 +52,55 @@ namespace Mogitor.Data
 
         public bool OnDragOver(IDataObject data, Point pt)
         {
-            return true;
+            Mogre.Vector4 rect = new Mogre.Vector4();
+            ViewportEditor vp = null;
+
+            int ZOrder = -1000;
+            foreach (KeyValuePair<string, BaseEditor> it in GetObjectsByType(EditorType.Viewport))
+            {
+                int order = ((it.Value) as ViewportEditor).GetRect(rect);
+                if ((rect.x <= pt.X) && (rect.y <= pt.Y) && ((rect.y + rect.w) >= pt.Y) && (order > ZOrder))
+                {
+                    ZOrder = order;
+                    vp = (it.Value) as ViewportEditor;
+                }
+            }
+
+            if (vp != null)
+            {
+                ActiveViewport = vp;
+                ActiveViewport.GetRect(rect);
+
+                DragData dragData = data.GetData(typeof(DragData)) as DragData;
+
+                foreach (KeyValuePair<object, IDragDropHandler> handler in this.dragDropHandlers)
+                {
+                    if (handler.Key == dragData.Source)
+                    {
+                        Mogre.Vector2 point = new Mogre.Vector2((float)(pt.X - rect.x) / rect.z, (float)(pt.Y - rect.y) / rect.w);
+                        return handler.Value.OnDragOver(dragData, ActiveViewport.Handle as Mogre.Viewport, point);
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         public void OnDragDrop(IDataObject data, Point pt)
         {
+            Mogre.Vector4 drect = new Mogre.Vector4();
+            ActiveViewport.GetRect(drect);
+            Mogre.Vector2 dropPos = new Mogre.Vector2((float)(pt.X - drect.x) / drect.z, (float)(pt.Y - drect.y) / drect.w);
+
+            DragData dragData = data.GetData(typeof(DragData)) as DragData;
+            foreach (KeyValuePair<object, IDragDropHandler> handler in this.dragDropHandlers)
+            {
+                if (handler.Key == dragData.Source)
+                {
+                    handler.Value.OnDragDrop(dragData, ActiveViewport.Handle as Mogre.Viewport, dropPos);
+                    break;
+                }
+            }
         }
 
         public interface IDragDropHandler

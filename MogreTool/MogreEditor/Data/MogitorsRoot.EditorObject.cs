@@ -167,6 +167,24 @@ namespace Mogitor.Data
             else
                 return this.namesByType[0];
         }
+
+        public void GetObjectList(EditorType type, ObjectVector list)
+        {
+            list.Clear();
+            if (type == EditorType.Multisel)
+                return;
+            if (type != EditorType.Node)
+            {
+                foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)type])
+                {
+                    list.Add(it.Value);
+                }
+            }
+            else
+            {
+                this.rootEditor.GetNodeList(list);
+            }
+        }
         #endregion
 
         #region Private Methods
