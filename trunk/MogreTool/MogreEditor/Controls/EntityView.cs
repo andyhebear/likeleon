@@ -220,8 +220,8 @@ namespace Mogitor.Controls
             {
                 if (entity.Position.x == 999999 && entity.Position.y == 999999 && entity.Position.z == 999999)
                     entity.Position = mouseRay.Origin + mouseRay.Direction * 40.0f;
-                //else
-                //    entity.Position = MogitorsRoot.Instance.GetGizmoIntersectCameraPlane(entity, mouseRay);
+                else
+                    entity.Position = MogitorsRoot.Instance.GetGizmoIntersectCameraPlane(entity, mouseRay);
             }
 
             return true;
