@@ -60,24 +60,11 @@ namespace Mogitor.Controls
         {
             get { return this.root; }
         }
-
-        public SceneManager SceneManager
-        {
-            get { return this.sceneMgr; }
-        }
-
-        public Camera Camera
-        {
-            get { return this.camera; }
-        }
         #endregion
 
         #region Private Fields
         private Root root;
         private RenderWindow renderWindow;
-        private SceneManager sceneMgr;
-        private Camera camera;
-        private Viewport viewPort;
         private RenderTarget renTarget;
         private TexturePtr texture;
         private bool imageSourceValid;
@@ -166,6 +153,7 @@ namespace Mogitor.Controls
                             RestoreLostDevice();
                     };
                 MogitorsRoot.Instance.RenderWindow = this.renderWindow;
+                MogitorsRoot.Instance.RenderTarget = this.renTarget;
                 Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
                     {
                         return true;
@@ -328,12 +316,10 @@ namespace Mogitor.Controls
         {
             if (this.renTarget != null)
             {
-                CompositorManager.Singleton.RemoveCompositorChain(this.viewPort);
                 this.renTarget.RemoveAllListeners();
                 this.renTarget.RemoveAllViewports();
                 this.root.RenderSystem.DestroyRenderTarget(renTarget.Name);
                 this.renTarget = null;
-                this.viewPort = null;
             }
 
             if (this.texture != null)
@@ -346,10 +332,19 @@ namespace Mogitor.Controls
 
         private void RenderFrame()
         {
-            if ((this.camera != null) && (this.viewPort == null))
+            if (!MogitorsRoot.Instance.IsSceneLoaded ||
+                (Width <= 0 && Height <= 0))
             {
-                this.viewPort = renTarget.AddViewport(this.camera);
-                this.viewPort.BackgroundColour = new ColourValue(0.0f, 0.0f, 0.0f, 0.0f);
+                return;
+            }
+
+            if (MogitorsRoot.Instance.IsClearScreenNeeded)
+            {
+                Mogre.Camera clearCam = MogitorsRoot.Instance.SceneManager.CreateCamera("sbtClearCam");
+                clearCam.NearClipDistance = 0.0001f;
+                clearCam.FarClipDistance = 0.0002f;
+                clearCam.LookAt(0, -1, 0);
+                MogitorsRoot.Instance.RenderTarget.AddViewport(clearCam, 0);
             }
 
             if (PreRender != null)
@@ -359,6 +354,13 @@ namespace Mogitor.Controls
 
             if (PostRender != null)
                 PostRender(this, EventArgs.Empty);
+
+            if (MogitorsRoot.Instance.IsClearScreenNeeded)
+            {
+                MogitorsRoot.Instance.RenderTarget.RemoveViewport(0);
+                MogitorsRoot.Instance.SceneManager.DestroyCamera("sbtClearCam");
+                MogitorsRoot.Instance.IsClearScreenNeeded = false;
+            }
         }
 
         private void OnFrameRateChanged(int? newFrameRate)

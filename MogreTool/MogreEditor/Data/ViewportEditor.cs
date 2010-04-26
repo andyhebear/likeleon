@@ -253,7 +253,7 @@ namespace Mogitor.Data
                 ViewCamera.Destroy(false);
                 ViewCamera = null;
 
-                MogitorsRoot.Instance.RenderWindow.RemoveViewport(this.handle.ZOrder);
+                MogitorsRoot.Instance.RenderTarget.RemoveViewport(this.handle.ZOrder);
                 this.handle = null;
             }
 
@@ -385,7 +385,7 @@ namespace Mogitor.Data
             ViewCamera = CameraEditor.Factory.CreateObject(ref scnMgr, parameters) as CameraEditor;
             ViewCamera.Load();
 
-            this.handle = MogitorsRoot.Instance.RenderWindow.AddViewport(ViewCamera.Camera, (int)ViewportIndex,
+            this.handle = MogitorsRoot.Instance.RenderTarget.AddViewport(ViewCamera.Camera, (int)ViewportIndex,
                 dimensions.x, dimensions.y, dimensions.z, dimensions.w);
 
             if (Name == "")
@@ -471,8 +471,8 @@ namespace Mogitor.Data
             }
             else
             {
-                float width = MogitorsRoot.Instance.RenderWindow.Width;
-                float height = MogitorsRoot.Instance.RenderWindow.Height;
+                float width = MogitorsRoot.Instance.RenderTarget.Width;
+                float height = MogitorsRoot.Instance.RenderTarget.Height;
                 rect.x = width * this.dimensions.x;
                 rect.y = height * this.dimensions.y;
                 rect.z = width * this.dimensions.z;
