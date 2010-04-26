@@ -9,13 +9,13 @@ namespace Mogitor.Data
     {
         private Mogre.SceneManager sceneMngr;
         private Mogre.Camera camera;
-        private Mogre.RenderWindow renderWindow;
+        private Mogre.RenderTarget renderTarget;
 
-        public SceneUpdatedEventArgs(Mogre.SceneManager sceneMngr, Mogre.Camera camera, Mogre.RenderWindow renderWindow)
+        public SceneUpdatedEventArgs(Mogre.SceneManager sceneMngr, Mogre.Camera camera, Mogre.RenderTarget renderTarget)
         {
             this.sceneMngr = sceneMngr;
             this.camera = camera;
-            this.renderWindow = renderWindow;
+            this.renderTarget = renderTarget;
         }
     }
 }

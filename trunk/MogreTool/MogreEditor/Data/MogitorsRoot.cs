@@ -41,6 +41,12 @@ namespace Mogitor.Data
             set;
         }
 
+        public Mogre.RenderTarget RenderTarget
+        {
+            get;
+            set;
+        }
+
         public bool IsSceneLoaded
         {
             get;
@@ -81,7 +87,6 @@ namespace Mogitor.Data
                 this.namesByTypeID[i] = new NameObjectPairList();
             }
 
-            RenderWindow = null;
             IsSceneLoaded = false;
             IsSceneModified = false;
 
@@ -121,7 +126,7 @@ namespace Mogitor.Data
 
             ClearEditors();
 
-            RenderWindow.RemoveAllViewports();
+            RenderTarget.RemoveAllViewports();
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
             mngr.DestroyResourceGroup("ProjectResources");
@@ -212,7 +217,7 @@ namespace Mogitor.Data
             system.UpdateLoadProgress(60, "Loading scene objects");
 
             if (SceneUpdated != null)
-                SceneUpdated(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderWindow));
+                SceneUpdated(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderTarget));
             SceneUpdated = null;
 
             system.UpdateLoadProgress(100, "Rendering...");
@@ -245,7 +250,7 @@ namespace Mogitor.Data
         public void RegisterForPostSceneUpdates(BaseEditor obj)
         {
             if (IsSceneLoaded)
-                obj.PostSceneUpdate(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderWindow));
+                obj.PostSceneUpdate(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderTarget));
             else
                 SceneUpdated += obj.PostSceneUpdate;
         }
