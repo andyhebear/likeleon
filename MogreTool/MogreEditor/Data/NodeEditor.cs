@@ -159,6 +159,39 @@ namespace Mogitor.Data
             retList["Scale"] = Mogre.StringConverter.ToString(this.scale);
             retList["AutoTrackTarget"] = this.autoTrackTarget;
         }
+
+        public override Mogre.Vector3 DerivedPosition
+        {
+            get
+            {
+                if (this.handle != null)
+                    return this.handle._getDerivedPosition();
+                else
+                    return Parent.DerivedPosition + (Parent.DerivedOrientation * (Parent.DerivedScale * this.position));
+            }
+        }
+
+        public override Mogre.Quaternion DerivedOrientation
+        {
+            get
+            {
+                if (this.handle != null)
+                    return this.handle._getDerivedOrientation();
+                else
+                    return (Parent.DerivedOrientation * this.orientation);
+            }
+        }
+
+        public override Mogre.Vector3 DerivedScale
+        {
+            get
+            {
+                if (this.handle != null)
+                    return this.handle._getDerivedScale();
+                else
+                    return (Parent.DerivedScale * this.scale);
+            }
+        }
         #endregion
     }
 

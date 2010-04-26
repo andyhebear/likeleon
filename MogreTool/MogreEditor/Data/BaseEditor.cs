@@ -111,6 +111,21 @@ namespace Mogitor.Data
             retList.Clear();
             retList["Name"] = Name;
         }
+
+        public virtual Mogre.Vector3 DerivedPosition
+        {
+            get { return new Mogre.Vector3(0, 0, 0); }
+        }
+
+        public virtual Mogre.Quaternion DerivedOrientation
+        {
+            get { return Mogre.Quaternion.IDENTITY; }
+        }
+
+        public virtual Mogre.Vector3 DerivedScale
+        {
+            get { return new Mogre.Vector3(1, 1, 1); }
+        }
         #endregion
 
         #region Public Methods

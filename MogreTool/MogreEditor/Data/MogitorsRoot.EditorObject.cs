@@ -185,6 +185,27 @@ namespace Mogitor.Data
                 this.rootEditor.GetNodeList(list);
             }
         }
+
+        public Mogre.Vector3 GetGizmoIntersectCameraPlane(BaseEditor obj, Mogre.Ray pickRay)
+        {
+            Mogre.Vector3 vPos = obj.DerivedPosition;
+            Mogre.Pair<bool, float> result = pickRay.Intersects(new Mogre.Plane(-ActiveViewport.CameraEditor.Camera.DerivedDirection, vPos));
+
+            if (result.first)
+            {
+                Mogre.Vector3 AxisX = obj.DerivedOrientation.XAxis;
+                Mogre.Vector3 AxisY = obj.DerivedOrientation.YAxis;
+                Mogre.Vector3 AxisZ = obj.DerivedOrientation.ZAxis;
+
+                Mogre.Vector3 Proj = pickRay.GetPoint(result.second) - vPos;
+                Mogre.Vector3 vPos1 = (AxisX.DotProduct(Proj) * AxisX);
+                Mogre.Vector3 vPos2 = (AxisY.DotProduct(Proj) * AxisY);
+                Mogre.Vector3 vPos3 = (AxisZ.DotProduct(Proj) * AxisZ);
+                vPos += vPos1 + vPos2 + vPos3;
+            }
+
+            return vPos;
+        }
         #endregion
 
         #region Private Methods

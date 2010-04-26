@@ -233,6 +233,28 @@ namespace Mogitor.Data
             retList["ClipDistance"] = Mogre.StringConverter.ToString(this.clipDistance);
             retList["FOV"] = Mogre.StringConverter.ToString(this.fov);
         }
+
+        public override Mogre.Vector3 DerivedPosition
+        {
+            get
+            {
+                if (this.handle != null)
+                    return this.handle.DerivedPosition;
+                else
+                    return Parent.DerivedPosition + (Parent.DerivedOrientation * this.position);
+            }
+        }
+
+        public override Mogre.Quaternion DerivedOrientation
+        {
+            get
+            {
+                if (this.handle != null)
+                    return this.handle.DerivedOrientation;
+                else
+                    return (Parent.DerivedOrientation * this.orientation);
+            }
+        }
         #endregion
     }
 
