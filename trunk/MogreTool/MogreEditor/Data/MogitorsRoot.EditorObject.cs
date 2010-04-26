@@ -125,8 +125,8 @@ namespace Mogitor.Data
 
             parent.AddChild(obj);
 
-            if (addToTreeList)
-                throw new NotImplementedException("addToTreeList");
+            //if (addToTreeList)
+            //    throw new NotImplementedException("addToTreeList");
 
             if (display)
             {

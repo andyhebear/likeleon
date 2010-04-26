@@ -229,6 +229,21 @@ namespace Mogitor.Controls
 
         void MogitorsRoot.IDragDropHandler.OnDragDrop(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position)
         {
+            if (dragData.Object != null)
+            {
+                Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
+                dragData.Object.GetObjectProperties(parameters);
+                dragData.Object.Destroy(false);
+                dragData.Object = null;
+
+                dragData.Parameters["Position"] = parameters["Position"];
+
+                MogitorsRoot.Instance.CreateEditorObject(null, dragData.ObjectType, dragData.Parameters, true, true);
+            }
+
+            dragData.Parameters.Clear();
+            dragData.ObjectType = "";
+            dragData.Object = null;
         }
         #endregion
 
