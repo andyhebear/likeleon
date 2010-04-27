@@ -183,15 +183,13 @@ namespace Mogitor.Data
                 it.Value.GetNodeList(list);
             }
         }
-        #endregion
 
-        #region Private Methods
-        private void LoadAllChildren()
+        public void LoadAllChildren()
         {
-            foreach (KeyValuePair<string, BaseEditor> child in this.children)
+            foreach (KeyValuePair<string, BaseEditor> it in this.children)
             {
-                if (child.Value.Load())
-                    child.Value.LoadAllChildren();
+                if (it.Value.Load())
+                    it.Value.LoadAllChildren();
             }
         }
         #endregion
