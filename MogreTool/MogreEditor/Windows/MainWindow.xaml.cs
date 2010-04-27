@@ -15,7 +15,8 @@ namespace Mogitor.Windows
         {
             InitializeComponent();
 
-            MogitorsSystem.Instance.SetWindows(this.ogreControl);
+            MogitorsSystem.Instance.SetWindows(this.ogreControl, this.treeControl);
+            MogitorsSystem.Instance.InitTreeIcons();
         }
 
         #region Private Fields

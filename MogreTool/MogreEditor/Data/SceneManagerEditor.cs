@@ -354,5 +354,13 @@ namespace Mogitor.Data
             InstanceCount++;
             return editor;
         }
+
+        public override string Icon
+        {
+            get
+            {
+                return "Icons/tsm.png";
+            }
+        }
     }
 }

@@ -49,6 +49,11 @@ namespace Mogitor.Data
             get;
             set;
         }
+
+        public EditorObjectFactoryMap EditorObjectFactories
+        {
+            get { return this.editorObjectFactories; }
+        }
         #endregion
 
         #region Public Methods

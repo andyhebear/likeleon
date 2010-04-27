@@ -289,5 +289,13 @@ namespace Mogitor.Data
             InstanceCount++;
             return obj;
         }
+
+        public override string Icon
+        {
+            get
+            {
+                return "Icons/camera.png";
+            }
+        }
     }
 }

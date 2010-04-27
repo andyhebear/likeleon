@@ -551,5 +551,13 @@ namespace Mogitor.Data
                     lastZOrder = viewport.ViewportIndex;
             }
         }
+
+        public override string Icon
+        {
+            get
+            {
+                return "Icons/viewport.png";
+            }
+        }
     }
 }
