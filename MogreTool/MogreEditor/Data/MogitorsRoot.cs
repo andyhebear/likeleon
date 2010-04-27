@@ -216,6 +216,9 @@ namespace Mogitor.Data
 
             system.UpdateLoadProgress(60, "Loading scene objects");
 
+            this.rootEditor.Load();
+            this.rootEditor.LoadAllChildren();
+
             if (SceneUpdated != null)
                 SceneUpdated(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderTarget));
             SceneUpdated = null;

@@ -92,9 +92,15 @@
                                 <DataTemplate>
                                     <StackPanel Margin="3,8">
                                         <Image Source="{Binding Path=ImgFile}" 
-                                               ToolTip="{Binding Path=ImgFile}"
                                                Width="55" 
-                                               LayoutTransform="{StaticResource transform}" />
+                                               LayoutTransform="{StaticResource transform}">
+                                            <Image.ToolTip>
+                                                <StackPanel>
+                                                    <Image Source="{Binding Path=ImgFile}" />
+                                                    <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Center" FontWeight="Bold" />
+                                                </StackPanel>
+                                            </Image.ToolTip>
+                                        </Image>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Name}" />
                                     </StackPanel>
                                 </DataTemplate>
