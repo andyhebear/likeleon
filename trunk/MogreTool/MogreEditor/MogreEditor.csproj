@@ -109,6 +109,7 @@
     <Compile Include="Controls\OgreImage.Resources.cs" />
     <Compile Include="Controls\PropertiesView.cs">
     </Compile>
+    <Compile Include="Controls\TreeControl.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
@@ -192,6 +193,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\preferences.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\camera.png" />
+    <Resource Include="Resources\Icons\entity.png" />
+    <Resource Include="Resources\Icons\node.png" />
+    <Resource Include="Resources\Icons\scene.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\project.png" />
+    <Resource Include="Resources\Icons\tsm.png" />
+    <Resource Include="Resources\Icons\viewport.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

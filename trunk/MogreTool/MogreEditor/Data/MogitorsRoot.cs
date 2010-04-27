@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Collections;
+using System.Windows.Media;
 
 namespace Mogitor.Data
 {
@@ -18,7 +19,8 @@ namespace Mogitor.Data
         /// </summary>
         private static MogitorsRoot instance;
         private readonly MogitorsSystem system;
-        private Mogre.SceneManager sceneManager = null;
+        private Mogre.SceneManager sceneManager;
+        private readonly IList<EditorType> objectDisplayOrder = new List<EditorType>();
         #endregion
 
         #region Public Properties
@@ -94,6 +96,18 @@ namespace Mogitor.Data
             BaseEditor nullParent = null;
             this.rootEditor = BaseEditor.Factory.CreateObject(ref nullParent, null);
 
+            this.objectDisplayOrder.Clear();
+            this.objectDisplayOrder.Add(EditorType.Viewport);
+            this.objectDisplayOrder.Add(EditorType.SceneManager);
+            this.objectDisplayOrder.Add(EditorType.CustomNamanger);
+            this.objectDisplayOrder.Add(EditorType.Light);
+            this.objectDisplayOrder.Add(EditorType.Camera);
+            for (EditorType type = EditorType.Camera + 1; type < EditorType.LastEditor; ++type)
+                this.objectDisplayOrder.Add(type);
+            this.objectDisplayOrder.Add(EditorType.Node);
+
+            IsClearScreenNeeded = false;
+
             ProjectOptions = new ProjectOptions();
         }
         #endregion
@@ -119,10 +133,13 @@ namespace Mogitor.Data
                 }
             }
 
+            ActiveViewport = null;
             IsSceneLoaded = false;
 
             if (SceneTerminated != null)
                 SceneTerminated(this, EventArgs.Empty);
+
+            this.system.ClearTreeItems();
 
             ClearEditors();
 
@@ -223,6 +240,8 @@ namespace Mogitor.Data
                 SceneUpdated(this, new SceneUpdatedEventArgs(SceneManager, ActiveViewport.CameraEditor.Camera, RenderTarget));
             SceneUpdated = null;
 
+            FillTreeView();
+
             system.UpdateLoadProgress(100, "Rendering...");
 
             IsSceneLoaded = true;
@@ -269,6 +288,30 @@ namespace Mogitor.Data
             ProjectOptions.TerrainDirectory = "";
             ProjectOptions.ResourceDirectories.Clear();
             ProjectOptions.Cameras.Clear();
+        }
+
+        private void FillTreeView()
+        {
+            this.system.ClearTreeItems();
+            object rootItem = this.system.CreateTreeRoot(ProjectOptions.ProjectName + ".mogscene");
+            this.rootEditor.TreeItemHandle = rootItem;
+            RecurseFillTreeView(this.rootEditor, rootItem);
+        }
+
+        private void RecurseFillTreeView(BaseEditor editor, object parent)
+        {
+            foreach (EditorType editorType in this.objectDisplayOrder)
+            {
+                foreach (KeyValuePair<string, BaseEditor> child in editor.Children)
+                {
+                    if (child.Value.EditorType != editorType)
+                        continue;
+
+                    object item = this.system.InsertTreeItem(parent, child.Value.Name, child.Value.ObjectTypeID, Colors.Black);
+                    child.Value.TreeItemHandle = item;
+                    RecurseFillTreeView(child.Value, item);
+                }
+            }
         }
         #endregion
 

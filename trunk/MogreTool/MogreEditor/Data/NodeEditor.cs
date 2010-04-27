@@ -209,5 +209,13 @@ namespace Mogitor.Data
                 return EditorType.Node;
             }
         }
+
+        public override string Icon
+        {
+            get
+            {
+                return "Icons/node.png";
+            }
+        }
     }
 }

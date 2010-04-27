@@ -295,6 +295,17 @@ namespace Mogitor.Data
         {
             get { return this.FactoryDynamic.TypeName; }
         }
+
+        public object TreeItemHandle
+        {
+            get;
+            set;
+        }
+
+        public NameObjectPairList Children
+        {
+            get { return this.children; }
+        }
         #endregion
     }
 
@@ -327,6 +338,11 @@ namespace Mogitor.Data
                 MogitorsRoot.Instance.UnRegisterObjectName(_object.Name, _object);
 
             InstanceCount--;
+        }
+
+        public virtual string Icon
+        {
+            get { return ""; }
         }
         #endregion
 

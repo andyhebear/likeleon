@@ -214,5 +214,13 @@ namespace Mogitor.Data
                 return EditorType.Entity;
             }
         }
+
+        public override string Icon
+        {
+            get
+            {
+                return "Icons/entity.png";
+            }
+        }
     }
 }
