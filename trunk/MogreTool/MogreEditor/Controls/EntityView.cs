@@ -35,7 +35,7 @@ namespace Mogitor.Controls
         #region Public Methods
         public void PrepareView()
         {
-            CreateImages(Icons);
+            CreateImages(Icons, true);
         }
 
         public override void OnApplyTemplate()
@@ -79,7 +79,7 @@ namespace Mogitor.Controls
         #endregion
 
         #region Private Methods
-        private void CreateImages(ObservableCollection<ImageEntry> retlist)
+        private void CreateImages(ObservableCollection<ImageEntry> retlist, bool skipCached)
         {
             retlist.Clear();
 
@@ -121,30 +121,33 @@ namespace Mogitor.Controls
             foreach (KeyValuePair<string, string> ite in entities)
             {
                 string addstr = ite.Key;
-
-                Mogre.Entity entity = sceneMgr.CreateEntity("scbDisplay", addstr);
-                sceneMgr.RootSceneNode.AttachObject(entity);
-
-                Mogre.Vector3 vSize = entity.BoundingBox.HalfSize;
-                Mogre.Vector3 vCenter = entity.BoundingBox.Center;
-
-                vSize += new Mogre.Vector3(vSize.z, vSize.z, vSize.z);
-
-                float maxsize = Math.Max(Math.Max(vSize.x, vSize.y), vSize.z);
-
-                vSize = new Mogre.Vector3(0, 0, maxsize * 1.1f) + vCenter;
-
-                RTTCam.SetPosition(vSize.x, vSize.y, vSize.z);
-                RTTCam.LookAt(vCenter.x, vCenter.y, vCenter.z);
-
-                rttTex.Update();
                 string addstrFile = MogitorsSystem.Instance.CombinePath(MogitorsRoot.Instance.ProjectOptions.ProjectDir, addstr + ".png");
-                rttTex.WriteContentsToFile(addstrFile);
+                
+                if (!skipCached || !System.IO.File.Exists(addstrFile))
+                {
+                    Mogre.Entity entity = sceneMgr.CreateEntity("scbDisplay", addstr);
+                    sceneMgr.RootSceneNode.AttachObject(entity);
+
+                    Mogre.Vector3 vSize = entity.BoundingBox.HalfSize;
+                    Mogre.Vector3 vCenter = entity.BoundingBox.Center;
+
+                    vSize += new Mogre.Vector3(vSize.z, vSize.z, vSize.z);
+
+                    float maxsize = Math.Max(Math.Max(vSize.x, vSize.y), vSize.z);
+
+                    vSize = new Mogre.Vector3(0, 0, maxsize * 1.1f) + vCenter;
+
+                    RTTCam.SetPosition(vSize.x, vSize.y, vSize.z);
+                    RTTCam.LookAt(vCenter.x, vCenter.y, vCenter.z);
+
+                    rttTex.Update();
+                    rttTex.WriteContentsToFile(addstrFile);
+
+                    entity.ParentSceneNode.DetachObject(entity);
+                    sceneMgr.DestroyEntity(entity);
+                }
 
                 retlist.Add(new ImageEntry(addstr.Remove(addstr.Length - 5, 5), addstrFile));
-
-                entity.ParentSceneNode.DetachObject(entity);
-                sceneMgr.DestroyEntity(entity);
             }
 
             rttTex.RemoveAllViewports();

@@ -29,13 +29,18 @@ namespace Mogitor.Controls
             get { return (LogBuffer)GetValue(LogBufferProperty); }
             set 
             {
+                if (LogBuffer != null)
+                {
+                    LogBuffer.CollectionChanged -= new System.Collections.Specialized.NotifyCollectionChangedEventHandler(LogBuffer_CollectionChanged);
+                }
                 SetValue(LogBufferProperty, value);
-                LogBuffer.CollectionChanged +=
-                    (s, e) =>
-                    {
-                        this.logStringsDisplay.ScrollIntoView(this.logStringsDisplay.Items.GetItemAt(this.logStringsDisplay.Items.Count - 1));
-                    };
+                LogBuffer.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(LogBuffer_CollectionChanged);
             }
+        }
+
+        void LogBuffer_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.logStringsDisplay.ScrollIntoView(this.logStringsDisplay.Items.GetItemAt(this.logStringsDisplay.Items.Count - 1));
         }
 
         public override void OnApplyTemplate()
