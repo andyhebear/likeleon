@@ -54,7 +54,7 @@
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
                             <ad:DockableContent Title="Templates"></ad:DockableContent>
                             <ad:DockableContent Title="Scene">
-                                <MogitorControls:TreeControl x:Name="treeControl" />
+                                <MogitorControls:SceneView x:Name="sceneView" />
                             </ad:DockableContent>
                             <ad:DockableContent Title="Materials"></ad:DockableContent>
                         </ad:DockablePane>

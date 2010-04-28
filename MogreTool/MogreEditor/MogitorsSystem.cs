@@ -17,7 +17,7 @@ namespace Mogitor
         /// </summary>
         private static MogitorsSystem instance;
         private OgreControl renderViewControl;
-        private TreeControl treeControl;
+        private TreeView treeControl;
         private readonly IDictionary<uint, string> iconList = new Dictionary<uint, string>();
         #endregion
 
@@ -135,7 +135,7 @@ namespace Mogitor
             return;
         }
 
-        public void SetWindows(OgreControl renderViewControl, TreeControl treeControl)
+        public void SetWindows(OgreControl renderViewControl, TreeView treeControl)
         {
             this.renderViewControl = renderViewControl;
             this.treeControl = treeControl;
@@ -159,7 +159,7 @@ namespace Mogitor
         public object CreateTreeRoot(string name)
         {
             TreeViewItem item = new TreeViewItem();
-            item.Header = new TreeControl.Item(name, this.iconList[0]);
+            item.Header = new SceneView.Item(name, this.iconList[0]);
             item.FontWeight = FontWeights.Bold;
             this.treeControl.Items.Add(item);
             return item;
@@ -171,7 +171,7 @@ namespace Mogitor
                 return null;
 
             TreeViewItem item = new TreeViewItem();
-            item.Header = new TreeControl.Item(name, this.iconList[iconId]);
+            item.Header = new SceneView.Item(name, this.iconList[iconId]);
             item.FontWeight = FontWeights.Normal;
             item.Foreground = new SolidColorBrush(color);
             

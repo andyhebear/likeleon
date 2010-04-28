@@ -109,7 +109,7 @@
     <Compile Include="Controls\OgreImage.Resources.cs" />
     <Compile Include="Controls\PropertiesView.cs">
     </Compile>
-    <Compile Include="Controls\TreeControl.cs" />
+    <Compile Include="Controls\SceneView.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
