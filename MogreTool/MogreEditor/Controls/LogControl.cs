@@ -40,7 +40,10 @@ namespace Mogitor.Controls
 
         void LogBuffer_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.logStringsDisplay.ScrollIntoView(this.logStringsDisplay.Items.GetItemAt(this.logStringsDisplay.Items.Count - 1));
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                this.logStringsDisplay.ScrollIntoView(e.NewItems[0]);
+            }
         }
 
         public override void OnApplyTemplate()
