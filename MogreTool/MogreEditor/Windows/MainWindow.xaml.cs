@@ -25,6 +25,10 @@ namespace Mogitor.Windows
 
         #region Private Fields
         private LogBuffer logBuffer = new LogBuffer();
+        private Mogre.Vector3 oldCamPos = new Vector3(-9999.0f, -9999.0f, -9999.0f);
+        private int frameCounter;
+        double totalFrameTime;
+        float frameRate;
         #endregion
 
         #region Private Methods
@@ -54,6 +58,27 @@ namespace Mogitor.Windows
 
                     this.ogreControl.OverlayText = "Please load a Scene File...";
                 };
+
+
+            Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
+            {
+                DisplayFPS(evt.timeSinceLastFrame);
+                MogitorsRoot.Instance.ActiveViewport.UpdateAutoCameraPosition(evt.timeSinceLastFrame);
+
+                MogitorsRoot.Instance.Update(evt.timeSinceLastFrame);
+
+                Mogre.Vector3 camPos = MogitorsRoot.Instance.ActiveViewport.CameraEditor.Camera.DerivedPosition;
+                if (this.oldCamPos != camPos)
+                {
+                    this.camPosLabel.Text = string.Format("X:{0:0.00}, Y:{1:0.00}, Z:{2:0.00}", camPos.x, camPos.y, camPos.z);
+                    oldCamPos = camPos;
+                }
+                return true;
+            };
+            Mogre.Root.Singleton.FrameEnded += (FrameEvent evt) =>
+            {
+                return true;
+            };
         }
 
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
@@ -75,13 +100,26 @@ namespace Mogitor.Windows
             else
             {
                 this.statusString.Text = "Resource Loaded";
-                this.statusProgress.Visibility = Visibility.Collapsed;
+                this.statusProgress.Visibility = Visibility.Hidden;
             }
         }
 
         private void ogreControl_ResourceReloaded(object sender, EventArgs e)
         {
             entityView.PrepareView();
+        }
+
+        private void DisplayFPS(float time)
+        {
+            this.frameCounter++;
+            this.totalFrameTime += time;
+            this.frameRate = (float)this.frameCounter / (float)this.totalFrameTime;
+            if (this.totalFrameTime > 2.0f)
+            {
+                this.totalFrameTime = 0;
+                frameCounter = 0;
+                this.fpsLabel.Text = string.Format("{0:0.00}", this.frameRate);
+            }
         }
         #endregion
     }

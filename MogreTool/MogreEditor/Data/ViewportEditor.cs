@@ -485,10 +485,13 @@ namespace Mogitor.Data
         {
             if (this.handle != null && ActiveCamera != null)
             {
-                //ActiveCamera.Camera.AspectRatio = (float)this.handle.ActualWidth / (float)this.handle.ActualHeight;
                 ActiveCamera.Camera.AspectRatio = (float)(viewportWidth / viewportHeight);
                 ActiveCamera.Camera.Yaw(new Mogre.Radian(0));
             }
+        }
+
+        public void UpdateAutoCameraPosition(float time)
+        {
         }
         #endregion
     }

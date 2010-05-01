@@ -287,6 +287,10 @@ namespace Mogitor.Data
             }
             ClearScreenBackground(true);
         }
+
+        public void Update(float timePassed)
+        {
+        }
         #endregion
 
         #region Private Methods

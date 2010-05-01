@@ -154,14 +154,6 @@ namespace Mogitor.Controls
                     };
                 MogitorsRoot.Instance.RenderWindow = this.renderWindow;
                 MogitorsRoot.Instance.RenderTarget = this.renTarget;
-                Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
-                    {
-                        return true;
-                    };
-                Mogre.Root.Singleton.FrameEnded += (FrameEvent evt) =>
-                    {
-                        return true;
-                    };
             }
 
             return true;
