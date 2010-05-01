@@ -43,6 +43,20 @@
             <StatusBarItem DockPanel.Dock="Right">
                 <ProgressBar x:Name="statusProgress" Height="15" Width="100" />
             </StatusBarItem>
+            <StatusBarItem DockPanel.Dock="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="15" Text="FPS: " />
+                    <TextBlock x:Name="fpsLabel" Height="15" Width="50" />
+                </StackPanel>
+            </StatusBarItem>
+            <!--<Separator DockPanel.Dock="Right" />-->
+            <StatusBarItem DockPanel.Dock="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="15" Text="Camera Position: " />
+                    <TextBlock x:Name="camPosLabel" Height="15" Width="150" />
+                </StackPanel>
+            </StatusBarItem>
+            <!--<Separator DockPanel.Dock="Right" />-->
             <StatusBarItem>
                 <TextBlock x:Name="statusString" Text="Ready"/>
             </StatusBarItem>
