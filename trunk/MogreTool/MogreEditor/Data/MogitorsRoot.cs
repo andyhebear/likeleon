@@ -276,6 +276,17 @@ namespace Mogitor.Data
             else
                 SceneUpdated += obj.PostSceneUpdate;
         }
+
+        public void RenderTargetResized(double viewportWidth, double viewportHeight)
+        {
+            NameObjectPairList viewports = GetObjectsByType(EditorType.Viewport);
+
+            foreach (KeyValuePair<string, BaseEditor> iter in viewports)
+            {
+                (iter.Value as ViewportEditor).RenderTargetResized(viewportWidth, viewportHeight);
+            }
+            ClearScreenBackground(true);
+        }
         #endregion
 
         #region Private Methods
@@ -312,6 +323,11 @@ namespace Mogitor.Data
                     RecurseFillTreeView(child.Value, item);
                 }
             }
+        }
+
+        private void ClearScreenBackground(bool clear)
+        {
+            IsClearScreenNeeded = clear;
         }
         #endregion
 
