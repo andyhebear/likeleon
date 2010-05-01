@@ -480,6 +480,16 @@ namespace Mogitor.Data
             }
             return (int)ViewportIndex;
         }
+
+        public void RenderTargetResized(double viewportWidth, double viewportHeight)
+        {
+            if (this.handle != null && ActiveCamera != null)
+            {
+                //ActiveCamera.Camera.AspectRatio = (float)this.handle.ActualWidth / (float)this.handle.ActualHeight;
+                ActiveCamera.Camera.AspectRatio = (float)(viewportWidth / viewportHeight);
+                ActiveCamera.Camera.Yaw(new Mogre.Radian(0));
+            }
+        }
         #endregion
     }
 

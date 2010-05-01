@@ -269,7 +269,9 @@ namespace Mogitor.Controls
                 if (((this.reloadRenderTargetTime < 0) || (durationTicks <= 0)) ||  // negative time will be reloaded immediatly
                     ((this.reloadRenderTargetTime > 0) && (Environment.TickCount >= (this.reloadRenderTargetTime + durationTicks))))
                 {
-                    //ReInitRenderTarget();
+                    if (MogitorsRoot.Instance.IsSceneLoaded)
+                        MogitorsRoot.Instance.RenderTargetResized(ViewportSize.Width, ViewportSize.Height);
+                    this.reloadRenderTargetTime = 0;
                 }
 
                 if (!this.imageSourceValid)
