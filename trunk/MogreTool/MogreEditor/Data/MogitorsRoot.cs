@@ -291,6 +291,29 @@ namespace Mogitor.Data
         public void Update(float timePassed)
         {
         }
+
+        public void OnMouseWheel(Mogre.Vector2 point, float delta, System.Windows.Input.MouseDevice mouseDevice)
+        {
+            if (ActiveViewport == null)
+                return;
+
+            Mogre.Vector4 rect = new Mogre.Vector4();
+            ActiveViewport.GetRect(ref rect);
+
+            if (this.activeDragData != null)
+            {
+                foreach (KeyValuePair<object, IDragDropHandler> handler in this.dragDropHandlers)
+                {
+                    if (handler.Key == this.activeDragData.Source)
+                    {
+                        handler.Value.OnDragWheel(this.activeDragData, ActiveViewport.Handle as Mogre.Viewport, delta);
+                        return;
+                    }
+                }
+            }
+
+            ActiveViewport.OnMouseWheel(point - new Mogre.Vector2(rect.x, rect.y), delta, mouseDevice);
+        }
         #endregion
 
         #region Private Methods

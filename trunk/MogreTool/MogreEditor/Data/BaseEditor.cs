@@ -115,6 +115,17 @@ namespace Mogitor.Data
         public virtual Mogre.Vector3 DerivedPosition
         {
             get { return new Mogre.Vector3(0, 0, 0); }
+            set
+            {
+                if (Parent != null)
+                {
+                    Mogre.Quaternion qParent = Parent.DerivedOrientation.Inverse();
+                    Mogre.Vector3 vParent = Parent.DerivedPosition;
+                    Mogre.Vector3 newPos = (value - vParent);
+                    newPos /= Parent.DerivedScale;
+                    value = qParent * newPos;
+                }
+            }
         }
 
         public virtual Mogre.Quaternion DerivedOrientation

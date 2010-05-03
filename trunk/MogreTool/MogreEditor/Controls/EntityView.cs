@@ -248,6 +248,23 @@ namespace Mogitor.Controls
             dragData.ObjectType = "";
             dragData.Object = null;
         }
+
+        void MogitorsRoot.IDragDropHandler.OnDragWheel(DragData dragData, Mogre.Viewport vp, float delta)
+        {
+            if (dragData.Object == null)
+                return;
+
+            EntityEditor entity = dragData.Object as EntityEditor;
+            Mogre.Vector3 vPos = entity.Position;
+            float distance = (vPos - vp.Camera.DerivedPosition).Length + (delta / 120.0f);
+
+            if (vPos.x == 999999 && vPos.y == 999999 && vPos.z == 999999)
+                return;
+            else
+                vPos = vp.Camera.DerivedPosition + ((vPos - vp.Camera.DerivedPosition).NormalisedCopy * distance);
+
+            entity.Position = vPos;
+        }
         #endregion
 
         #region Helpers
