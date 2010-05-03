@@ -178,6 +178,12 @@ namespace Mogitor.Data
                 PopCompositors();
             }
         }
+
+        public static float CameraSpeed
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Inner Classes
@@ -202,6 +208,9 @@ namespace Mogitor.Data
         private Mogre.Vector2 camClipDistance = new Mogre.Vector2(1, 1000);
         private static readonly ViewportEditorFactory viewportEditorFactory = new ViewportEditorFactory();
         private readonly IList<CompositorPush> compositorStorage = new List<CompositorPush>();
+        private Mogre.Vector3 newCamPosition = Mogre.Vector3.ZERO;
+        private Mogre.Vector2 lastMouse = Mogre.Vector2.ZERO;
+        private System.Windows.Input.MouseDevice lastMouseDevice;
         #endregion
 
         #region Overrides BaseEditor
@@ -492,6 +501,45 @@ namespace Mogitor.Data
 
         public void UpdateAutoCameraPosition(float time)
         {
+            if (ActiveCamera == null)
+                return;
+
+            if (this.newCamPosition != Mogre.Vector3.ZERO)
+            {
+                Mogre.Vector3 curPos = ActiveCamera.DerivedPosition;
+                Mogre.Vector3 diff = this.newCamPosition - curPos;
+
+                if (diff.Length > 0.03f)
+                {
+                    curPos += diff * System.Math.Min(time * 3.0f, 1.0f);
+                }
+                else
+                {
+                    this.newCamPosition = Mogre.Vector3.ZERO;
+                }
+                ActiveCamera.DerivedPosition = curPos;
+            }
+        }
+
+        public virtual void OnMouseWheel(Mogre.Vector2 point, float delta, System.Windows.Input.MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastMouseDevice = mouseDevice;
+
+            if (ActiveCamera == null)
+                return;
+            Mogre.Vector3 vPos = ActiveCamera.DerivedPosition;
+
+            Mogre.Vector3 vDelta = new Mogre.Vector3(0, 0, delta / 16.0f) * CameraSpeed;
+            vPos = vPos - (ActiveCamera.DerivedOrientation * vDelta);
+            this.newCamPosition = vPos;
+        }
+        #endregion
+
+        #region Constructors
+        static ViewportEditor()
+        {
+            CameraSpeed = 1.0f;
         }
         #endregion
     }

@@ -8,6 +8,10 @@ namespace Mogitor.Data
 {
     partial class MogitorsRoot
     {
+        #region Fields
+        private DragData activeDragData;
+        #endregion
+
         public void RegisterDragDropHandler(object source, IDragDropHandler handler)
         {
             if (dragDropHandlers.Keys.Contains<object>(source))
@@ -34,6 +38,7 @@ namespace Mogitor.Data
             if (handler == null)
                 return false;
 
+            this.activeDragData = dragData;
             return handler.OnDrageEnter(dragData);
         }
 
@@ -48,6 +53,7 @@ namespace Mogitor.Data
                 return;
 
             handler.OnDragLeave(dragData);
+            this.activeDragData = null;
         }
 
         public bool OnDragOver(IDataObject data, Point pt)
@@ -101,6 +107,7 @@ namespace Mogitor.Data
                     break;
                 }
             }
+            this.activeDragData = null;
         }
 
         public interface IDragDropHandler
@@ -132,6 +139,13 @@ namespace Mogitor.Data
             /// <param name="vp">the viewport in which the event occured</param>
             /// <param name="position">mouse position relative to the viewports width/height</param>
             void OnDragDrop(DragData dragData, Mogre.Viewport vp, Mogre.Vector2 position);
+
+            /// <summary>
+            /// Delegate function for drag wheel event
+            /// </summary>
+            /// <param name="vp"></param>
+            /// <param name="delta"></param>
+            void OnDragWheel(DragData dragData, Mogre.Viewport vp, float delta);
         };
 
         private IDictionary<object, IDragDropHandler> dragDropHandlers = new Dictionary<object, IDragDropHandler>();

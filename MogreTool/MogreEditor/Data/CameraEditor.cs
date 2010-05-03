@@ -243,6 +243,17 @@ namespace Mogitor.Data
                 else
                     return Parent.DerivedPosition + (Parent.DerivedOrientation * this.position);
             }
+            set
+            {
+                if (Parent != null)
+                {
+                    Mogre.Quaternion qParent = Parent.DerivedOrientation.Inverse();
+                    Mogre.Vector3 vParent = Parent.DerivedPosition;
+                    Mogre.Vector3 newPos = (value - vParent);
+                    value = qParent * newPos;
+                }
+                Position = value;
+            }
         }
 
         public override Mogre.Quaternion DerivedOrientation

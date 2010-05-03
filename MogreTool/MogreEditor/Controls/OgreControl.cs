@@ -105,6 +105,17 @@ namespace Mogitor.Controls
             this.PreviewDragOver += new DragEventHandler(OgreControl_PreviewDragOver);
             this.PreviewDrop += new DragEventHandler(OgreControl_PreviewDrop);
         }
+
+        protected override void OnMouseWheel(System.Windows.Input.MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            if (!IsFocused)
+                Focus();
+
+            Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
+            MogitorsRoot.Instance.OnMouseWheel(pos, e.Delta, e.MouseDevice);
+        }
         #endregion
 
         #region Public Events
