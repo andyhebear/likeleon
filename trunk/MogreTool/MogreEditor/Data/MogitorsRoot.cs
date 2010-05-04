@@ -293,16 +293,77 @@ namespace Mogitor.Data
         {
         }
 
+        public void OnPreRenderTargetChanged()
+        {
+            foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
+                it.Value.UnLoad();
+        }
+
+        public void OnPostRenderTargetChanged()
+        {
+            foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
+                it.Value.Load();
+        }
+
         public void OnMouseRightDown(Mogre.Vector2 point, MouseDevice mouseDevice)
         {
+            Mogre.Vector4 rect = new Mogre.Vector4();
+
+            ViewportEditor vp = null;
+            int zOrder = -1000;
+
+            foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
+            {
+                int order = (it.Value as ViewportEditor).GetRect(ref rect);
+                if ((rect.x <= point.x) && (rect.y <= point.y) && ((rect.x + rect.z) >= point.x) && ((rect.y + rect.w) >= point.y) && (order > zOrder))
+                {
+                    zOrder = order;
+                    vp = it.Value as ViewportEditor;
+                }
+            }
+            if (vp != null)
+            {
+                ActiveViewport = vp;
+                ActiveViewport.GetRect(ref rect);
+                ActiveViewport.OnMouseRightDown(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice);
+            }
         }
 
         public void OnMouseRightUp(Mogre.Vector2 point, MouseDevice mouseDevice)
         {
+            if (ActiveViewport == null)
+                return;
+
+            Mogre.Vector4 rect = new Mogre.Vector4();
+            ActiveViewport.GetRect(ref rect);
+            if ((rect.x <= point.x) && (rect.y <= point.y) && ((rect.x + rect.z) >= point.x) && ((rect.y + rect.w) >= point.y))
+            {
+                ActiveViewport.OnMouseRightUp(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice);
+            }
         }
 
         public void OnMouseMiddleDown(Mogre.Vector2 point, MouseDevice mouseDevice)
         {
+            Mogre.Vector4 rect = new Mogre.Vector4();
+
+            ViewportEditor vp = null;
+            int zOrder = -1000;
+
+            foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
+            {
+                int order = (it.Value as ViewportEditor).GetRect(ref rect);
+                if ((rect.x <= point.x) && (rect.y <= point.y) && ((rect.x + rect.z) >= point.x) && ((rect.y + rect.w) >= point.y) && (order > zOrder))
+                {
+                    zOrder = order;
+                    vp = it.Value as ViewportEditor;
+                }
+            }
+            if (vp != null)
+            {
+                ActiveViewport = vp;
+                ActiveViewport.GetRect(ref rect);
+                ActiveViewport.OnMouseMiddleDown(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice);
+            }
         }
 
         public void OnMouseMiddleUp(Mogre.Vector2 point, MouseDevice mouseDevice)
