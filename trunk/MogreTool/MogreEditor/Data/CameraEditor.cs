@@ -267,6 +267,26 @@ namespace Mogitor.Data
             }
         }
         #endregion
+
+        #region Public Methods
+        public void Yaw(Mogre.Radian value)
+        {
+            if (this.handle != null)
+            {
+                this.handle.Yaw(value);
+                Orientation = this.handle.Orientation;
+            }
+        }
+
+        public void Pitch(Mogre.Radian value)
+        {
+            if (this.handle != null)
+            {
+                this.handle.Pitch(value);
+                Orientation = this.handle.Orientation;
+            }
+        }
+        #endregion
     }
 
     class CameraEditorFactory : BaseEditorFactory

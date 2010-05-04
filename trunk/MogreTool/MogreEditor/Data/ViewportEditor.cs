@@ -547,7 +547,7 @@ namespace Mogitor.Data
                     Mogre.Vector3 vDelta = new Mogre.Vector3(deltaX * CameraSpeed / 3.0f, -deltaY * CameraSpeed / 3.0f, 0);
                     ActiveCamera.DerivedPosition = (vPos + (ActiveCamera.DerivedOrientation * vDelta));
                     this.newCamPosition = Mogre.Vector3.ZERO;
-                    //MogitorsSystem.Instance.ShowMouseCursor(false);
+                    MogitorsSystem.Instance.ShowMouseCursor(false);
 
                     point.x -= (deltaX * 2.0f);
                     point.y -= (deltaY * 2.0f);
@@ -557,6 +557,15 @@ namespace Mogitor.Data
                 }
                 else if (mouseDevice.RightButton == MouseButtonState.Pressed)
                 {
+                    ActiveCamera.Yaw(new Mogre.Degree(-deltaX / 4.0f));
+                    ActiveCamera.Pitch(new Mogre.Degree(-deltaY / 4.0f));
+                    MogitorsSystem.Instance.ShowMouseCursor(false);
+
+                    point.x -= (deltaX * 2.0f);
+                    point.y -= (deltaY * 2.0f);
+
+                    this.isSettingPos = true;
+                    MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
                 }
             }
 
