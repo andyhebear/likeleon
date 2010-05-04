@@ -26,7 +26,7 @@ namespace Mogitor.Data
             {
                 if (this.handle != null)
                 {
-                    this.handle.SetPosition(this.position.x, this.position.y, this.position.z);
+                    this.handle.SetPosition(value.x, value.y, value.z);
                     if (this.autoTrackTargetPtr != null)
                     {
                         this.handle.LookAt(this.autoTrackTargetPtr.Node._getDerivedPosition());
