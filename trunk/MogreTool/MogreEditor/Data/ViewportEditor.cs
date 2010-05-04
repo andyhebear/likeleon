@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Mogitor.Data
 {
@@ -210,7 +211,8 @@ namespace Mogitor.Data
         private readonly IList<CompositorPush> compositorStorage = new List<CompositorPush>();
         private Mogre.Vector3 newCamPosition = Mogre.Vector3.ZERO;
         private Mogre.Vector2 lastMouse = Mogre.Vector2.ZERO;
-        private System.Windows.Input.MouseDevice lastMouseDevice;
+        private MouseDevice lastMouseDevice;
+        private bool isSettingPos = false;
         #endregion
 
         #region Overrides BaseEditor
@@ -521,7 +523,82 @@ namespace Mogitor.Data
             }
         }
 
-        public virtual void OnMouseWheel(Mogre.Vector2 point, float delta, System.Windows.Input.MouseDevice mouseDevice)
+        public virtual void OnMouseMove(Mogre.Vector2 point, MouseDevice mouseDevice, bool imitate)
+        {
+            this.lastMouseDevice = mouseDevice;
+
+            if (this.isSettingPos)
+            {
+                this.isSettingPos = false;
+                this.lastMouse = point;
+                return;
+            }
+
+            float deltaX = (point.x - lastMouse.x) * 0.5f;
+            float deltaY = (point.y - lastMouse.y) * 0.5f;
+
+            MogitorsRoot mogRoot = MogitorsRoot.Instance;
+
+            if (!imitate)
+            {
+                if (mouseDevice.MiddleButton == MouseButtonState.Pressed)
+                {
+                    Mogre.Vector3 vPos = ActiveCamera.DerivedPosition;
+                    Mogre.Vector3 vDelta = new Mogre.Vector3(deltaX * CameraSpeed / 3.0f, -deltaY * CameraSpeed / 3.0f, 0);
+                    ActiveCamera.DerivedPosition = (vPos + (ActiveCamera.DerivedOrientation * vDelta));
+                    this.newCamPosition = Mogre.Vector3.ZERO;
+                    //MogitorsSystem.Instance.ShowMouseCursor(false);
+
+                    point.x -= (deltaX * 2.0f);
+                    point.y -= (deltaY * 2.0f);
+
+                    this.isSettingPos = true;
+                    MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
+                }
+                else if (mouseDevice.RightButton == MouseButtonState.Pressed)
+                {
+                }
+            }
+
+            this.lastMouse = point;
+        }
+
+        public virtual void OnMouseLeave(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouseDevice = mouseDevice;
+            this.lastMouse = new Mogre.Vector2(-1, -1);
+
+            MogitorsSystem.Instance.ShowMouseCursor(true);
+        }
+
+        public virtual void OnMouseRightDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastMouseDevice = mouseDevice;
+        }
+
+        public virtual void OnMouseRightUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastMouseDevice = mouseDevice;
+            MogitorsSystem.Instance.SetMouseCursor(Cursors.Arrow);
+            MogitorsSystem.Instance.ShowMouseCursor(true);
+        }
+
+        public virtual void OnMouseMiddleDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastMouseDevice = mouseDevice;
+        }
+
+        public virtual void OnMouseMiddleUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastMouseDevice = mouseDevice;
+            MogitorsSystem.Instance.ShowMouseCursor(true);
+        }
+
+        public virtual void OnMouseWheel(Mogre.Vector2 point, float delta, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;

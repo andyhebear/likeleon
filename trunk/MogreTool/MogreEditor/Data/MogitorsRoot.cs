@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Collections;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace Mogitor.Data
 {
@@ -292,7 +293,50 @@ namespace Mogitor.Data
         {
         }
 
-        public void OnMouseWheel(Mogre.Vector2 point, float delta, System.Windows.Input.MouseDevice mouseDevice)
+        public void OnMouseRightDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+        }
+
+        public void OnMouseRightUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+        }
+
+        public void OnMouseMiddleDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+        }
+
+        public void OnMouseMiddleUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            if (ActiveViewport == null)
+                return;
+
+            Mogre.Vector4 rect = new Mogre.Vector4();
+            ActiveViewport.GetRect(ref rect);
+            if ((rect.x <= point.x) && (rect.y <= point.y) && ((rect.x + rect.z) >= point.x) && ((rect.y + rect.w) >= point.y))
+            {
+                ActiveViewport.OnMouseMiddleUp(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice);
+            }
+        }
+
+        public void OnMouseMove(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            if (ActiveViewport == null)
+                return;
+
+            Mogre.Vector4 rect = new Mogre.Vector4();
+            ActiveViewport.GetRect(ref rect);
+
+            if ((rect.x <= point.x) && (rect.y <= point.y) && ((rect.x + rect.z) >= point.x) && ((rect.y + rect.w) >= point.y))
+            {
+                ActiveViewport.OnMouseMove(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice, false);
+            }
+            else
+            {
+                ActiveViewport.OnMouseLeave(point - new Mogre.Vector2(rect.x, rect.y), mouseDevice);
+            }
+        }
+
+        public void OnMouseWheel(Mogre.Vector2 point, float delta, MouseDevice mouseDevice)
         {
             if (ActiveViewport == null)
                 return;

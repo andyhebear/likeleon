@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Generic;
 using Mogitor.Data;
+using System.Windows.Interop;
 
 namespace Mogitor
 {
@@ -178,6 +179,62 @@ namespace Mogitor
             (parent as TreeViewItem).Items.Add(item);
 
             return item;
+        }
+
+        public void SetMouseCursor(System.Windows.Input.Cursor cursor)
+        {
+            this.renderViewControl.SetCursor(cursor);
+        }
+
+        public void ShowMouseCursor(bool bShow)
+        {
+            this.renderViewControl.ShowCursorEx(bShow);
+        }
+
+        public void SetMousePosition(Mogre.Vector2 position)
+        {
+            Point pos = TransformToScreen(new Point(position.x, position.y), this.renderViewControl);
+            NativeMethods.SetCursorPos((int)pos.X, (int)pos.Y);
+        }
+        #endregion
+
+        #region Private Methods
+
+        static Point TransformToScreen(Point point, Visual relativeTo)
+        {
+            HwndSource hwndSource = PresentationSource.FromVisual(relativeTo) as HwndSource;
+            Visual root = hwndSource.RootVisual;
+
+            // Translate the point from the visual to the root.
+            GeneralTransform transformToRoot = relativeTo.TransformToAncestor(root);
+            Point pointRoot = transformToRoot.Transform(point);
+
+            // Transform the point from the root to client coordinates.
+            Matrix m = Matrix.Identity;
+            Transform transform = VisualTreeHelper.GetTransform(root);
+
+            if (transform != null)
+            {
+                m = Matrix.Multiply(m, transform.Value);
+            }
+
+            Vector offset = VisualTreeHelper.GetOffset(root);
+            m.Translate(offset.X, offset.Y);
+
+            Point pointClient = m.Transform(pointRoot);
+
+            // Convert from “device-independent pixels” into pixels.
+            pointClient = hwndSource.CompositionTarget.TransformToDevice.Transform(pointClient);
+
+            NativeMethods.POINT pointClientPixels = new NativeMethods.POINT();
+            pointClientPixels.x = (0 < pointClient.X) ? (int)(pointClient.X + 0.5) : (int)(pointClient.X - 0.5);
+            pointClientPixels.y = (0 < pointClient.Y) ? (int)(pointClient.Y + 0.5) : (int)(pointClient.Y - 0.5);
+
+            // Transform the point into screen coordinates.
+            NativeMethods.POINT pointScreenPixels = pointClientPixels;
+            NativeMethods.ClientToScreen(hwndSource.Handle, pointScreenPixels);
+
+            return new Point(pointScreenPixels.x, pointScreenPixels.y);
         }
         #endregion
     }
