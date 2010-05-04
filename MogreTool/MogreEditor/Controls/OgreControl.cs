@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using Mogitor.Data;
+using System.Windows.Input;
 
 namespace Mogitor.Controls
 {
@@ -28,6 +29,7 @@ namespace Mogitor.Controls
         private OgreImage ogreImage;
         private TextBlock overlayTextBlock;
         private bool initialized;
+        private bool cursorHidden;
         #endregion
 
         #region Constructor
@@ -83,6 +85,24 @@ namespace Mogitor.Controls
             if (ResourceReloaded != null)
                 ResourceReloaded(this, EventArgs.Empty);
         }
+
+        public void SetCursor(Cursor cursor)
+        {
+            Cursor = cursor;
+        }
+
+        public void ShowCursorEx(bool bShow)
+        {
+            if (this.cursorHidden == bShow)
+            {
+                if (!bShow)
+                    Cursor = Cursors.None;
+                else
+                    Cursor = Cursors.Arrow;
+
+                this.cursorHidden = !bShow;
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -106,7 +126,48 @@ namespace Mogitor.Controls
             this.PreviewDrop += new DragEventHandler(OgreControl_PreviewDrop);
         }
 
-        protected override void OnMouseWheel(System.Windows.Input.MouseWheelEventArgs e)
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (!IsFocused)
+                Focus();
+
+            Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
+
+            if (e.ChangedButton == MouseButton.Right)
+                MogitorsRoot.Instance.OnMouseRightDown(pos, e.MouseDevice);
+            else if (e.ChangedButton == MouseButton.Middle)
+                MogitorsRoot.Instance.OnMouseMiddleDown(pos, e.MouseDevice);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (!IsFocused)
+                Focus();
+
+            Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
+
+            if (e.ChangedButton == MouseButton.Right)
+                MogitorsRoot.Instance.OnMouseRightUp(pos, e.MouseDevice);
+            else if (e.ChangedButton == MouseButton.Middle)
+                MogitorsRoot.Instance.OnMouseMiddleUp(pos, e.MouseDevice);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (!IsFocused)
+                Focus();
+
+            Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
+            MogitorsRoot.Instance.OnMouseMove(pos, e.MouseDevice);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
 
