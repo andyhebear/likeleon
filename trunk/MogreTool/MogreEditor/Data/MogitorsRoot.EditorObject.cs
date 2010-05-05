@@ -16,6 +16,7 @@ namespace Mogitor.Data
         private BaseEditor rootEditor;
         private readonly EditorObjectFactoryMap editorObjectFactories = new EditorObjectFactoryMap();
         private uint editorObjectTypeIDCounter;
+        private BaseEditor selectedEditor;
         #endregion
 
         #region Properties
@@ -53,6 +54,12 @@ namespace Mogitor.Data
         public EditorObjectFactoryMap EditorObjectFactories
         {
             get { return this.editorObjectFactories; }
+        }
+
+        public BaseEditor Selected
+        {
+            get { return this.selectedEditor; }
+            set { this.selectedEditor = value; }
         }
         #endregion
 

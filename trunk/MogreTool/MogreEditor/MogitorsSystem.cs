@@ -19,6 +19,7 @@ namespace Mogitor
         private static MogitorsSystem instance;
         private OgreControl renderViewControl;
         private TreeView treeControl;
+        private PropertiesView propsControl;
         private readonly IDictionary<uint, string> iconList = new Dictionary<uint, string>();
         #endregion
 
@@ -136,10 +137,11 @@ namespace Mogitor
             return;
         }
 
-        public void SetWindows(OgreControl renderViewControl, TreeView treeControl)
+        public void SetWindows(OgreControl renderViewControl, TreeView treeControl, PropertiesView propsControl)
         {
             this.renderViewControl = renderViewControl;
             this.treeControl = treeControl;
+            this.propsControl = propsControl;
         }
 
         public MessageBoxResult DisplayMessageDialog(string msg, MessageBoxButton messageBoxButton)
@@ -195,6 +197,21 @@ namespace Mogitor
         {
             Point pos = TransformToScreen(new Point(position.x, position.y), this.renderViewControl);
             NativeMethods.SetCursorPos((int)pos.X, (int)pos.Y);
+        }
+
+        public bool SetProperty(object caller)
+        {
+            BaseEditor selected = MogitorsRoot.Instance.Selected;
+            if (selected != null && selected != caller && selected.Parent != caller)
+                return false;
+            this.propsControl.Selected = caller;
+            return true;
+        }
+
+        public bool ClearPropertiesView()
+        {
+            this.propsControl.Selected = null;
+            return true;
         }
         #endregion
 

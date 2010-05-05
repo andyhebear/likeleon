@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
+using Mogitor.Data;
 
 namespace Mogitor.Controls
 {
@@ -46,10 +47,31 @@ namespace Mogitor.Controls
             base.OnApplyTemplate();
 
             this.treeControl = this.Template.FindName("PART_TreeControl", this) as TreeView;
-            this.treeControl.SelectedItemChanged += (s, e) =>
+            this.treeControl.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(treeControl_SelectedItemChanged);
+        }
+
+        void treeControl_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            TreeViewItem treeItem = e.NewValue as TreeViewItem;
+            Item item = treeItem.Header as Item;
+            if (item == null)
+                return;
+
+            string name = item.Name;
+
+            MogitorsRoot mogRoot = MogitorsRoot.Instance;
+            BaseEditor curEdit = mogRoot.FindObject(name, 0);
+
+            if (curEdit != mogRoot.Selected)
+            {
+                if (mogRoot.Selected != null)
+                    mogRoot.Selected.IsSelected = false;
+
+                if (curEdit != null)
                 {
-                    MessageBox.Show(e.ToString());
-                };
+                    curEdit.IsSelected = true;
+                }
+            }
         }
         #endregion
     }

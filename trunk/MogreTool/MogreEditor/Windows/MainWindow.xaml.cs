@@ -19,7 +19,7 @@ namespace Mogitor.Windows
             this.propertiesView.ApplyTemplate();
             this.entityView.ApplyTemplate();
 
-            MogitorsSystem.Instance.SetWindows(this.ogreControl, this.sceneView.TreeControl);
+            MogitorsSystem.Instance.SetWindows(this.ogreControl, this.sceneView.TreeControl, this.propertiesView);
             MogitorsSystem.Instance.InitTreeIcons();
         }
 
