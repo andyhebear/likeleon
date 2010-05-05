@@ -22,6 +22,21 @@ namespace Mogitor.Data
         LastEditor
     };
 
+    /// <summary>
+    /// Possible types of editor tools enumeration
+    /// </summary>
+    enum EditorTools
+    {
+        Select = 0,
+        Move,
+        Rotate,
+        Scale,
+        Deform,
+        Splat,
+        Paint,
+        Smooth
+    };
+
     class QueryFlags
     {
         public const uint Widget = 1;

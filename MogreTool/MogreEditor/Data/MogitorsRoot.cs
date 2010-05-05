@@ -222,6 +222,8 @@ namespace Mogitor.Data
 
         public void AfterLoadScene()
         {
+            ViewportEditor.ResetCommonValues();
+
             if (ActiveViewport == null)
             {
                 Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();

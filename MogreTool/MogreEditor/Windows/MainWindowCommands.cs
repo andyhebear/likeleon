@@ -188,5 +188,49 @@ namespace Mogitor.Windows
             MessageBox.Show("by likeleon.");
         }
         #endregion
+
+        #region Select
+        private void CommandBinding_SelectCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_SelectCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
+        #region Move
+        private void CommandBinding_MoveCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_MoveCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
+        #region Rotate
+        private void CommandBinding_RotateCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_RotateCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
+        #region Scale
+        private void CommandBinding_ScaleCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_ScaleCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
     }
 }

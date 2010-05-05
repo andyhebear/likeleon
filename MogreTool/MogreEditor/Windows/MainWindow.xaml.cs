@@ -122,5 +122,10 @@ namespace Mogitor.Windows
             }
         }
         #endregion
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+
+        }
     }
 }

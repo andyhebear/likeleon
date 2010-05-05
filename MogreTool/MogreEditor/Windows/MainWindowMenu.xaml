@@ -1,13 +1,15 @@
 ﻿<UserControl x:Class="Mogitor.Windows.MainWindowMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Mogitor">
+    xmlns:local="clr-namespace:Mogitor"
+    xmlns:MogitorData="clr-namespace:Mogitor.Data">
     <Menu>
         <Menu.Resources>
             <Style TargetType="{x:Type Image}">
                 <Setter Property="Width" Value="16" />
                 <Setter Property="Height" Value="16" />
             </Style>
+            <local:EditorToolToBooleanConverter x:Key="editorToolToBooleanConverter" />
         </Menu.Resources>
         <MenuItem Header="_File">
             <MenuItem Header="_New" 
@@ -68,6 +70,44 @@
                       ToolTip="Preferences">
                 <MenuItem.Icon>
                     <Image Source="../Resources/Icons/preferences.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="_Tool">
+            <MenuItem Header="Selec_t"
+                      Command="{x:Static local:CustomCommands.Select}"
+                      ToolTip="Select"
+                      IsCheckable="True"
+                      IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Select, Mode=TwoWay}">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/select.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="_Move"
+                      Command="{x:Static local:CustomCommands.Move}"
+                      ToolTip="Move"
+                      IsCheckable="True"
+                      IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Move, Mode=TwoWay}">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/translate.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="_Rotate"
+                      Command="{x:Static local:CustomCommands.Rotate}"
+                      ToolTip="Rotate"
+                      IsCheckable="True"
+                      IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Rotate, Mode=TwoWay}">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/rotate.png" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Sc_ale"
+                      Command="{x:Static local:CustomCommands.Scale}"
+                      ToolTip="Scale"
+                      IsCheckable="True"
+                      IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Scale, Mode=TwoWay}">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/scale.png" />
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>

@@ -110,6 +110,7 @@
     <Compile Include="Controls\PropertiesView.cs">
     </Compile>
     <Compile Include="Controls\SceneView.cs" />
+    <Compile Include="Converters\EditorToolToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
@@ -205,6 +206,12 @@
     <Resource Include="Resources\Icons\project.png" />
     <Resource Include="Resources\Icons\tsm.png" />
     <Resource Include="Resources\Icons\viewport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\rotate.png" />
+    <Resource Include="Resources\Icons\scale.png" />
+    <Resource Include="Resources\Icons\select.png" />
+    <Resource Include="Resources\Icons\translate.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
