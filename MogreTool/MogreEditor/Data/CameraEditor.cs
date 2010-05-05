@@ -266,6 +266,15 @@ namespace Mogitor.Data
                     return (Parent.DerivedOrientation * this.orientation);
             }
         }
+
+        protected override void SetSelectedImpl(bool bSelected)
+        {
+            base.SetSelectedImpl(bSelected);
+            if (MogitorsRoot.Instance.ActiveViewport.CameraEditor == this)
+                bSelected = false;
+
+            ShowBoundingBox(bSelected);
+        }
         #endregion
 
         #region Public Methods

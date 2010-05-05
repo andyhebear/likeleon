@@ -25,14 +25,16 @@ namespace Mogitor.Controls
         }
         #endregion
 
+        #region Fields
         private System.Windows.Forms.PropertyGrid propertyGrid;
+        #endregion
 
+        #region Public Methods
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.propertyGrid = this.Template.FindName("PART_PropertyGrid", this) as System.Windows.Forms.PropertyGrid;
-
-            this.Selected = MogitorsRoot.Instance;
         }
+        #endregion
     }
 }

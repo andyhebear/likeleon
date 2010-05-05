@@ -58,7 +58,7 @@ namespace Mogitor.Data
 
         public bool Shadows
         {
-            get { return this.Shadows; }
+            get { return this.shadows; }
             set
             {
                 if (this.handle != null)

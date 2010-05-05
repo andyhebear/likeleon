@@ -138,6 +138,26 @@ namespace Mogitor.Data
         {
             get { return new Mogre.Vector3(1, 1, 1); }
         }
+
+        protected virtual void SetSelectedImpl(bool bSelected)
+        {
+            this.isSelected = bSelected;
+            if (isSelected)
+            {
+                MogitorsRoot.Instance.Selected = this;
+                system.SetProperty(this);
+            }
+            else
+            {
+                MogitorsRoot.Instance.Selected = null;
+                system.ClearPropertiesView();
+            }
+            ShowBoundingBox(bSelected);
+        }
+
+        protected virtual void ShowBoundingBox(bool bShow)
+        {
+        }
         #endregion
 
         #region Public Methods
@@ -239,13 +259,14 @@ namespace Mogitor.Data
         #endregion
 
         #region Fields
-        private bool modified = false;
+        private bool modified;
         private static readonly BaseEditorFactory baseEditorFactory = new BaseEditorFactory();
         private readonly NameObjectPairList children = new NameObjectPairList();
+        private bool isSelected;
 
-        protected static MogitorsSystem system = null;
-        protected static bool initialized = false;
-        protected string name = "";
+        protected static MogitorsSystem system;
+        protected static bool initialized;
+        protected string name;
         #endregion
 
         #region Properties
@@ -317,6 +338,16 @@ namespace Mogitor.Data
         public NameObjectPairList Children
         {
             get { return this.children; }
+        }
+
+        public bool IsSelected
+        {
+            get { return this.isSelected; }
+            set
+            {
+                SetSelectedImpl(value);
+                OnPropertyChanged("IsSelected");
+            }
         }
         #endregion
     }
