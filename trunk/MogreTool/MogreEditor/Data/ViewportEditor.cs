@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows;
 
 namespace Mogitor.Data
 {
@@ -185,6 +186,26 @@ namespace Mogitor.Data
             get;
             set;
         }
+
+        public EditorTools EditorTool
+        {
+            get
+            {
+                return editorTool;
+            }
+            set
+            {
+                editorTool = value;
+
+                instance.OnPropertyChanged("EditorTool");
+                OnPropertyChanged("EditorTool");
+            }
+        }
+
+        public static ViewportEditor Instance
+        {
+            get { return instance; }
+        }
         #endregion
 
         #region Inner Classes
@@ -212,7 +233,9 @@ namespace Mogitor.Data
         private Mogre.Vector3 newCamPosition = Mogre.Vector3.ZERO;
         private Mogre.Vector2 lastMouse = Mogre.Vector2.ZERO;
         private MouseDevice lastMouseDevice;
-        private bool isSettingPos = false;
+        private static bool isSettingPos = false;
+        private static EditorTools editorTool = EditorTools.Select;
+        private static readonly ViewportEditor instance = new ViewportEditor();
         #endregion
 
         #region Overrides BaseEditor
@@ -527,9 +550,9 @@ namespace Mogitor.Data
         {
             this.lastMouseDevice = mouseDevice;
 
-            if (this.isSettingPos)
+            if (isSettingPos)
             {
-                this.isSettingPos = false;
+                isSettingPos = false;
                 this.lastMouse = point;
                 return;
             }
@@ -552,7 +575,7 @@ namespace Mogitor.Data
                     point.x -= (deltaX * 2.0f);
                     point.y -= (deltaY * 2.0f);
 
-                    this.isSettingPos = true;
+                    isSettingPos = true;
                     MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
                 }
                 else if (mouseDevice.RightButton == MouseButtonState.Pressed)
@@ -564,7 +587,7 @@ namespace Mogitor.Data
                     point.x -= (deltaX * 2.0f);
                     point.y -= (deltaY * 2.0f);
 
-                    this.isSettingPos = true;
+                    isSettingPos = true;
                     MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
                 }
             }
@@ -619,6 +642,13 @@ namespace Mogitor.Data
             Mogre.Vector3 vDelta = new Mogre.Vector3(0, 0, delta / 16.0f) * CameraSpeed;
             vPos = vPos - (ActiveCamera.DerivedOrientation * vDelta);
             this.newCamPosition = vPos;
+        }
+
+        public static void ResetCommonValues()
+        {
+            CameraSpeed = 1.0f;
+            Instance.EditorTool = EditorTools.Select;
+            isSettingPos = false;
         }
         #endregion
 

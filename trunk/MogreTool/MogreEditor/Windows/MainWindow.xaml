@@ -31,6 +31,18 @@
                         Executed="CommandBinding_PreferencesCmdExecuted" />
         <CommandBinding Command="{x:Static local:CustomCommands.About}"
                         Executed="CommandBinding_AboutCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Select}"
+                        Executed="CommandBinding_SelectCmdExecuted"
+                        CanExecute="CommandBinding_SelectCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Move}"
+                        Executed="CommandBinding_MoveCmdExecuted"
+                        CanExecute="CommandBinding_MoveCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Rotate}"
+                        Executed="CommandBinding_RotateCmdExecuted"
+                        CanExecute="CommandBinding_RotateCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Scale}"
+                        Executed="CommandBinding_ScaleCmdExecuted"
+                        CanExecute="CommandBinding_ScaleCmdCanExecute" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="F4"
