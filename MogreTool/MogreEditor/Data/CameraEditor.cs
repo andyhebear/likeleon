@@ -206,7 +206,7 @@ namespace Mogitor.Data
 
         public override bool UnLoad()
         {
-            if (IsLoaded)
+            if (!IsLoaded)
                 return true;
 
             UnLoadAllChildren();
