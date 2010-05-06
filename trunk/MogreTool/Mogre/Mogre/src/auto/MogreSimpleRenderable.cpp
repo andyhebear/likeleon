@@ -31,6 +31,34 @@ namespace Mogre
 	
 	
 	//Public Declarations
+	OBBoxRenderable::OBBoxRenderable() : SimpleRenderable((CLRObject*) 0)
+	{
+		_createdByCLR = true;
+		_native = new Ogre::OBBoxRenderable();
+
+		_native->_MapToCLRObject(this, System::Runtime::InteropServices::GCHandleType::Normal);
+	}
+
+	OBBoxRenderable::OBBoxRenderable( String^ matname) : SimpleRenderable((CLRObject*) 0)
+	{
+		_createdByCLR = true;
+		DECLARE_NATIVE_STRING( o_matname, matname )
+
+		_native = new Ogre::OBBoxRenderable(o_matname);
+
+		_native->_MapToCLRObject(this, System::Runtime::InteropServices::GCHandleType::Normal);
+	}
+
+	OBBoxRenderable::OBBoxRenderable( String^ matname, Mogre::ColourValue colour ) : SimpleRenderable((CLRObject*) 0)
+	{
+		_createdByCLR = true;
+		DECLARE_NATIVE_STRING( o_matname, matname )
+
+		_native = new Ogre::OBBoxRenderable(o_matname, colour);
+
+		_native->_MapToCLRObject(this, System::Runtime::InteropServices::GCHandleType::Normal);
+	}
+
 	Mogre::AxisAlignedBox^ SimpleRenderable::BoundingBox::get()
 	{
 		return static_cast<const Ogre::SimpleRenderable*>(_native)->getBoundingBox( );
@@ -187,4 +215,35 @@ namespace Mogre
 	
 	
 
+	//################################################################
+	//OBBoxRenderable
+	//################################################################
+	
+	//Nested Types
+	//Private Declarations
+	
+	//Internal Declarations	
+	
+	//Public Declarations
+	void OBBoxRenderable::SetupVertices( Mogre::AxisAlignedBox^ aab )
+	{
+		static_cast<Ogre::OBBoxRenderable*>(_native)->setupVertices(aab);
+	}
+
+	Mogre::Real OBBoxRenderable::GetSquaredViewDepth( Mogre::Camera^ cam )
+	{
+		return static_cast<const Ogre::OBBoxRenderable*>(_native)->getSquaredViewDepth( cam );
+	}
+
+	Mogre::Real OBBoxRenderable::BoundingRadius::get()
+	{
+		return static_cast<const Ogre::OBBoxRenderable*>(_native)->getBoundingRadius();
+	}
+
+	void OBBoxRenderable::GetWorldTransforms( Mogre::Matrix4::NativeValue* xform )
+	{
+		Ogre::Matrix4* o_xform = reinterpret_cast<Ogre::Matrix4*>(xform);
+	
+		static_cast<const Ogre::OBBoxRenderable*>(_native)->getWorldTransforms( o_xform );
+	}
 }

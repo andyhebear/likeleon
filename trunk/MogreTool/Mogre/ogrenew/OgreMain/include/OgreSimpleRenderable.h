@@ -95,6 +95,52 @@ namespace Ogre {
         const LightList& getLights(void) const;
 
     };
+
+	//! Object-oriented box class
+	/*!  
+	An object-oriented box class implementation that is not present in OGRE
+	*/
+	class _OgreExport OBBoxRenderable : public SimpleRenderable
+	{
+	public:
+		DECLARE_INIT_CLROBJECT_METHOD_OVERRIDE(OBBoxRenderable);
+
+	private:
+		VertexData vertexes;  /** Box' vertices */
+
+	public:
+		/**
+		* Constructor
+		* @param Material name for the box
+		* @param colour colour of the box
+		*/
+		OBBoxRenderable(String matname = "OBBoxManualMaterial", ColourValue colour = ColourValue(0,1,0));
+		/**
+		* Destructor
+		*/
+		virtual ~OBBoxRenderable();
+		/**
+		* Sets up object-oriented box using standard AABB
+		* @param aab AAB box
+		*/
+		void setupVertices(const AxisAlignedBox& aab);
+		/**
+		* Fetches squared view depth
+		* @param camera handle to current camera
+		* @return squared view depth
+		*/    
+		Real getSquaredViewDepth(const Camera* camera)const;
+		/**
+		* Fetches calculated bounding sphere radius
+		* @return bounding sphere radius
+		*/
+		Real getBoundingRadius()const;
+		/**
+		* Fetches world transformation matrix
+		* @param xform handle to matrix into which to put world transformation
+		*/
+		virtual void getWorldTransforms (Matrix4 *xform)const;
+	};
 }
 
 #endif

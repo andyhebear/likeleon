@@ -156,4 +156,43 @@ namespace Mogre
 	};
 	
 
+	//################################################################
+	//OBBoxRenderable
+	//################################################################
+	
+	public ref class OBBoxRenderable : public SimpleRenderable
+	{
+		//Nested Types
+	
+		//Private Declarations
+	private protected:
+	
+		//Internal Declarations
+	public protected:
+		OBBoxRenderable( CLRObject* obj ) : SimpleRenderable(obj)
+		{
+		}	
+	
+		//Public Declarations
+	public:
+		OBBoxRenderable();
+		OBBoxRenderable( String^ matname );
+		OBBoxRenderable( String^ matname, Mogre::ColourValue colour );
+
+		void SetupVertices( Mogre::AxisAlignedBox^ aab );
+		virtual Mogre::Real GetSquaredViewDepth( Mogre::Camera^ cam ) override;
+
+		property Mogre::Real BoundingRadius
+		{
+		public:
+			Mogre::Real get();
+		}
+
+		virtual void GetWorldTransforms( Mogre::Matrix4::NativeValue* xform ) override;
+
+		DEFINE_MANAGED_NATIVE_CONVERSIONS( OBBoxRenderable )
+	
+		//Protected Declarations
+	protected public:
+	};
 }
