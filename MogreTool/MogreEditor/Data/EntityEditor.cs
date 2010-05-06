@@ -177,6 +177,22 @@ namespace Mogitor.Data
                 retList[paramName + "Material"] = this.subMeshes[i].Material;
             }
         }
+
+        protected override Mogre.AxisAlignedBox GetAABB()
+        {
+            if (this.entityHandle != null)
+                return this.entityHandle.BoundingBox;
+            else
+                return Mogitor.MogreX.AxisAlignedBox.Null;
+        }
+
+        public override void ShowBoundingBox(bool bShow)
+        {
+            if (this.boxParentNode == null)
+                CreateBoundingBox();
+
+            this.bBoxNode.SetVisible(bShow);
+        }
         #endregion
     }
 

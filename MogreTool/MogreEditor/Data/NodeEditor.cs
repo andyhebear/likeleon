@@ -192,6 +192,31 @@ namespace Mogitor.Data
                     return (Parent.DerivedScale * this.scale);
             }
         }
+
+        protected override Mogre.AxisAlignedBox GetAABB()
+        {
+            if (this.handle != null)
+                return this.handle._getWorldAABB();
+            else
+                return Mogitor.MogreX.AxisAlignedBox.Null;
+        }
+
+        public override void ShowBoundingBox(bool bShow)
+        {
+            if (this.handle == null)
+                return;
+
+            this.handle.ShowBoundingBox = bShow;
+
+            foreach (KeyValuePair<string, BaseEditor> child in Children)
+            {
+                BaseEditor current = child.Value;
+                if (current.EditorType != EditorType.Movable && current.EditorType != EditorType.Entity && current.EditorType != EditorType.Base)
+                {
+                    current.ShowBoundingBox(bShow);
+                }
+            }
+        }
         #endregion
     }
 
