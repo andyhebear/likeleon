@@ -325,6 +325,15 @@ namespace Mogitor.Data
                 MogitorsRoot.Instance.LoadScene(fileName);
             }
         }
+
+        protected override Mogre.AxisAlignedBox GetAABB()
+        {
+            return this.handle.RootSceneNode._getWorldAABB();
+        }
+
+        public override void ShowBoundingBox(bool bShow)
+        {
+        }
         #endregion
     }
 

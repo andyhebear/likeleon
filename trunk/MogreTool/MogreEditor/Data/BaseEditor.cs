@@ -155,9 +155,16 @@ namespace Mogitor.Data
             ShowBoundingBox(bSelected);
         }
 
-        protected virtual void ShowBoundingBox(bool bShow)
+        public virtual void ShowBoundingBox(bool bShow)
         {
+            if (this.boxParentNode == null && EditorType != EditorType.Base)
+                CreateBoundingBox();
+
+            if (this.bBoxNode != null)
+                this.bBoxNode.SetVisible(bShow);
         }
+
+        protected virtual Mogre.AxisAlignedBox GetAABB() { return Mogitor.MogreX.AxisAlignedBox.Null; }
         #endregion
 
         #region Public Methods
@@ -241,6 +248,26 @@ namespace Mogitor.Data
         {
             MogitorsRoot.Instance.RegisterForPostSceneUpdates(this);
         }
+
+        protected void CreateBoundingBox()
+        {
+            this.boxParentNode = Node.CreateChildSceneNode("scbno" + this.name, new Mogre.Vector3(0, 0, 0), Mogre.Quaternion.IDENTITY);
+
+            this.oBBoxData = GetAABB();
+
+            this.bBoxNode = this.boxParentNode.CreateChildSceneNode("scbnb" + this.name, new Mogre.Vector3(0, 0, 0), Mogre.Quaternion.IDENTITY);
+            this.oBBoxRenderable = new Mogre.OBBoxRenderable("SelectionBBMaterial", MogitorsRoot.Instance.ProjectOptions.SelectionBBColour);
+            this.oBBoxRenderable.SetupVertices(this.oBBoxData);
+            this.bBoxNode.AttachObject(this.oBBoxRenderable);
+            this.bBoxNode.SetVisible(false);
+
+            this.highlightNode = this.boxParentNode.CreateChildSceneNode("scbnhl" + this.name, new Mogre.Vector3(0, 0, 0), Mogre.Quaternion.IDENTITY);
+            this.highlightNode.SetScale(1.05f, 1.05f, 1.05f);
+            this.highlightRenderable = new Mogre.OBBoxRenderable("HighlightBBMaterial", MogitorsRoot.Instance.ProjectOptions.HighlightBBColour);
+            this.highlightRenderable.SetupVertices(this.oBBoxData);
+            this.highlightNode.AttachObject(this.highlightRenderable);
+            this.highlightNode.SetVisible(false);
+        }
         #endregion
 
         #region Constructor
@@ -266,7 +293,13 @@ namespace Mogitor.Data
 
         protected static MogitorsSystem system;
         protected static bool initialized;
-        protected string name;
+        protected string name = "";
+        protected Mogre.SceneNode boxParentNode;
+        protected Mogre.SceneNode bBoxNode;
+        protected Mogre.SceneNode highlightNode;
+        private Mogre.OBBoxRenderable oBBoxRenderable;
+        private Mogre.OBBoxRenderable highlightRenderable;
+        private Mogre.AxisAlignedBox oBBoxData;
         #endregion
 
         #region Properties

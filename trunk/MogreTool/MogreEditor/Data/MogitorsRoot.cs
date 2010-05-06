@@ -433,6 +433,8 @@ namespace Mogitor.Data
             ProjectOptions.TerrainDirectory = "";
             ProjectOptions.ResourceDirectories.Clear();
             ProjectOptions.Cameras.Clear();
+            ProjectOptions.SelectionBBColour = new Mogre.ColourValue(1, 1, 1);
+            ProjectOptions.HighlightBBColour = new Mogre.ColourValue(0.91f, 0.19f, 0.19f);
         }
 
         private void FillTreeView()

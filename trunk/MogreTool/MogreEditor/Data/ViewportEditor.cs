@@ -405,6 +405,10 @@ namespace Mogitor.Data
 
             Modified = true;
         }
+
+        public override void ShowBoundingBox(bool bShow)
+        {
+        }
         #endregion
 
         #region Private Methods

@@ -275,6 +275,15 @@ namespace Mogitor.Data
 
             ShowBoundingBox(bSelected);
         }
+
+        public override void ShowBoundingBox(bool bShow)
+        {
+            if (this.boxParentNode == null)
+                CreateBoundingBox();
+
+            if (this.bBoxNode != null)
+                this.bBoxNode.SetVisible(bShow && (MogitorsRoot.Instance.ActiveViewport.CameraEditor != this));
+        }
         #endregion
 
         #region Public Methods

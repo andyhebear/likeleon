@@ -130,6 +130,7 @@
     <Compile Include="Data\SceneUpdatedEventArgs.cs" />
     <Compile Include="Data\ViewportEditor.cs" />
     <Compile Include="MogitorSettings.cs" />
+    <Compile Include="MogreX\AxisAlignedBox.cs" />
     <Compile Include="MogreX\StringConverter.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Windows\MainWindowMenu.xaml.cs">

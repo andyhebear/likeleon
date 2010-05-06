@@ -25,6 +25,8 @@ namespace Mogitor.Data
         public string TerrainDirectory { get; set; }
         public List<string> ResourceDirectories { get; set; }
         public List<Camera> Cameras { get; set; }
+        public Mogre.ColourValue SelectionBBColour { get; set; }
+        public Mogre.ColourValue HighlightBBColour { get; set; }
         #endregion
 
         #region Constructor

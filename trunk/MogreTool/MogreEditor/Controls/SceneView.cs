@@ -53,6 +53,9 @@ namespace Mogitor.Controls
         void treeControl_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem treeItem = e.NewValue as TreeViewItem;
+            if (treeItem == null)
+                return;
+
             Item item = treeItem.Header as Item;
             if (item == null)
                 return;

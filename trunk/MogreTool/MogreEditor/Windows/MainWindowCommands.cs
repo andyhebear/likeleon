@@ -26,6 +26,8 @@ namespace Mogitor.Windows
             opt.TerrainDirectory = "Terrain";
             opt.ResourceDirectories.Clear();
             opt.Cameras.Clear();
+            opt.SelectionBBColour = new Mogre.ColourValue(1, 1, 1);
+            opt.HighlightBBColour = new Mogre.ColourValue(0.91f, 0.19f, 0.19f);
 
             SettingsDialog dlg = new SettingsDialog(opt);
             if (dlg.ShowDialog() == true)
