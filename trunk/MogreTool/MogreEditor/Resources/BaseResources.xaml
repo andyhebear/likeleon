@@ -135,7 +135,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type MogitorControls:SceneView}">
-                    <TreeView x:Name="PART_TreeControl" >
+                    <TreeView x:Name="PART_TreeControl">
                         <TreeView.Resources>
                             <Style TargetType="TreeViewItem">
                                 <Setter Property="HeaderTemplate">
@@ -148,6 +148,7 @@
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="IsExpanded" Value="True" />
                             </Style>
                         </TreeView.Resources>
                     </TreeView>
