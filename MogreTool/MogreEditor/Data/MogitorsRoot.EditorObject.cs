@@ -137,13 +137,16 @@ namespace Mogitor.Data
 
             parent.AddChild(obj);
 
-            //if (addToTreeList)
-            //    throw new NotImplementedException("addToTreeList");
+            if (addToTreeList)
+            {
+                object handle = this.system.InsertTreeItem(parent.TreeItemHandle, obj.Name, obj.ObjectTypeID, System.Windows.Media.Colors.Black);
+                obj.TreeItemHandle = handle;
+            }
 
             if (display)
             {
                 obj.Load();
-                //obj.UpdateTreeView();
+                obj.UpdateTreeView();
             }
 
             IsSceneModified = true;
