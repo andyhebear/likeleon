@@ -234,7 +234,8 @@ namespace Mogitor
             if (!Uri.TryCreate(targetPath, UriKind.Absolute, out targetPathUri))
                 return targetPath;
 
-            return pathToUri.MakeRelativeUri(targetPathUri).ToString();
+            string relativePath = pathToUri.MakeRelativeUri(targetPathUri).ToString();
+            return Uri.UnescapeDataString(relativePath);
         }
 
         public bool IsRelativePath(string path)
