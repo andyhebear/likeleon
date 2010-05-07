@@ -130,8 +130,8 @@ namespace Mogitor.Controls
         {
             base.OnMouseDown(e);
 
-            if (!IsFocused)
-                Focus();
+            //if (!IsFocused)
+            //    Focus();
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
 
@@ -145,8 +145,8 @@ namespace Mogitor.Controls
         {
             base.OnMouseUp(e);
 
-            if (!IsFocused)
-                Focus();
+            //if (!IsFocused)
+            //    Focus();
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
 
@@ -160,8 +160,8 @@ namespace Mogitor.Controls
         {
             base.OnMouseMove(e);
 
-            if (!IsFocused)
-                Focus();
+            //if (!IsFocused)
+            //    Focus();
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
             MogitorsRoot.Instance.OnMouseMove(pos, e.MouseDevice);
@@ -171,8 +171,8 @@ namespace Mogitor.Controls
         {
             base.OnMouseWheel(e);
 
-            if (!IsFocused)
-                Focus();
+            //if (!IsFocused)
+            //    Focus();
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
             MogitorsRoot.Instance.OnMouseWheel(pos, e.Delta, e.MouseDevice);
@@ -205,8 +205,8 @@ namespace Mogitor.Controls
 
         private void OgreControl_PreviewDragOver(object sender, DragEventArgs args)
         {
-            if (!IsFocused)
-                Focus();
+            //if (!IsFocused)
+            //    Focus();
 
             if (!MogitorsRoot.Instance.OnDragOver(args.Data, args.GetPosition(this)))
             {
