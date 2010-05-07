@@ -3,6 +3,7 @@ using Mogitor.Data;
 using System.IO;
 using System.Xml;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Mogitor.Windows
 {
@@ -26,8 +27,8 @@ namespace Mogitor.Windows
             opt.TerrainDirectory = "Terrain";
             opt.ResourceDirectories.Clear();
             opt.Cameras.Clear();
-            opt.SelectionBBColour = new Mogre.ColourValue(1, 1, 1);
-            opt.HighlightBBColour = new Mogre.ColourValue(0.91f, 0.19f, 0.19f);
+            opt.SelectionBBColourForSerializer = Color.FromRgb(255, 255, 255);
+            opt.HighlightBBColourForSerializer = Color.FromRgb(232, 48, 48);
 
             SettingsDialog dlg = new SettingsDialog(opt);
             if (dlg.ShowDialog() == true)

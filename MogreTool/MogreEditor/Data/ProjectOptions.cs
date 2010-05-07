@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 
 namespace Mogitor.Data
 {
@@ -25,8 +26,31 @@ namespace Mogitor.Data
         public string TerrainDirectory { get; set; }
         public List<string> ResourceDirectories { get; set; }
         public List<Camera> Cameras { get; set; }
-        public Mogre.ColourValue SelectionBBColour { get; set; }
-        public Mogre.ColourValue HighlightBBColour { get; set; }
+        
+        public Color SelectionBBColourForSerializer;
+        [System.Xml.Serialization.XmlIgnore]
+        public Mogre.ColourValue SelectionBBColour
+        {
+            get
+            {
+                return new Mogre.ColourValue((float)SelectionBBColourForSerializer.R / 255.0f,
+                    (float)SelectionBBColourForSerializer.G / 255.0f,
+                    (float)SelectionBBColourForSerializer.B / 255.0f);
+            }
+        }
+
+        public Color HighlightBBColourForSerializer;
+        [System.Xml.Serialization.XmlIgnore]
+        public Mogre.ColourValue HighlightBBColour
+        {
+            get
+            {
+                return new Mogre.ColourValue((float)HighlightBBColourForSerializer.R / 255.0f,
+                        (float)HighlightBBColourForSerializer.G / 255.0f,
+                        (float)HighlightBBColourForSerializer.B / 255.0f,
+                        (float)HighlightBBColourForSerializer.A / 255.0f);
+            }
+        }
         #endregion
 
         #region Constructor
