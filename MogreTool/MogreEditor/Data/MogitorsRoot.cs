@@ -22,6 +22,7 @@ namespace Mogitor.Data
         private readonly MogitorsSystem system;
         private Mogre.SceneManager sceneManager;
         private readonly IList<EditorType> objectDisplayOrder = new List<EditorType>();
+        private bool isSceneModified;
         #endregion
 
         #region Public Properties
@@ -58,8 +59,14 @@ namespace Mogitor.Data
 
         public bool IsSceneModified
         {
-            get;
-            set;
+            get { return this.isSceneModified; }
+            set
+            {
+                this.isSceneModified = value;
+                
+                if (this.isSceneModified && SceneModified != null)
+                    SceneModified(this, EventArgs.Empty);
+            }
         }
 
         public ProjectOptions ProjectOptions
@@ -471,6 +478,7 @@ namespace Mogitor.Data
         public event EventHandler<SceneUpdatedEventArgs> SceneUpdated;
         public event EventHandler<EventArgs> SceneLoaded;
         public event EventHandler<EventArgs> SceneTerminated;
+        public event EventHandler<EventArgs> SceneModified;
         #endregion
     }
 }
