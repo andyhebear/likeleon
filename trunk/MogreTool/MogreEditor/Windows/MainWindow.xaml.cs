@@ -59,6 +59,13 @@ namespace Mogitor.Windows
                     this.ogreControl.OverlayText = "Please load a Scene File...";
                 };
 
+            MogitorsRoot.Instance.SceneModified += (s, args) =>
+                {
+                    if (!MogitorsRoot.Instance.IsSceneLoaded || !MogitorsRoot.Instance.IsSceneModified)
+                        return;
+                    this.Title = "Mogitor - (*)" + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                };
+
 
             Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
             {
