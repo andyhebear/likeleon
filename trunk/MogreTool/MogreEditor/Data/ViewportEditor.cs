@@ -157,6 +157,10 @@ namespace Mogitor.Data
                 if (ActiveCamera != null)
                 {
                     ActiveCamera.ShowHelper = true;
+                    if (ActiveCamera == MogitorsRoot.Instance.Selected)
+                    {
+                        ActiveCamera.ShowBoundingBox(true);
+                    }
 
                     PushCompositors(this.ActiveCamera.Camera);
                 }
