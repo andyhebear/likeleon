@@ -268,18 +268,25 @@ namespace Mogitor.Data
 
         private void ClearEditors()
         {
+            this.activeDragData = null;
+
+            // Make sure to unload all the viewports first, since they are dependent on SceneManager
+            // but they share the same parent with scene manager and scene manager may get deleted before they do
             foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
                 it.Value.UnLoad();
 
             this.rootEditor.Destroy(false);
             this.rootEditor = null;
 
+            ActiveViewport = null;
             this.sceneManager = null;
             this.sceneManagerEditor = null;
+            this.selectedEditor = null;
             this.objCounter = 0;
             IsSceneModified = false;
             IsSceneLoaded = false;
             this.nameList.Clear();
+            SceneUpdated = null;
             
             foreach (KeyValuePair<string, BaseEditorFactory> it in this.editorObjectFactories)
             {
