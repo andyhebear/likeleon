@@ -63,7 +63,7 @@ namespace Mogitor.Windows
                 if (this.txtBoxTerrainDir.Text.Length <= 0)
                     return;
 
-                string projectDir = MogitorsSystem.Instance.QualifyPath(this.txtBoxProjectDir.Text + "\\" + this.txtBoxProjectName.Text);
+                string projectDir = MogitorsSystem.Instance.GetFullPath(this.txtBoxProjectDir.Text + "\\" + this.txtBoxProjectName.Text);
                 MogitorsSystem.Instance.MakeDirectory(projectDir);
 
                 Options.ProjectDir = projectDir;
@@ -76,17 +76,21 @@ namespace Mogitor.Windows
 
             for (int i = 0; i < lbResources.Items.Count; ++i)
             {
+                string strTemp = lbResources.Items[i].ToString();
+                if (!MogitorsSystem.Instance.IsRelativePath(strTemp))
+                    strTemp = MogitorsSystem.Instance.GetRelativePath(Options.ProjectDir + "\\", strTemp);
+
                 string val = "";
 
                 int stype = resourceFileTypes[i];
                 if (stype == 1)
                 {
-                    val = "FS:" + lbResources.Items[i].ToString();
+                    val = "FS:" + strTemp;
                     Options.ResourceDirectories.Add(val);
                 }
                 else if (stype == 2)
                 {
-                    val = "ZP:" + lbResources.Items[i].ToString();
+                    val = "ZP:" + strTemp;
                     Options.ResourceDirectories.Add(val);
                 }
             }

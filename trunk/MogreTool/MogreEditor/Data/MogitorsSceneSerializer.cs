@@ -49,7 +49,7 @@ namespace Mogitor.Data
                 system.MakeDirectory(newDir);
                 system.CopyFilesEx(oldProjDir, newDir);
 
-                string delFileStr = system.QualifyPath(system.CombinePath(opt.ProjectDir, oldProjName + ".mogscene"));
+                string delFileStr = system.GetFullPath(system.CombinePath(opt.ProjectDir, oldProjName + ".mogscene"));
                 system.DeleteFile(delFileStr);
             }
 
@@ -133,11 +133,6 @@ namespace Mogitor.Data
             string filePath = system.ExtractFilePath(importFile);
             string fileName = system.ExtractFileName(importFile);
 
-            ProjectOptions opt = mogRoot.ProjectOptions;
-
-            opt.ProjectDir = filePath;
-            opt.ProjectName = fileName;
-
             XmlTextReader textReader = new XmlTextReader(importFile);
 
             system.UpdateLoadProgress(5, "Loading scene objects");
@@ -158,6 +153,10 @@ namespace Mogitor.Data
             {
                 system.UpdateLoadProgress(15, "Parsing project options");
                 mogRoot.LoadProjectOptions(textReader);
+                
+                mogRoot.ProjectOptions.ProjectDir = filePath;
+                mogRoot.ProjectOptions.ProjectName = fileName;
+
                 mogRoot.PrepareProjectResources();
             }
 

@@ -20,8 +20,13 @@ namespace Mogitor.Data
         #region Public Properties
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNewProject { get; set; }
+        
+        [System.Xml.Serialization.XmlIgnore]
         public string ProjectDir { get; set; }
+        
+        [System.Xml.Serialization.XmlIgnore]
         public string ProjectName { get; set; }
+
         public string SceneManagerName { get; set; }
         public string TerrainDirectory { get; set; }
         public List<string> ResourceDirectories { get; set; }

@@ -188,7 +188,7 @@ namespace Mogitor.Data
         public BaseSerializer.SceneFileResult LoadScene(string fileName)
         {
             if (fileName.Length > 0)
-                fileName = system.QualifyPath(fileName);
+                fileName = system.GetFullPath(fileName);
 
             ClearProjectOptions();
             SceneUpdated = null;
@@ -272,10 +272,14 @@ namespace Mogitor.Data
                 else if (str.Substring(0, 3) == "ZP:")
                     stype = "Zip";
 
-                string resource = str.Remove(0, 3);
-                resource = system.QualifyPath(resource);
+                string resPath = str.Remove(0, 3);
+                if (system.IsRelativePath(resPath))
+                {
+                    resPath = resPath.Insert(0, path + "/");
+                    resPath = system.GetFullPath(resPath);
+                }
 
-                mngr.AddResourceLocation(resource, stype, group);
+                mngr.AddResourceLocation(resPath, stype, group);
             }
         }
 
