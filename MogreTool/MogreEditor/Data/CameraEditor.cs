@@ -128,6 +128,20 @@ namespace Mogitor.Data
                 OnPropertyChanged("PolygonMode");
             }
         }
+
+        public bool IsActiveCam
+        {
+            get { return MogitorsRoot.Instance.ActiveViewport.CameraEditor == this; }
+            set
+            {
+                if (value)
+                    MogitorsRoot.Instance.ActiveViewport.CameraEditor = this;
+                else
+                    MogitorsRoot.Instance.ActiveViewport.CameraEditor = null;
+
+                OnPropertyChanged("IsActiveCam");
+            }
+        }
         #endregion
 
         #region Fields
