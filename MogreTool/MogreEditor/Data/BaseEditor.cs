@@ -203,6 +203,22 @@ namespace Mogitor.Data
 
         public void DestroyBoundingBox()
         {
+            if (this.oBBoxRenderable == null)
+                return;
+
+            this.oBBoxRenderable.ParentSceneNode.DetachObject(this.oBBoxRenderable);
+            this.oBBoxRenderable = null;
+
+            this.highlightRenderable.ParentSceneNode.DetachObject(this.highlightRenderable);
+            this.highlightRenderable = null;
+
+            this.boxParentNode.RemoveAndDestroyChild(this.bBoxNode.Name);
+            this.boxParentNode.RemoveAndDestroyChild(this.highlightNode.Name);
+            this.bBoxNode = null;
+            this.highlightNode = null;
+
+            this.boxParentNode.ParentSceneNode.RemoveAndDestroyChild(this.boxParentNode.Name);
+            this.boxParentNode = null;
         }
 
         public void AddChild(BaseEditor child)

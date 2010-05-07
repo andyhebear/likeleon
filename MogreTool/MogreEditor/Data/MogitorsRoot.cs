@@ -148,6 +148,7 @@ namespace Mogitor.Data
                 SceneTerminated(this, EventArgs.Empty);
 
             this.system.ClearTreeItems();
+            this.system.ClearPropertiesView();
 
             ClearEditors();
 
