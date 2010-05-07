@@ -34,7 +34,7 @@ namespace Mogitor.Windows
             if (dlg.ShowDialog() == true)
             {
                 string fileName = MogitorsSystem.Instance.CombinePath(mogRoot.ProjectOptions.ProjectDir, mogRoot.ProjectOptions.ProjectName + ".mogscene");
-                fileName = MogitorsSystem.Instance.QualifyPath(fileName);
+                fileName = MogitorsSystem.Instance.GetFullPath(fileName);
 
                 XmlTextWriter textWriter = new XmlTextWriter(fileName, System.Text.Encoding.Unicode);
                 textWriter.Formatting = Formatting.Indented;

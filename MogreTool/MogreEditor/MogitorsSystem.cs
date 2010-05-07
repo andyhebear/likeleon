@@ -64,19 +64,20 @@ namespace Mogitor
                 string filenm = factory.Value.Icon;
                 if (filenm != "")
                 {
-                    filenm = QualifyPath("../Resources/" + filenm);
+                    filenm = "../Resources/" + filenm;
                     this.iconList[factory.Value.TypeID] = filenm;
                 }
                 else
                 {
-                    this.iconList[factory.Value.TypeID] = QualifyPath("../Resources/Icons/project.png");
+                    this.iconList[factory.Value.TypeID] = "../Resources/Icons/project.png";
                 }
             }
         }
 
-        public string QualifyPath(string fileName)
+        public string GetFullPath(string fileName)
         {
-            return fileName;
+            Uri uri = new Uri(fileName);
+            return uri.AbsolutePath;
         }
 
         public void UpdateLoadProgress(float percentage, string msg)
@@ -221,6 +222,25 @@ namespace Mogitor
                 return;
 
             item.IsSelected = true;
+        }
+
+        public string GetRelativePath(string pathTo, string targetPath)
+        {
+            Uri pathToUri;
+            if (!Uri.TryCreate(pathTo, UriKind.Absolute, out pathToUri))
+                return targetPath;
+
+            Uri targetPathUri;
+            if (!Uri.TryCreate(targetPath, UriKind.Absolute, out targetPathUri))
+                return targetPath;
+
+            return pathToUri.MakeRelativeUri(targetPathUri).ToString();
+        }
+
+        public bool IsRelativePath(string path)
+        {
+            Uri absoluteUri;
+            return !Uri.TryCreate(path, UriKind.Absolute, out absoluteUri);
         }
         #endregion
 
