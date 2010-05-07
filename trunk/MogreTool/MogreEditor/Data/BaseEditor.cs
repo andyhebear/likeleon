@@ -231,6 +231,11 @@ namespace Mogitor.Data
                     it.Value.LoadAllChildren();
             }
         }
+
+        public void UpdateTreeView()
+        {
+            system.SelectTreeItem(TreeItemHandle);
+        }
         #endregion
 
         #region Protected Methods

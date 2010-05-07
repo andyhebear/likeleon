@@ -213,6 +213,15 @@ namespace Mogitor
             this.propsControl.Selected = null;
             return true;
         }
+
+        public void SelectTreeItem(object handle)
+        {
+            TreeViewItem item = handle as TreeViewItem;
+            if (item == null)
+                return;
+
+            item.IsSelected = true;
+        }
         #endregion
 
         #region Private Methods
