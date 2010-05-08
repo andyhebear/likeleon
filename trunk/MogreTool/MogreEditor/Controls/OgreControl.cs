@@ -22,6 +22,12 @@ namespace Mogitor.Controls
             get { return (string)GetValue(OverlayTextProperty); }
             set { SetValue(OverlayTextProperty, value); }
         }
+
+        public int? FrameRate
+        {
+            get { return this.ogreImage.FrameRate; }
+            set { this.ogreImage.FrameRate = value; }
+        }
         #endregion
 
         #region Private Fields
@@ -70,6 +76,7 @@ namespace Mogitor.Controls
                     ResourceLoadItemProgress(s, e);
             };
 
+            this.ogreImage.FrameRate = (MogitorSettings.Instance.UseWpfDisplaySurface == true)? (int?)null : MogitorSettings.Instance.FrameRate;
             this.ogreImage.InitOgreAsync();
         }
 

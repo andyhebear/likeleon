@@ -30,5 +30,17 @@ namespace Mogitor
         {
             get { return Properties.Settings.Default.MaxObjectType; }
         }
+
+        public bool UseWpfDisplaySurface
+        {
+            get { return Properties.Settings.Default.UseWpfDisplaySurface; }
+            set { Properties.Settings.Default.UseWpfDisplaySurface = value; }
+        }
+
+        public int FrameRate
+        {
+            get { return Properties.Settings.Default.FrameRate; }
+            set { Properties.Settings.Default.FrameRate = value; }
+        }
     }
 }

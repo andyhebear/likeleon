@@ -40,5 +40,29 @@ namespace Mogitor.Properties {
                 return ((string)(this["ApplicationName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int FrameRate {
+            get {
+                return ((int)(this["FrameRate"]));
+            }
+            set {
+                this["FrameRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseWpfDisplaySurface {
+            get {
+                return ((bool)(this["UseWpfDisplaySurface"]));
+            }
+            set {
+                this["UseWpfDisplaySurface"] = value;
+            }
+        }
     }
 }
