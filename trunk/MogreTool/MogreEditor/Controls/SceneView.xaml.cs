@@ -59,24 +59,6 @@ namespace Mogitor.Controls
             e.Handled = true;
         }
 
-        void treeControl_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            //TreeViewItem treeItem = e.Source as TreeViewItem;
-            //if (treeItem == null)
-            //    return;
-
-            //Item item = treeItem.Header as Item;
-            //if (item == null)
-            //    return;
-
-            //BaseEditor editor = MogitorsRoot.Instance.FindObject(item.Name, 0);
-            //if (editor == null)
-            //    return;
-
-            //this.treeControl.ContextMenu.IsOpen = true;
-            //e.Handled = true;
-        }
-
         void treeControl_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem treeItem = e.NewValue as TreeViewItem;
@@ -101,6 +83,33 @@ namespace Mogitor.Controls
                 {
                     curEdit.IsSelected = true;
                 }
+            }
+        }
+        #endregion
+
+        #region Private Methods
+        private void treeControl_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            TreeViewItem treeItem = e.Source as TreeViewItem;
+            if (treeItem == null)
+            {
+                e.Handled = true;
+                return;
+            }
+            treeItem.Focus();
+
+            Item item = treeItem.Header as Item;
+            if (item == null)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            BaseEditor editor = MogitorsRoot.Instance.FindObject(item.Name, 0);
+            if (editor == null)
+            {
+                e.Handled = true;
+                return;
             }
         }
         #endregion
