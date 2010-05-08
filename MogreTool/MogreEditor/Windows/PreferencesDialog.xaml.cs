@@ -11,6 +11,8 @@ namespace Mogitor.Windows
         {
             InitializeComponent();
 
+            ShowInTaskbar = false;
+
             this.chkNotWpfSurface.IsChecked = !MogitorSettings.Instance.UseWpfDisplaySurface;
             this.tboxTargetFps.Text = MogitorSettings.Instance.FrameRate.ToString();
         }
