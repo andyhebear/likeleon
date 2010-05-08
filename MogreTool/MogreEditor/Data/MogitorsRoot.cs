@@ -62,10 +62,13 @@ namespace Mogitor.Data
             get { return this.isSceneModified; }
             set
             {
+                if (this.isSceneModified == value)
+                    return;
+
                 this.isSceneModified = value;
                 
-                if (this.isSceneModified && SceneModified != null)
-                    SceneModified(this, EventArgs.Empty);
+                if (IsSceneModifiedChanged != null)
+                    IsSceneModifiedChanged(this, EventArgs.Empty);
             }
         }
 
@@ -483,7 +486,7 @@ namespace Mogitor.Data
         public event EventHandler<SceneUpdatedEventArgs> SceneUpdated;
         public event EventHandler<EventArgs> SceneLoaded;
         public event EventHandler<EventArgs> SceneTerminated;
-        public event EventHandler<EventArgs> SceneModified;
+        public event EventHandler<EventArgs> IsSceneModifiedChanged;
         #endregion
     }
 }

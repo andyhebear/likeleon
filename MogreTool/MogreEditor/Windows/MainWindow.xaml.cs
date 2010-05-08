@@ -44,7 +44,7 @@ namespace Mogitor.Windows
 
             MogitorsRoot.Instance.SceneLoaded += (s, args) =>
                 {
-                    this.Title = "Mogitor - " + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                    UpdateWindowTitle();
 
                     entityView.PrepareView();
 
@@ -55,16 +55,14 @@ namespace Mogitor.Windows
                 {
                     entityView.ClearView();
 
-                    this.Title = "Mogitor";
+                    UpdateWindowTitle();
 
                     this.ogreControl.OverlayText = "Please load a Scene File...";
                 };
 
-            MogitorsRoot.Instance.SceneModified += (s, args) =>
+            MogitorsRoot.Instance.IsSceneModifiedChanged += (s, args) =>
                 {
-                    if (!MogitorsRoot.Instance.IsSceneLoaded || !MogitorsRoot.Instance.IsSceneModified)
-                        return;
-                    this.Title = "Mogitor - (*)" + MogitorsRoot.Instance.ProjectOptions.ProjectName + ".mogscene";
+                    UpdateWindowTitle();
                 };
 
 
@@ -128,6 +126,18 @@ namespace Mogitor.Windows
                 frameCounter = 0;
                 this.fpsLabel.Text = string.Format("{0:0.00}", this.frameRate);
             }
+        }
+
+        private void UpdateWindowTitle()
+        {
+            string title = "Mogitor";
+            if (MogitorsRoot.Instance.IsSceneLoaded)
+            {
+                title += " - " + MogitorsRoot.Instance.ProjectOptions.ProjectName;
+                if (MogitorsRoot.Instance.IsSceneModified)
+                    title += "*";
+            }
+            this.Title = title;
         }
         #endregion
     }
