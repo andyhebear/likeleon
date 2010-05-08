@@ -3,6 +3,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using Mogre;
 using Mogitor.Data;
+using System.Windows.Controls;
 
 namespace Mogitor.Windows
 {
@@ -15,7 +16,7 @@ namespace Mogitor.Windows
         {
             InitializeComponent();
 
-            this.sceneView.ApplyTemplate();
+            this.sceneView.MainWindow = this;
             this.propertiesView.ApplyTemplate();
             this.entityView.ApplyTemplate();
 
@@ -129,10 +130,5 @@ namespace Mogitor.Windows
             }
         }
         #endregion
-
-        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-        {
-
-        }
     }
 }

@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/BaseResources.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/MenuResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

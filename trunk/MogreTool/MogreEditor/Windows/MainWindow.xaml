@@ -24,6 +24,12 @@
                         CanExecute="CommandBinding_SaveAsCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.Exit}"
                         Executed="CommandBinding_ExitCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.EditDelete}"
+                        Executed="CommandBinding_EditDeleteCmdExecuted"
+                        CanExecute="CommandBinding_EditDeleteCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.EditRename}"
+                        Executed="CommandBinding_EditRenameCmdExecuted"
+                        CanExecute="CommandBinding_EditRenameCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.Settings}"
                         Executed="CommandBinding_SettingsCmdExecuted"
                         CanExecute="CommandBinding_SettingsCmdCanExecute" />
@@ -50,7 +56,7 @@
                     Command="{x:Static local:CustomCommands.Exit}" />
     </Window.InputBindings>
     <DockPanel>
-        <MogitorWindows:MainWindowMenu DockPanel.Dock="Top"/>
+        <MogitorWindows:MainWindowMenu x:Name="mainWindowMenu" DockPanel.Dock="Top"/>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right">
                 <ProgressBar x:Name="statusProgress" Height="15" Width="100" />

@@ -61,6 +61,9 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -79,6 +82,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\SceneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\MenuResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindowMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,7 +120,9 @@
     <Compile Include="Controls\OgreImage.Resources.cs" />
     <Compile Include="Controls\PropertiesView.cs">
     </Compile>
-    <Compile Include="Controls\SceneView.cs" />
+    <Compile Include="Controls\SceneView.xaml.cs">
+      <DependentUpon>SceneView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\EditorToolToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
@@ -213,6 +226,10 @@
     <Resource Include="Resources\Icons\scale.png" />
     <Resource Include="Resources\Icons\select.png" />
     <Resource Include="Resources\Icons\translate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\editdelete.png" />
+    <Resource Include="Resources\Icons\editrename.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
