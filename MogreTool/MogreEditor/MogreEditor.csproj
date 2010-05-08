@@ -201,6 +201,10 @@
       <Project>{B612CB51-8D9B-4BEB-AD8B-D03FAAF52B52}</Project>
       <Name>MogreWpf.Interop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UIControls\UIControls.csproj">
+      <Project>{A3082956-9EE4-4B35-9B4E-B07D0C4C8B56}</Project>
+      <Name>UIControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\ogscene.png" />
