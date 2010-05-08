@@ -76,8 +76,8 @@
                             <ScaleTransform x:Key="transform" ScaleX="1" ScaleY="{Binding Path=ScaleX, RelativeSource={RelativeSource Self}}"/>
                         </DockPanel.Resources>
                         <TextBox DockPanel.Dock="Top"
-                                   Margin="3,2"
-                                   ToolTip="Entity View Search"
+                                 Margin="3,2"
+                                 ToolTip="Entity View Search"
                                  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Filter, UpdateSourceTrigger=PropertyChanged}"/>
                         <Slider DockPanel.Dock="Top"
                                 Margin="3,1" Minimum="1" Maximum="10"
@@ -125,33 +125,6 @@
                             <swf:PropertyGrid x:Name="PART_PropertyGrid" />
                         </WindowsFormsHost>
                     </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    <!-- Tree View Template -->
-    <Style TargetType="{x:Type MogitorControls:SceneView}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type MogitorControls:SceneView}">
-                    <TreeView x:Name="PART_TreeControl">
-                        <TreeView.Resources>
-                            <Style TargetType="TreeViewItem">
-                                <Setter Property="HeaderTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="1">
-                                                <Image Source="{Binding Path=Icon}" Height="16" />
-                                                <TextBlock Text="{Binding Path=Name}" Margin="5,0" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="IsExpanded" Value="True" />
-                            </Style>
-                        </TreeView.Resources>
-                    </TreeView>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

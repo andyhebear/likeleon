@@ -133,6 +133,30 @@ namespace Mogitor.Windows
         }
         #endregion
 
+        #region Edit - Delete
+        public void CommandBinding_EditDeleteCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(sender.ToString());
+        }
+
+        public void CommandBinding_EditDeleteCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (MogitorsRoot.Instance.Selected != null);
+        }
+        #endregion
+
+        #region Edit - Rename
+        public void CommandBinding_EditRenameCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show(sender.ToString());
+        }
+
+        public void CommandBinding_EditRenameCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (MogitorsRoot.Instance.Selected != null);
+        }
+        #endregion
+
         #region Settings
         private void CommandBinding_SettingsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {

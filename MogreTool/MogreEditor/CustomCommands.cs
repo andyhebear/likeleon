@@ -12,6 +12,8 @@ namespace Mogitor
         {
             exitCommand = new RoutedCommand("Exit", typeof(CustomCommands));
             aboutCommand = new RoutedCommand("About", typeof(CustomCommands));
+            editDeleteCommand = new RoutedCommand("EditDelete", typeof(CustomCommands));
+            editRenameCommand = new RoutedCommand("EditRename", typeof(CustomCommands));
             settingsCommand = new RoutedCommand("Settings", typeof(CustomCommands));
             preferencesCommand = new RoutedCommand("Preferences", typeof(CustomCommands));
             selectCommand = new RoutedCommand("Select", typeof(CustomCommands));
@@ -28,6 +30,16 @@ namespace Mogitor
         public static RoutedCommand About
         {
             get { return aboutCommand; }
+        }
+
+        public static RoutedCommand EditDelete
+        {
+            get { return editDeleteCommand; }
+        }
+
+        public static RoutedCommand EditRename
+        {
+            get { return editRenameCommand; }
         }
 
         public static RoutedCommand Settings
@@ -62,6 +74,8 @@ namespace Mogitor
 
         static readonly RoutedCommand exitCommand;
         static readonly RoutedCommand aboutCommand;
+        static readonly RoutedCommand editDeleteCommand;
+        static readonly RoutedCommand editRenameCommand;
         static readonly RoutedCommand settingsCommand;
         static readonly RoutedCommand preferencesCommand;
         static readonly RoutedCommand selectCommand;
