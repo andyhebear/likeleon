@@ -24,7 +24,7 @@ namespace Mogitor.Windows
         }
         #endregion
 
-        #region Private Methods
+        #region Private Fields
         private string lastDirPath = MogitorsSystem.Instance.ProjectsDirectory;
         #endregion
 
@@ -32,6 +32,8 @@ namespace Mogitor.Windows
         public SettingsDialog(ProjectOptions options)
         {
             InitializeComponent();
+
+            ShowInTaskbar = false;
 
             Options = options;
 

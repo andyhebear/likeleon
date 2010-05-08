@@ -311,10 +311,13 @@ namespace Mogitor.Data
 
         protected override void SetNameImpl(string name)
         {
-            if (name == Name)
+            if (name == this.name)
                 return;
 
             name = name.Trim();
+
+            if (name.Length == 0)
+                return;
 
             if (system.DisplayMessageDialog("Renaming a Scene Manager requires Save and Reload of the Scene.\nDo you want to continue?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {

@@ -74,6 +74,8 @@ namespace Mogitor.Data
             if (MogitorsRoot.Instance.FindObject(name, 0) != null)
                 return;
 
+            MogitorsSystem.Instance.SetTreeItemText(TreeItemHandle, name);
+
             if (IsLoaded)
             {
                 UnLoadAllChildren();
@@ -83,6 +85,8 @@ namespace Mogitor.Data
                 RegisterObjectName();
                 Load();
                 LoadAllChildren();
+                if (IsSelected)
+                    ShowBoundingBox(true);
             }
             else
             {

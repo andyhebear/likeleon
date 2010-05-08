@@ -400,12 +400,11 @@ namespace Mogitor.Data
 
             if (MogitorsRoot.Instance.FindObject(name, 0) == null)
             {
+                system.SetTreeItemText(TreeItemHandle, name);
                 UnRegisterObjectName();
                 this.name = name;
                 RegisterObjectName();
             }
-
-            OnPropertyChanged("Name");
 
             Modified = true;
         }
