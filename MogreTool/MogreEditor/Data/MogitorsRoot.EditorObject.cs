@@ -221,6 +221,51 @@ namespace Mogitor.Data
 
             return vPos;
         }
+
+        public void DestroyEditorObject(BaseEditor obj, bool removeFromTreeList)
+        {
+            // Index0 Viewport can not be deleted
+            if (obj.EditorType == EditorType.Viewport)
+            {
+                ViewportEditor viewport = obj as ViewportEditor;
+
+                if (viewport.ViewportIndex == 1)
+                {
+                    MogitorsSystem.Instance.DisplayMessageDialog("Can not delete the main viewport!!", System.Windows.MessageBoxButton.OK);
+                    return;
+                }
+
+                if (ActiveViewport == viewport)
+                {
+                    foreach (var vt in this.namesByType[(int)EditorType.Viewport])
+                    {
+                        if (vt.Value == obj)
+                            continue;
+
+                        ActiveViewport = vt.Value as ViewportEditor;
+                        break;
+                    }
+                }
+            }
+
+            if (this.selectedEditor == obj)
+            {
+                obj.IsSelected = false;
+                obj.IsHighLighted = false;
+            }
+
+            if (removeFromTreeList)
+            {
+                this.system.DeleteTreeItem(obj.TreeItemHandle);
+            }
+
+            if (obj.Parent != null)
+                obj.Parent.RemoveChild(obj.Name);
+
+            obj.FactoryDynamic.DestroyObject(obj);
+
+            IsSceneModified = true;
+        }
         #endregion
 
         #region Private Methods

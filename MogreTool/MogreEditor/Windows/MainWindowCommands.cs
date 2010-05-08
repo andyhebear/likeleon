@@ -136,12 +136,12 @@ namespace Mogitor.Windows
         #region Edit - Delete
         public void CommandBinding_EditDeleteCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(sender.ToString());
+            MogitorsRoot.Instance.ActiveViewport.DeleteSelectedObject(false);
         }
 
         public void CommandBinding_EditDeleteCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (MogitorsRoot.Instance.Selected != null);
+            e.CanExecute = (MogitorsRoot.Instance.Selected != null && MogitorsRoot.Instance.Selected.Supports(EditFlags.CanDelete));
         }
         #endregion
 

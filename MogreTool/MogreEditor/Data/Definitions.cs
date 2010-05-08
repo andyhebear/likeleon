@@ -43,6 +43,26 @@ namespace Mogitor.Data
         public const uint Movable = 2;
     }
 
+    /// <summary>
+    /// Capabilities enumeration for editor class(es)
+    /// </summary>
+    enum EditFlags
+    {
+        None = 0,
+        CanMove = 1,
+        CanScale = 2,
+        CanRotate = 4,
+        CanDelete = 8,
+        CanClone = 16,
+        CanFocus = 32,
+        CanDrag = 64,
+        CanDrop = 128,
+        CanUndo = 256,
+        CanuseMaterial = 512,
+        CanAcceptCopy = 1024,
+        CanAcceptPaste = 2048
+    }
+
     class EditorObjectFactoryMap : Dictionary<string, BaseEditorFactory>
     {
     }

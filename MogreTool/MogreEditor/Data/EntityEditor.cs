@@ -201,6 +201,8 @@ namespace Mogitor.Data
         public EntityEditorFactory()
         {
             TypeName = "Entity Object";
+            Capabilities = EditFlags.CanMove | EditFlags.CanScale | EditFlags.CanRotate | EditFlags.CanClone | EditFlags.CanDelete | 
+                EditFlags.CanFocus | EditFlags.CanDrag | EditFlags.CanUndo | EditFlags.CanuseMaterial | EditFlags.CanAcceptCopy;
         }
 
         public override BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)

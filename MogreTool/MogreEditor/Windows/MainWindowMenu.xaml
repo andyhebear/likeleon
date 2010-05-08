@@ -13,8 +13,8 @@
             <StaticResourceExtension ResourceKey="menuOpen" />
             <StaticResourceExtension ResourceKey="menuSave" />
             <StaticResourceExtension ResourceKey="menuSaveAs" />
-            <Separator />
             <StaticResourceExtension ResourceKey="menuClose" />
+            <Separator />
             <StaticResourceExtension ResourceKey="menuExit" />
         </MenuItem>
         <MenuItem Header="_Edit">

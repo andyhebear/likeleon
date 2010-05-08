@@ -217,6 +217,14 @@ namespace Mogitor.Data
                 }
             }
         }
+
+        public override bool IsNodeType
+        {
+            get
+            {
+                return true;
+            }
+        }
         #endregion
     }
 
@@ -225,6 +233,8 @@ namespace Mogitor.Data
         public NodeEditorFactory()
         {
             TypeName = "Node Object";
+            Capabilities = EditFlags.CanMove | EditFlags.CanRotate | EditFlags.CanScale | EditFlags.CanFocus | EditFlags.CanDelete |
+                EditFlags.CanDrag | EditFlags.CanDrop | EditFlags.CanUndo | EditFlags.CanAcceptCopy | EditFlags.CanAcceptPaste;
         }
 
         public override EditorType EditorType
