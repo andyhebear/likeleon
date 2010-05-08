@@ -165,6 +165,28 @@ namespace Mogitor.Data
         }
 
         protected virtual Mogre.AxisAlignedBox GetAABB() { return Mogitor.MogreX.AxisAlignedBox.Null; }
+
+        public virtual bool IsNodeType
+        {
+            get { return false; }
+        }
+
+        public virtual bool IsHighLighted
+        {
+            get { return this.isHighLighted; }
+            set
+            {
+                if (this.isHighLighted == value)
+                    return;
+
+                this.isHighLighted = value;
+
+                if (this.highlightNode == null)
+                    CreateBoundingBox();
+
+                this.highlightNode.SetVisible(this.isHighLighted);
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -252,6 +274,11 @@ namespace Mogitor.Data
         {
             system.SelectTreeItem(TreeItemHandle);
         }
+
+        public bool Supports(EditFlags flags)
+        {
+            return (FactoryDynamic.Capabilities & flags) != 0;
+        }
         #endregion
 
         #region Protected Methods
@@ -321,6 +348,7 @@ namespace Mogitor.Data
         private Mogre.OBBoxRenderable oBBoxRenderable;
         private Mogre.OBBoxRenderable highlightRenderable;
         private Mogre.AxisAlignedBox oBBoxData;
+        protected bool isHighLighted;
         #endregion
 
         #region Properties
@@ -447,6 +475,7 @@ namespace Mogitor.Data
         {
             InstanceCount = 0;
             TypeName = "";
+            Capabilities = EditFlags.None;
         }
 
         #region Properties
@@ -466,6 +495,12 @@ namespace Mogitor.Data
         {
             get;
             set; 
+        }
+
+        public EditFlags Capabilities
+        {
+            get;
+            protected set;
         }
         #endregion
     }

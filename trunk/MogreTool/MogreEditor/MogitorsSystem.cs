@@ -243,6 +243,19 @@ namespace Mogitor
             Uri absoluteUri;
             return !Uri.TryCreate(path, UriKind.Absolute, out absoluteUri);
         }
+
+        public void DeleteTreeItem(object treeItemHandle)
+        {
+            TreeViewItem delItem = treeItemHandle as TreeViewItem;
+            if (delItem == null)
+                return;
+
+            TreeViewItem parent = delItem.Parent as TreeViewItem;
+            if (parent == null)
+                return;
+
+            parent.Items.Remove(delItem);
+        }
         #endregion
 
         #region Private Methods

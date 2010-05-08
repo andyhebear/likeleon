@@ -334,6 +334,14 @@ namespace Mogitor.Data
         public override void ShowBoundingBox(bool bShow)
         {
         }
+
+        public override bool IsNodeType
+        {
+            get
+            {
+                return true;
+            }
+        }
         #endregion
     }
 
@@ -342,6 +350,7 @@ namespace Mogitor.Data
         public SceneMangerEditorFactory()
         {
             TypeName = "OctreeSceneManager";
+            Capabilities = EditFlags.CanDrop | EditFlags.CanUndo | EditFlags.CanAcceptPaste;
         }
 
         public override EditorType EditorType

@@ -658,6 +658,40 @@ namespace Mogitor.Data
             Instance.EditorTool = EditorTools.Select;
             isSettingPos = false;
         }
+
+        public virtual void DeleteSelectedObject(bool silent)
+        {
+            BaseEditor selected = MogitorsRoot.Instance.Selected;
+            if (selected == null || !selected.Supports(EditFlags.CanDelete))
+                return;
+
+            bool cont = false;
+            if (!silent)
+            {
+                string strWarn;
+                if (selected.IsNodeType)
+                    strWarn = "Are you sure want to delete " + selected.Name + " and all of its children?";
+                else if (selected.EditorType == EditorType.Multisel)
+                    strWarn = "Are you sure want to delete all selected objects?";
+                else
+                    strWarn = "Are you sure want to delete " + selected.Name + "?";
+
+                if (MogitorsSystem.Instance.DisplayMessageDialog(strWarn, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    cont = true;
+            }
+            else
+                cont = true;
+
+            if (!cont)
+                return;
+
+            BaseEditor delEd = selected;
+
+            if (delEd.EditorType == EditorType.Multisel)
+                throw new System.NotImplementedException("Delete MultiSelEditor");
+            else
+                MogitorsRoot.Instance.DestroyEditorObject(delEd, true);
+        }
         #endregion
 
         #region Constructors
@@ -675,6 +709,7 @@ namespace Mogitor.Data
         public ViewportEditorFactory()
         {
             TypeName = "Viewport Object";
+            Capabilities = EditFlags.CanDelete | EditFlags.CanUndo;
         }
 
         public override EditorType EditorType

@@ -298,6 +298,29 @@ namespace Mogitor.Data
             if (this.bBoxNode != null)
                 this.bBoxNode.SetVisible(bShow && (MogitorsRoot.Instance.ActiveViewport.CameraEditor != this));
         }
+
+        public override bool IsHighLighted
+        {
+            get
+            {
+                return base.IsHighLighted;
+            }
+            set
+            {
+                if (this.isHighLighted == value)
+                    return;
+
+                if (MogitorsRoot.Instance.ActiveViewport.CameraEditor == this)
+                    return;
+
+                this.isHighLighted = value;
+
+                if (this.highlightNode == null)
+                    CreateBoundingBox();
+
+                this.highlightNode.SetVisible(this.isHighLighted);
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -326,6 +349,8 @@ namespace Mogitor.Data
         public CameraEditorFactory()
         {
             TypeName = "Camera Object";
+            Capabilities = EditFlags.CanMove | EditFlags.CanRotate | EditFlags.CanClone | EditFlags.CanDelete | 
+                EditFlags.CanFocus | EditFlags.CanDrag | EditFlags.CanUndo | EditFlags.CanAcceptCopy;
         }
 
         public override EditorType EditorType
