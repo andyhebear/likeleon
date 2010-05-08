@@ -4,8 +4,8 @@
     xmlns:local="clr-namespace:Mogitor">
     <TreeView x:Name="treeControl"
               MouseRightButtonDown="treeControl_MouseRightButtonDown"
-              MouseRightButtonUp="treeControl_MouseRightButtonUp"
-              SelectedItemChanged="treeControl_SelectedItemChanged">
+              SelectedItemChanged="treeControl_SelectedItemChanged" 
+              ContextMenuOpening="treeControl_ContextMenuOpening">
         <TreeView.Resources>
             <Style TargetType="TreeViewItem">
                 <Setter Property="HeaderTemplate">
@@ -20,12 +20,9 @@
                 </Setter>
                 <Setter Property="IsExpanded" Value="True" />
             </Style>
-            <Menu x:Key="contextMenu">
-                
-            </Menu>
         </TreeView.Resources>
         <TreeView.ContextMenu>
-            <ContextMenu >
+            <ContextMenu>
                 <ContextMenu.CommandBindings>
                     <CommandBinding Command="{x:Static local:CustomCommands.EditDelete}"
                             Executed="CommandBinding_EditDeleteCmdExecuted"
