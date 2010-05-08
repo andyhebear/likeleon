@@ -214,14 +214,20 @@ namespace Mogitor.Controls
             if (attach)
             {
                 if (this.timer != null)
+                {
                     this.timer.Tick += OnRender;
+                    this.timer.Start();
+                }
                 else
                     CompositionTarget.Rendering += OnRender;
             }
             else
             {
                 if (this.timer != null)
+                {
                     this.timer.Tick -= OnRender;
+                    this.timer.Stop();
+                }
                 else
                     CompositionTarget.Rendering -= OnRender;
             }
@@ -381,8 +387,7 @@ namespace Mogitor.Controls
                 if (this.timer == null)
                     this.timer = new DispatcherTimer();
 
-                this.timer.Interval = new TimeSpan(1000 / newFrameRate.Value);
-                this.timer.Start();
+                this.timer.Interval = new TimeSpan(10000000 / newFrameRate.Value);
             }
 
             if (wasAttached)

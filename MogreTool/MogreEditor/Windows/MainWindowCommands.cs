@@ -215,7 +215,11 @@ namespace Mogitor.Windows
         #region Preferences
         private void CommandBinding_PreferencesCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("awefawefaweF");
+            PreferencesDialog dlg = new PreferencesDialog();
+            if (dlg.ShowDialog() == true)
+            {
+                this.ogreControl.FrameRate = MogitorSettings.Instance.UseWpfDisplaySurface? (int?)null : MogitorSettings.Instance.FrameRate;
+            }
         }
         #endregion
 
