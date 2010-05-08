@@ -148,12 +148,22 @@ namespace Mogitor.Windows
         #region Edit - Rename
         public void CommandBinding_EditRenameCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show(sender.ToString());
+            BaseEditor obj = MogitorsRoot.Instance.Selected;
+            if (obj == null)
+                return;
+
+            InputDialog dlg = new InputDialog("Enter a new name", "Name : ", obj.Name);
+            if (dlg.ShowDialog() == true)
+            {
+                string text = dlg.InputText.Trim();
+                if (text != obj.Name)
+                    obj.Name = text;
+            }
         }
 
         public void CommandBinding_EditRenameCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (MogitorsRoot.Instance.Selected != null);
+            e.CanExecute = (MogitorsRoot.Instance.Selected != null && MogitorsRoot.Instance.Selected.EditorType != EditorType.Multisel);
         }
         #endregion
 

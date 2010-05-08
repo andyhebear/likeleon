@@ -256,6 +256,19 @@ namespace Mogitor
 
             parent.Items.Remove(delItem);
         }
+
+        public void SetTreeItemText(object treeItemHandle, string newName)
+        {
+            TreeViewItem renameItem = treeItemHandle as TreeViewItem;
+            if (renameItem == null)
+                return;
+
+            SceneView.Item item = renameItem.Header as SceneView.Item;
+            if (item == null)
+                return;
+
+            item.Name = newName;
+        }
         #endregion
 
         #region Private Methods

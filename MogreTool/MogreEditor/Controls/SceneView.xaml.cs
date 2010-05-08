@@ -14,12 +14,13 @@ namespace Mogitor.Controls
         }
 
         #region Inner Classes
-        public class Item
+        public class Item : DependencyObject
         {
+            private string name;
             public string Name
             {
-                get;
-                private set;
+                get { return (string)GetValue(NameProperty); }
+                set { SetValue(NameProperty, value); }
             }
 
             public string Icon
@@ -33,6 +34,9 @@ namespace Mogitor.Controls
                 Name = name;
                 Icon = icon;
             }
+
+            public static readonly DependencyProperty NameProperty =
+                DependencyProperty.Register("Name", typeof(string), typeof(Item), new UIPropertyMetadata(null));
         }
         #endregion
 
