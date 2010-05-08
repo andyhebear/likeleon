@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:MogitorControls="clr-namespace:Mogitor.Controls"
-    xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms">
+    xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    xmlns:UIControls="clr-namespace:UIControls;assembly=UIControls">
     
     <!-- Log Control Template -->
     <Style TargetType="{x:Type MogitorControls:LogControl}">
@@ -75,7 +76,7 @@
                         <DockPanel.Resources>
                             <ScaleTransform x:Key="transform" ScaleX="1" ScaleY="{Binding Path=ScaleX, RelativeSource={RelativeSource Self}}"/>
                         </DockPanel.Resources>
-                        <TextBox DockPanel.Dock="Top"
+                        <UIControls:SearchTextBox DockPanel.Dock="Top"
                                  Margin="3,2"
                                  ToolTip="Entity View Search"
                                  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Filter, UpdateSourceTrigger=PropertyChanged}"/>
