@@ -31,6 +31,9 @@
             <StaticResourceExtension ResourceKey="menuRotate" />
             <StaticResourceExtension ResourceKey="menuScale" />
         </MenuItem>
+        <MenuItem Header="_Messages">
+            <StaticResourceExtension ResourceKey="menuClearLog" />
+        </MenuItem>
         <MenuItem Header="_Camera">
             <MenuItem Header="_Polygon Mode"
                       ToolTip="Change Camera Polygon Mode"

@@ -313,5 +313,12 @@ namespace Mogitor.Windows
             e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
         }
         #endregion
+
+        #region ClearLog
+        private void CommandBinding_ClearLogCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            Dispatcher.Invoke((System.Action)delegate() { this.logBuffer.Clear(); });
+        }
+        #endregion
     }
 }

@@ -63,6 +63,8 @@
         <CommandBinding Command="{x:Static local:CustomCommands.CamModePoints}"
                         Executed="CommandBinding_CamModePointsCmdExecuted"
                         CanExecute="CommandBinding_CamModePointsCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.ClearLog}"
+                        Executed="CommandBinding_ClearLogCmdExecuted" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="F4"

@@ -22,6 +22,7 @@ namespace Mogitor
         static readonly RoutedCommand camModeSolidCommand;
         static readonly RoutedCommand camModeWireframeCommand;
         static readonly RoutedCommand camModePointsCommand;
+        static readonly RoutedCommand clearLogCommand;
 
         static CustomCommands()
         {
@@ -38,6 +39,7 @@ namespace Mogitor
             camModeSolidCommand = new RoutedCommand("CamModeSolid", typeof(CustomCommands));
             camModeWireframeCommand = new RoutedCommand("CamModeWireframe", typeof(CustomCommands));
             camModePointsCommand = new RoutedCommand("CamModePoints", typeof(CustomCommands));
+            clearLogCommand = new RoutedCommand("ClearLog", typeof(CustomCommands));
         }
 
         public static RoutedCommand Exit
@@ -103,6 +105,11 @@ namespace Mogitor
         public static RoutedCommand CamModePoints
         {
             get { return camModePointsCommand; }
+        }
+
+        public static RoutedCommand ClearLog
+        {
+            get { return clearLogCommand; }
         }
     }
 }
