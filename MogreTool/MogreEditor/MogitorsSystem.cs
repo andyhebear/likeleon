@@ -203,8 +203,8 @@ namespace Mogitor
         public bool SetProperty(object caller)
         {
             BaseEditor selected = MogitorsRoot.Instance.Selected;
-            if (selected != null && selected != caller && selected.Parent != caller)
-                return false;
+            //if (selected != null && selected != caller && selected.Parent != caller)
+            //    return false;
             this.propsControl.Selected = caller;
             return true;
         }
