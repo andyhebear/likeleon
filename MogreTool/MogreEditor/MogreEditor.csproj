@@ -140,6 +140,7 @@
     <Compile Include="Controls\SceneView.xaml.cs">
       <DependentUpon>SceneView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToCollapsedVisibilityConverter.cs" />
     <Compile Include="Converters\DoubleToScaleStringConverter.cs" />
     <Compile Include="Converters\EditorToolToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />

@@ -9,10 +9,11 @@ using System.Xml;
 using System.Collections;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace Mogitor.Data
 {
-    partial class MogitorsRoot
+    partial class MogitorsRoot : INotifyPropertyChanged
     {
         #region Fields
         /// <summary>
@@ -23,6 +24,7 @@ namespace Mogitor.Data
         private Mogre.SceneManager sceneManager;
         private readonly IList<EditorType> objectDisplayOrder = new List<EditorType>();
         private bool isSceneModified;
+        private bool isSceneLoaded;
         #endregion
 
         #region Public Properties
@@ -53,8 +55,12 @@ namespace Mogitor.Data
 
         public bool IsSceneLoaded
         {
-            get;
-            private set;
+            get { return isSceneLoaded; }
+            private set
+            {
+                isSceneLoaded = value;
+                OnPropertyChanged("IsSceneLoaded");
+            }
         }
 
         public bool IsSceneModified
@@ -495,6 +501,14 @@ namespace Mogitor.Data
         {
             IsClearScreenNeeded = clear;
         }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
         #endregion
 
         #region Events
@@ -502,6 +516,7 @@ namespace Mogitor.Data
         public event EventHandler<EventArgs> SceneLoaded;
         public event EventHandler<EventArgs> SceneTerminated;
         public event EventHandler<EventArgs> IsSceneModifiedChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }
 }
