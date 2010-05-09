@@ -19,13 +19,13 @@
                                 <TextBlock x:Name="tboxMessage" Text="{Binding Path=Message}" />
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding Path=Level}" Value="1">
-                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="DarkGray" />
+                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="RoyalBlue" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Level}" Value="2">
                                         <Setter TargetName="tboxMessage" Property="Foreground" Value="Black" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Level}" Value="3">
-                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="Red" />
+                                        <Setter TargetName="tboxMessage" Property="Foreground" Value="Tomato" />
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>

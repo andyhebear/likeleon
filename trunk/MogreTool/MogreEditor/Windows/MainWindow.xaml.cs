@@ -48,14 +48,16 @@ namespace Mogitor.Windows
 
                     this.entityView.PrepareView();
                     this.materialView.PrepareView();
+                    this.templateView.PrepareView();
 
                     this.ogreControl.OverlayText = "";
                 };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
                 {
-                    entityView.ClearView();
-                    materialView.DestroyScene();
+                    this.entityView.ClearView();
+                    this.materialView.DestroyScene();
+                    this.templateView.DestroyScene();
 
                     UpdateWindowTitle();
 
@@ -108,7 +110,7 @@ namespace Mogitor.Windows
             else
             {
                 this.statusString.Text = "Resource Loaded";
-                this.statusProgress.Visibility = Visibility.Hidden;
+                this.statusProgress.Visibility = Visibility.Collapsed;
             }
         }
 
