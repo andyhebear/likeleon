@@ -136,9 +136,8 @@ namespace Mogitor.Controls
                 if (this.materialEditor != null && this.materialEditor.Load())
                 {
                     this.materialEditor.TreeItemHandle = treeItem;
-                    this.materialEditor.PropertyLevel = level;
-                    this.materialEditor.PropertyId = id;
-                    this.materialEditor.PropertiesTarget.IsSelected = true;
+                    this.materialEditor.SetPropertiesLevel(level, id);
+                    this.materialEditor.IsSelected = true;
                 }
             }
         }

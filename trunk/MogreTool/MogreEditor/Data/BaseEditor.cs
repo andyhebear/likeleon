@@ -149,7 +149,7 @@ namespace Mogitor.Data
             if (isSelected)
             {
                 MogitorsRoot.Instance.Selected = this;
-                system.SetProperty(this);
+                system.SetProperty(Property);
             }
             else
             {
@@ -157,6 +157,11 @@ namespace Mogitor.Data
                 system.ClearPropertiesView();
             }
             ShowBoundingBox(bSelected);
+        }
+
+        public virtual object Property
+        {
+            get { return this; }
         }
 
         public virtual void ShowBoundingBox(bool bShow)

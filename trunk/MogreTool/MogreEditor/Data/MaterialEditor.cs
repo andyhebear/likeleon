@@ -7,22 +7,23 @@ namespace Mogitor.Data
 {
     class MaterialEditor : BaseEditor
     {
+        #region Fields
+        private object property;
+        private int propertyLevel;
+        private int propertyId;
+        private Mogre.MaterialPtr handle;
+        private static readonly MaterialEditorFactory materialEditorFactory = new MaterialEditorFactory();
+        #endregion
+
         #region Properties
         public int PropertyLevel
         {
-            get;
-            set;
+            get { return this.propertyLevel; }
         }
 
         public int PropertyId
         {
-            get;
-            set;
-        }
-
-        public BaseEditor PropertiesTarget
-        {
-            get { return this; }
+            get { return this.propertyId; }
         }
         #endregion
 
@@ -108,11 +109,56 @@ namespace Mogitor.Data
                 return null;
             }
         }
+
+        public override object Property
+        {
+            get { return this.property; }
+        }
         #endregion
 
-        #region Fields
-        private Mogre.MaterialPtr handle;
-        private static readonly MaterialEditorFactory materialEditorFactory = new MaterialEditorFactory();
+        #region Public Methods
+        public void SetPropertiesLevel(int level, int id)
+        {
+            this.propertyLevel = level;
+            this.propertyId = id;
+
+            if (this.propertyLevel == 0)
+            {
+                this.property = this;
+            }
+            else if (this.propertyLevel == 1)
+            {
+                ushort techId = (ushort)(this.propertyLevel >> 8);
+                this.property = this.handle.GetTechnique(techId);
+            }
+            else if (this.propertyLevel == 2)
+            {
+                ushort techId = (ushort)(this.propertyLevel >> 8);
+                ushort passId = (ushort)(this.propertyId & 0xFF);
+                this.property = this.handle.GetTechnique(techId).GetPass(passId);
+            }
+            else
+            {
+                this.property = null;
+            }
+        }
+        #endregion
+
+        #region Inner Classes
+        //class TechniqueProperties
+        //{
+        //    public string Material { get; private set; }
+        //    public int Technique { get; private set; }
+        //    public string Name { get; private set;  }
+        //    public string Scheme { get; private set; }
+        //    public ushort LodIndex { get; private set; }
+        //    public string ShadowRecMat { get; private set; }
+        //    public string ShadowCastMat { get; private set; }
+        //}
+
+        //class PassProperies
+        //{
+        //}
         #endregion
     }
 
