@@ -141,6 +141,18 @@ namespace Mogitor.Windows
             }
             this.Title = title;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MogitorsRoot.Instance.TerminateScene())
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
         #endregion
     }
 }
