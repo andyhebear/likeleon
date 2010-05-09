@@ -79,7 +79,7 @@
             <Image Source="../Resources/Icons/editrename.png" />
         </MenuItem.Icon>
     </MenuItem>
-    <MenuItem Header="_Settings"
+    <MenuItem Header="Project _Settings"
               Command="{x:Static local:CustomCommands.Settings}"
               ToolTip="Mogitor scene Settings"
               x:Key="menuSettings"
