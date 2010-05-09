@@ -49,6 +49,8 @@ namespace Mogitor.Windows
                     this.entityView.PrepareView();
                     this.materialView.PrepareView();
                     this.templateView.PrepareView();
+
+                    this.statusString.Text = "Scene loaded";
                 };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
@@ -58,6 +60,8 @@ namespace Mogitor.Windows
                     this.templateView.DestroyScene();
 
                     UpdateWindowTitle();
+
+                    this.statusString.Text = "Scene terminated";
                 };
 
             MogitorsRoot.Instance.IsSceneModifiedChanged += (s, args) =>
