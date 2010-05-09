@@ -86,6 +86,9 @@
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
                             <ad:DockableContent Title="Templates"></ad:DockableContent>
                             <ad:DockableContent Title="Scene">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/scene.png" Width="16" />
+                                </ad:DockableContent.Icon>
                                 <MogitorControls:SceneView x:Name="sceneView" />
                             </ad:DockableContent>
                             <ad:DockableContent Title="Materials"></ad:DockableContent>
@@ -100,12 +103,19 @@
                         </ad:DocumentPane>
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
                             <ad:DockableContent Title="Properties">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/preferences.png" Width="16" />
+                                </ad:DockableContent.Icon>
                                 <MogitorControls:PropertiesView x:Name="propertiesView" />
                             </ad:DockableContent>
                             <ad:DockableContent Title="Meshes">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/entity.png" Width="16" />
+                                </ad:DockableContent.Icon>
                                 <MogitorControls:EntityViewControl x:Name="entityView"/>
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Objects"></ad:DockableContent>
+                            <ad:DockableContent Title="Objects">
+                            </ad:DockableContent>
                         </ad:DockablePane>
                     </ad:ResizingPanel>
                     <ad:DockablePane ad:ResizingPanel.ResizeHeight="150">
