@@ -46,6 +46,17 @@ namespace Mogitor.Controls
             // because our TemplateParts become valid *after* OnApplyTemplate called.
             initialized = false;
             this.Loaded += OgreControl_Loaded;
+
+            MogitorsRoot.Instance.SceneLoaded += (s, args) =>
+                {
+                    OverlayText = "";
+                };
+
+            MogitorsRoot.Instance.SceneTerminated += (s, args) =>
+                {
+                    this.ogreImage.ReInitRenderTarget();
+                    OverlayText = "Please load a Scene File...";
+                };
         }
         #endregion
 
@@ -66,9 +77,10 @@ namespace Mogitor.Controls
 
             this.ogreImage.Initialized += (s, e) =>
             {
+                this.initialized = true;
+                OverlayText = "Please load a Scene File...";
                 if (OgreInitialized != null)
                     OgreInitialized(s, e);
-                this.initialized = true;
             };
 
             this.ogreImage.ResourceLoadItemProgress += (s, e) =>

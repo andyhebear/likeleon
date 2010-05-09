@@ -159,9 +159,6 @@ namespace Mogitor.Data
             ActiveViewport = null;
             IsSceneLoaded = false;
 
-            if (SceneTerminated != null)
-                SceneTerminated(this, EventArgs.Empty);
-
             this.system.ClearTreeItems();
             this.system.ClearPropertiesView();
 
@@ -171,6 +168,9 @@ namespace Mogitor.Data
 
             Mogre.ResourceGroupManager mngr = Mogre.ResourceGroupManager.Singleton;
             mngr.DestroyResourceGroup("ProjectResources");
+
+            if (SceneTerminated != null)
+                SceneTerminated(this, EventArgs.Empty);
 
             return true;
         }

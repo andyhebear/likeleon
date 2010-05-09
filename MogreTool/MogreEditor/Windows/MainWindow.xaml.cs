@@ -49,8 +49,6 @@ namespace Mogitor.Windows
                     this.entityView.PrepareView();
                     this.materialView.PrepareView();
                     this.templateView.PrepareView();
-
-                    this.ogreControl.OverlayText = "";
                 };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
@@ -60,8 +58,6 @@ namespace Mogitor.Windows
                     this.templateView.DestroyScene();
 
                     UpdateWindowTitle();
-
-                    this.ogreControl.OverlayText = "Please load a Scene File...";
                 };
 
             MogitorsRoot.Instance.IsSceneModifiedChanged += (s, args) =>
@@ -94,7 +90,6 @@ namespace Mogitor.Windows
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
         {
             this.statusString.Text = "Ready";
-            this.ogreControl.OverlayText = "Please load a Scene File...";
         }
 
         private void ogreControl_ResourceLoadItemProgress(object sender, Mogitor.Controls.ResourceLoadEventArgs e)
