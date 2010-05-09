@@ -84,6 +84,31 @@ namespace Mogitor.Controls
         {
             InitOgreAsync(ThreadPriority.Normal, null);
         }
+
+        public void ReInitRenderTarget()
+        {
+            DetachRenderTarget(true, false);
+
+            MogitorsRoot.Instance.OnPreRenderTargetChanged();
+            DisposeRenderTarget();
+
+            this.texture = TextureManager.Singleton.CreateManual(
+                "OgreImageSource RenderTarget",
+                ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME,
+                TextureType.TEX_TYPE_2D,
+                (uint)ViewportSize.Width,
+                (uint)ViewportSize.Height,
+                0,
+                Mogre.PixelFormat.PF_A8R8G8B8,
+                (int)TextureUsage.TU_RENDERTARGET);
+
+            this.renTarget = this.texture.GetBuffer().GetRenderTarget();
+            MogitorsRoot.Instance.RenderTarget = this.renTarget;
+
+            MogitorsRoot.Instance.OnPostRenderTargetChanged();
+
+            this.reloadRenderTargetTime = 0;
+        }
         #endregion
 
         #region Private Methods
@@ -290,31 +315,6 @@ namespace Mogitor.Controls
             if (MogreWpf.Interop.D3D9RenderSystem.IsDeviceLost(this.renderWindow))
                 return false;
             return true;
-        }
-
-        private void ReInitRenderTarget()
-        {
-            DetachRenderTarget(true, false);
-
-            MogitorsRoot.Instance.OnPreRenderTargetChanged();
-            DisposeRenderTarget();
-
-            this.texture = TextureManager.Singleton.CreateManual(
-                "OgreImageSource RenderTarget",
-                ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME,
-                TextureType.TEX_TYPE_2D,
-                (uint)ViewportSize.Width,
-                (uint)ViewportSize.Height,
-                0,
-                Mogre.PixelFormat.PF_A8R8G8B8,
-                (int)TextureUsage.TU_RENDERTARGET);
-
-            this.renTarget = this.texture.GetBuffer().GetRenderTarget();
-            MogitorsRoot.Instance.RenderTarget = this.renTarget;
-
-            MogitorsRoot.Instance.OnPostRenderTargetChanged();
-
-            this.reloadRenderTargetTime = 0;
         }
 
         private void DisposeRenderTarget()
