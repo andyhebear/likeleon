@@ -273,5 +273,38 @@ namespace Mogitor.Windows
             e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
         }
         #endregion
+        
+        #region CamModeSolid
+        private void CommandBinding_CamModeSolidCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_CamModeSolidCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
+        #region CamModeWireframe
+        private void CommandBinding_CamModeWireframeCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_CamModeWireframeCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
+
+        #region CamModePoints
+        private void CommandBinding_CamModePointsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CommandBinding_CamModePointsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MogitorsRoot.Instance.IsSceneLoaded;
+        }
+        #endregion
     }
 }

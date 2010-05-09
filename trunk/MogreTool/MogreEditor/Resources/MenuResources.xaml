@@ -4,6 +4,7 @@
     xmlns:MogitorData="clr-namespace:Mogitor.Data"
     xmlns:c="clr-namespace:System.Collections;assembly=mscorlib">
     <local:EditorToolToBooleanConverter x:Key="editorToolToBooleanConverter" />
+    <local:PolygonModeToBooleanConverter x:Key="polygonModeToBooleanConverter" />
     <MenuItem x:Key="menuNew"
               Header="_New" 
               Command="ApplicationCommands.New"
@@ -153,6 +154,12 @@
               Header="_Solid"
               Command="{x:Static local:CustomCommands.CamModeSolid}"
               ToolTip="Set Polygon Mode to Solid"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=PolygonMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_SOLID,
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/pmsolid.png"></Image>
@@ -162,6 +169,12 @@
               Header="_Wireframe"
               Command="{x:Static local:CustomCommands.CamModeWireframe}"
               ToolTip="Set Polygon Mode to Wireframe"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=PolygonMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_WIREFRAME,
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/pmwireframe.png"></Image>
@@ -171,6 +184,12 @@
               Header="_Points"
               Command="{x:Static local:CustomCommands.CamModePoints}"
               ToolTip="Set Polygon Mode to Points"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=PolygonMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_POINTS,
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/pmpoints.png"></Image>

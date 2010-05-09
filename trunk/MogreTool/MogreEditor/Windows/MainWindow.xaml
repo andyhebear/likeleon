@@ -54,6 +54,15 @@
         <CommandBinding Command="{x:Static local:CustomCommands.Scale}"
                         Executed="CommandBinding_ScaleCmdExecuted"
                         CanExecute="CommandBinding_ScaleCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModeSolid}"
+                        Executed="CommandBinding_CamModeSolidCmdExecuted"
+                        CanExecute="CommandBinding_CamModeSolidCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModeWireframe}"
+                        Executed="CommandBinding_CamModeWireframeCmdExecuted"
+                        CanExecute="CommandBinding_CamModeWireframeCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModePoints}"
+                        Executed="CommandBinding_CamModePointsCmdExecuted"
+                        CanExecute="CommandBinding_CamModePointsCmdCanExecute" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="F4"

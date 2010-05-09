@@ -95,6 +95,23 @@ namespace Mogitor.Data
             get;
             set;
         }
+
+        public Mogre.PolygonMode PolygonMode
+        {
+            get
+            {
+                if (ActiveViewport != null && ActiveViewport.CameraEditor != null)
+                    return ActiveViewport.CameraEditor.PolygonMode;
+                else
+                    return Mogre.PolygonMode.PM_SOLID;
+            }
+            set
+            {
+                if (ActiveViewport != null && ActiveViewport.CameraEditor != null)
+                    ActiveViewport.CameraEditor.PolygonMode = value;
+                OnPropertyChanged("PolygonMode");
+            }
+        }
         #endregion
 
         #region Constructors

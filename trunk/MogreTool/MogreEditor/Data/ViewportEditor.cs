@@ -24,8 +24,12 @@ namespace Mogitor.Data
 
         public CameraEditor ActiveCamera
         {
-            get;
-            private set;
+            get { return this.activeCamera; }
+            private set
+            {
+                this.activeCamera = value;
+                OnPropertyChanged("ActiveCamera");
+            }
         }
 
         public bool Overlays
@@ -240,6 +244,7 @@ namespace Mogitor.Data
         private static bool isSettingPos = false;
         private static EditorTools editorTool = EditorTools.Select;
         private static readonly ViewportEditor instance = new ViewportEditor();
+        private CameraEditor activeCamera;
         #endregion
 
         #region Overrides BaseEditor
