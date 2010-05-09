@@ -13,33 +13,6 @@ namespace Mogitor.Controls
             InitializeComponent();
         }
 
-        #region Inner Classes
-        public class Item : DependencyObject
-        {
-            private string name;
-            public string Name
-            {
-                get { return (string)GetValue(NameProperty); }
-                set { SetValue(NameProperty, value); }
-            }
-
-            public string Icon
-            {
-                get;
-                private set;
-            }
-
-            public Item(string name, string icon)
-            {
-                Name = name;
-                Icon = icon;
-            }
-
-            public static readonly DependencyProperty NameProperty =
-                DependencyProperty.Register("Name", typeof(string), typeof(Item), new UIPropertyMetadata(null));
-        }
-        #endregion
-
         #region Properties
         public TreeView TreeControl
         {
@@ -69,7 +42,7 @@ namespace Mogitor.Controls
             if (treeItem == null)
                 return;
 
-            Item item = treeItem.Header as Item;
+            IconTextItem item = treeItem.Header as IconTextItem;
             if (item == null)
                 return;
 
@@ -102,7 +75,7 @@ namespace Mogitor.Controls
             }
             treeItem.Focus();
 
-            Item item = treeItem.Header as Item;
+            IconTextItem item = treeItem.Header as IconTextItem;
             if (item == null)
             {
                 e.Handled = true;

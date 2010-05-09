@@ -20,32 +20,6 @@ namespace Mogitor.Controls
     /// </summary>
     public partial class TemplateView : UserControl
     {
-        #region Inner Classes
-        public class Item : DependencyObject
-        {
-            public string Name
-            {
-                get { return (string)GetValue(NameProperty); }
-                set { SetValue(NameProperty, value); }
-            }
-
-            public string Icon
-            {
-                get;
-                private set;
-            }
-
-            public Item(string name, string icon)
-            {
-                Name = name;
-                Icon = icon;
-            }
-
-            public static readonly DependencyProperty NameProperty =
-                DependencyProperty.Register("Name", typeof(string), typeof(Item), new UIPropertyMetadata(null));
-        }
-        #endregion
-
         public TemplateView()
         {
             InitializeComponent();
@@ -54,12 +28,12 @@ namespace Mogitor.Controls
         public void PrepareView()
         {
             TreeViewItem rootItem = new TreeViewItem();
-            rootItem.Header = new Item("General Templates", "../Resources/Icons/project.png");
+            rootItem.Header = new IconTextItem("General Templates", "../Resources/Icons/project.png");
             rootItem.FontWeight = FontWeights.Bold;
             this.treeControl.Items.Add(rootItem);
 
             rootItem = new TreeViewItem();
-            rootItem.Header = new Item("Project Templates", "../Resources/Icons/template.png");
+            rootItem.Header = new IconTextItem("Project Templates", "../Resources/Icons/template.png");
             rootItem.FontWeight = FontWeights.Bold;
             this.treeControl.Items.Add(rootItem);
         }

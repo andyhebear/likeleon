@@ -163,7 +163,7 @@ namespace Mogitor
         public object CreateTreeRoot(string name)
         {
             TreeViewItem item = new TreeViewItem();
-            item.Header = new SceneView.Item(name, this.iconList[0]);
+            item.Header = new IconTextItem(name, this.iconList[0]);
             item.FontWeight = FontWeights.Bold;
             this.treeControl.Items.Add(item);
             return item;
@@ -175,7 +175,7 @@ namespace Mogitor
                 return null;
 
             TreeViewItem item = new TreeViewItem();
-            item.Header = new SceneView.Item(name, this.iconList[iconId]);
+            item.Header = new IconTextItem(name, this.iconList[iconId]);
             item.FontWeight = FontWeights.Normal;
             item.Foreground = new SolidColorBrush(color);
             
@@ -263,7 +263,7 @@ namespace Mogitor
             if (renameItem == null)
                 return;
 
-            SceneView.Item item = renameItem.Header as SceneView.Item;
+            IconTextItem item = renameItem.Header as IconTextItem;
             if (item == null)
                 return;
 
