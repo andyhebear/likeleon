@@ -68,6 +68,8 @@ namespace Mogitor.Windows
 
                 mogRoot.LoadScene(fileName);
             }
+
+            this.statusString.Text = "New scene created";
         }
         #endregion
 
@@ -86,6 +88,8 @@ namespace Mogitor.Windows
                 MessageBox.Show("Error Loading File", "Mogitor", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            this.statusString.Text = "Scene opened";
         }
         #endregion
 
@@ -93,6 +97,7 @@ namespace Mogitor.Windows
         private void CommandBinding_CloseCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             MogitorsRoot.Instance.TerminateScene();
+            this.statusString.Text = "Scene closed";
         }
 
         private void CommandBinding_CloseCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -105,6 +110,7 @@ namespace Mogitor.Windows
         private void CommandBinding_SaveCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             MogitorsRoot.Instance.SaveScene(false);
+            this.statusString.Text = "Scene saved";
         }
 
         private void CommandBinding_SaveCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -117,6 +123,7 @@ namespace Mogitor.Windows
         private void CommandBinding_SaveAsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             MogitorsRoot.Instance.SaveScene(true);
+            this.statusString.Text = "Scene saved";
         }
 
         private void CommandBinding_SaveAsCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
