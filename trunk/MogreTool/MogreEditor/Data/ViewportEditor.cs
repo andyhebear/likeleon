@@ -333,7 +333,10 @@ namespace Mogitor.Data
                 this.camClipDistance = MogreX.StringConverter.ParseVector2(ni.Value);
 
             if ((ni = parameters.Find("CamPolyMode")) != parameters.End())
-                this.CamPolyMode = (Mogre.PolygonMode)Mogre.StringConverter.ParseInt(ni.Value);
+            {
+                this.camPolyMode = (Mogre.PolygonMode)Mogre.StringConverter.ParseInt(ni.Value);
+                OnPropertyChanged("CamPolyMode");
+            }
 
             if ((ni = parameters.Find("CamFOV")) != parameters.End())
                 this.camFOV = Mogre.StringConverter.ParseReal(ni.Value);
@@ -371,7 +374,7 @@ namespace Mogitor.Data
             retList["CamPosition"] = Mogre.StringConverter.ToString(ViewCamera.Position);
             retList["CamOrientation"] = Mogre.StringConverter.ToString(ViewCamera.Orientation);
             retList["CamFOV"] = Mogre.StringConverter.ToString(ViewCamera.FOV);
-            retList["CamPolyMode"] = Mogre.StringConverter.ToString((int)ViewCamera.Camera.PolygonMode);
+            retList["CamPolyMode"] = Mogre.StringConverter.ToString((int)ViewCamera.PolygonMode);
             retList["CamClipDistance"] = Mogre.StringConverter.ToString(ViewCamera.ClipDistance);
 
             Mogre.CompositorManager comMngr = Mogre.CompositorManager.Singleton;
