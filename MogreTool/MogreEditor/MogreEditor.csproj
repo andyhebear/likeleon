@@ -83,6 +83,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\MaterialView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SceneView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +128,9 @@
     <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\EntityView.cs" />
     <Compile Include="Controls\LogControl.cs" />
+    <Compile Include="Controls\MaterialView.xaml.cs">
+      <DependentUpon>MaterialView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OgreControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />
@@ -254,6 +261,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="clapperboard.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\pass.png" />
+    <Resource Include="Resources\Icons\technique.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\material.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

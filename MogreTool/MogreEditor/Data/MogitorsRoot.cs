@@ -83,6 +83,12 @@ namespace Mogitor.Data
             get;
             set;
         }
+
+        public IList<string> MaterialNames
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Constructors
@@ -224,6 +230,15 @@ namespace Mogitor.Data
                 FillResourceGroup(mngr, ProjectOptions.ResourceDirectories, ProjectOptions.ProjectDir, "ProjectResources");
 
                 mngr.InitialiseResourceGroup("ProjectResources");
+
+                List<string> materialNames = new List<string>();
+                foreach (var it in  Mogre.MaterialManager.Singleton.GetResourceIterator())
+                {
+                    if (it.Group == "ProjectResources")
+                        materialNames.Add(it.Name);
+                }
+                materialNames.Sort();
+                MaterialNames = materialNames;
             }
             catch
             {

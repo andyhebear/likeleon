@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Mogitor.Data;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace Mogitor.Controls
 {
@@ -86,6 +87,15 @@ namespace Mogitor.Controls
             mngr.ClearResourceGroup("ProjectResources");
             MogitorsRoot.Instance.FillResourceGroup(mngr, MogitorsRoot.Instance.ProjectOptions.ResourceDirectories, MogitorsRoot.Instance.ProjectOptions.ProjectDir, "ProjectResources");
             mngr.InitialiseResourceGroup("ProjectResources");
+
+            List<string> materialNames = new List<string>();
+            foreach (var it in Mogre.MaterialManager.Singleton.GetResourceIterator())
+            {
+                if (it.Group == "ProjectResources")
+                    materialNames.Add(it.Name);
+            }
+            materialNames.Sort();
+            MogitorsRoot.Instance.MaterialNames = materialNames;
 
             MogitorsRoot.Instance.IsSceneModified = true;
 

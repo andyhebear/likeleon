@@ -46,7 +46,8 @@ namespace Mogitor.Windows
                 {
                     UpdateWindowTitle();
 
-                    entityView.PrepareView();
+                    this.entityView.PrepareView();
+                    this.materialView.PrepareView();
 
                     this.ogreControl.OverlayText = "";
                 };
@@ -54,6 +55,7 @@ namespace Mogitor.Windows
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
                 {
                     entityView.ClearView();
+                    materialView.DestroyScene();
 
                     UpdateWindowTitle();
 

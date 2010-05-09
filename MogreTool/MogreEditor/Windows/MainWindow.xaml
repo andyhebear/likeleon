@@ -91,7 +91,12 @@
                                 </ad:DockableContent.Icon>
                                 <MogitorControls:SceneView x:Name="sceneView" />
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Materials"></ad:DockableContent>
+                            <ad:DockableContent Title="Materials">
+                                <MogitorControls:MaterialView x:Name="materialView" />
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/material.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                            </ad:DockableContent>
                         </ad:DockablePane>
                         <ad:DocumentPane>
                             <ad:DockableContent Title="Render" IsCloseable="False" Background="Black">
