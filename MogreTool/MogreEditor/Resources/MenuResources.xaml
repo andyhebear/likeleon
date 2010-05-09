@@ -195,4 +195,13 @@
             <Image Source="../Resources/Icons/pmpoints.png"></Image>
         </MenuItem.Icon>
     </MenuItem>
+    <MenuItem x:Key="menuClearLog"
+              Header="_Clear"
+              Command="{x:Static local:CustomCommands.ClearLog}"
+              ToolTip="Clear Message Log"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/clear.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
 </ResourceDictionary>
