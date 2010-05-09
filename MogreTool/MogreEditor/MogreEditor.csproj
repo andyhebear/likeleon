@@ -121,6 +121,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\EntityView.cs" />
     <Compile Include="Controls\LogControl.cs" />
     <Compile Include="Controls\OgreControl.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Controls\SceneView.xaml.cs">
       <DependentUpon>SceneView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DoubleToScaleStringConverter.cs" />
     <Compile Include="Converters\EditorToolToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />

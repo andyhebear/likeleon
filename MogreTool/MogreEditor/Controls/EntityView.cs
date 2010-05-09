@@ -11,6 +11,7 @@ using Mogitor.Data;
 namespace Mogitor.Controls
 {
     [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
+    [TemplatePart(Name = "PART_CloseScalePopupBtn", Type = typeof(Button))]
     class EntityViewControl : Control, MogitorsRoot.IDragDropHandler
     {
         #region Inner Class
@@ -30,6 +31,7 @@ namespace Mogitor.Controls
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(string), typeof(EntityViewControl), new PropertyMetadata(OnFilterChanged));
         private ListBox iconsListBox;
+        private Button closeScalePopupBtn;
         #endregion
 
         #region Public Methods
@@ -51,6 +53,13 @@ namespace Mogitor.Controls
                     {
                         DragDrop.DoDragDrop(listBox, new DragData(this, imageEntry), DragDropEffects.Copy);
                     }
+                };
+
+            this.closeScalePopupBtn = this.Template.FindName("PART_CloseScalePopupBtn", this) as Button;
+            this.closeScalePopupBtn.Click += (s, e) =>
+                {
+                    DropDownButton scaleBtn = this.Template.FindName("PART_ScaleBtn", this) as DropDownButton;
+                    scaleBtn.DropDown.IsOpen = false;
                 };
         }
 
