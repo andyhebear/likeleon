@@ -42,7 +42,10 @@ namespace Mogitor.Controls
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                this.logStringsDisplay.ScrollIntoView(e.NewItems[0]);
+                this.logStringsDisplay.Dispatcher.BeginInvoke((System.Action)(() =>
+                    {
+                        this.logStringsDisplay.ScrollIntoView(e.NewItems[0]);
+                    }));
             }
         }
 
