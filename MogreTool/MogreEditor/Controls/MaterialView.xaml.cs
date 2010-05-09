@@ -13,7 +13,6 @@ namespace Mogitor.Controls
         #region Inner Classes
         public class Item : DependencyObject
         {
-            private string name;
             public string Name
             {
                 get { return (string)GetValue(NameProperty); }

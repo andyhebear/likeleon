@@ -91,6 +91,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\MenuResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,6 +143,9 @@
     </Compile>
     <Compile Include="Controls\SceneView.xaml.cs">
       <DependentUpon>SceneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TemplateView.xaml.cs">
+      <DependentUpon>TemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToCollapsedVisibilityConverter.cs" />
     <Compile Include="Converters\DoubleToScaleStringConverter.cs" />
@@ -269,6 +276,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\material.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\template.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
