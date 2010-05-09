@@ -156,7 +156,7 @@
               ToolTip="Set Polygon Mode to Solid"
               IsCheckable="True"
               IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
-                                  Path=PolygonMode, 
+                                  Path=ActiveViewport.CamPolyMode, 
                                   Converter={StaticResource polygonModeToBooleanConverter}, 
                                   ConverterParameter=PM_SOLID,
                                   Mode=TwoWay}"
@@ -171,7 +171,7 @@
               ToolTip="Set Polygon Mode to Wireframe"
               IsCheckable="True"
               IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
-                                  Path=PolygonMode, 
+                                  Path=ActiveViewport.CamPolyMode, 
                                   Converter={StaticResource polygonModeToBooleanConverter}, 
                                   ConverterParameter=PM_WIREFRAME,
                                   Mode=TwoWay}"
@@ -186,7 +186,7 @@
               ToolTip="Set Polygon Mode to Points"
               IsCheckable="True"
               IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
-                                  Path=PolygonMode, 
+                                  Path=ActiveViewport.CamPolyMode, 
                                   Converter={StaticResource polygonModeToBooleanConverter}, 
                                   ConverterParameter=PM_POINTS,
                                   Mode=TwoWay}"
