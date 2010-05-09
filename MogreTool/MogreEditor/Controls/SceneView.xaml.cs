@@ -26,8 +26,8 @@ namespace Mogitor.Controls
         }
         #endregion
 
-        #region Public Methods
-        void treeControl_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        #region Private Methods
+        private void treeControl_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             TreeViewItem treeItem = e.Source as TreeViewItem;
             if (treeItem == null)
@@ -36,7 +36,7 @@ namespace Mogitor.Controls
             e.Handled = true;
         }
 
-        void treeControl_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void treeControl_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem treeItem = e.NewValue as TreeViewItem;
             if (treeItem == null)
@@ -62,9 +62,7 @@ namespace Mogitor.Controls
                 }
             }
         }
-        #endregion
 
-        #region Private Methods
         private void treeControl_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             TreeViewItem treeItem = e.Source as TreeViewItem;
