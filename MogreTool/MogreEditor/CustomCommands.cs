@@ -8,6 +8,21 @@ namespace Mogitor
 {
     static class CustomCommands
     {
+
+        static readonly RoutedCommand exitCommand;
+        static readonly RoutedCommand aboutCommand;
+        static readonly RoutedCommand editDeleteCommand;
+        static readonly RoutedCommand editRenameCommand;
+        static readonly RoutedCommand settingsCommand;
+        static readonly RoutedCommand preferencesCommand;
+        static readonly RoutedCommand selectCommand;
+        static readonly RoutedCommand moveCommand;
+        static readonly RoutedCommand rotateCommand;
+        static readonly RoutedCommand scaleCommand;
+        static readonly RoutedCommand camModeSolidCommand;
+        static readonly RoutedCommand camModeWireframeCommand;
+        static readonly RoutedCommand camModePointsCommand;
+
         static CustomCommands()
         {
             exitCommand = new RoutedCommand("Exit", typeof(CustomCommands));
@@ -20,6 +35,9 @@ namespace Mogitor
             moveCommand = new RoutedCommand("Move", typeof(CustomCommands));
             rotateCommand = new RoutedCommand("Rotate", typeof(CustomCommands));
             scaleCommand = new RoutedCommand("Scale", typeof(CustomCommands));
+            camModeSolidCommand = new RoutedCommand("CamModeSolid", typeof(CustomCommands));
+            camModeWireframeCommand = new RoutedCommand("CamModeWireframe", typeof(CustomCommands));
+            camModePointsCommand = new RoutedCommand("CamModePoints", typeof(CustomCommands));
         }
 
         public static RoutedCommand Exit
@@ -72,15 +90,19 @@ namespace Mogitor
             get { return scaleCommand; }
         }
 
-        static readonly RoutedCommand exitCommand;
-        static readonly RoutedCommand aboutCommand;
-        static readonly RoutedCommand editDeleteCommand;
-        static readonly RoutedCommand editRenameCommand;
-        static readonly RoutedCommand settingsCommand;
-        static readonly RoutedCommand preferencesCommand;
-        static readonly RoutedCommand selectCommand;
-        static readonly RoutedCommand moveCommand;
-        static readonly RoutedCommand rotateCommand;
-        static readonly RoutedCommand scaleCommand;
+        public static RoutedCommand CamModeSolid
+        {
+            get { return camModeSolidCommand; }
+        }
+
+        public static RoutedCommand CamModeWireframe
+        {
+            get { return camModeWireframeCommand; }
+        }
+
+        public static RoutedCommand CamModePoints
+        {
+            get { return camModePointsCommand; }
+        }
     }
 }

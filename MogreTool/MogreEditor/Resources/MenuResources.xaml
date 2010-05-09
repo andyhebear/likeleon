@@ -149,4 +149,31 @@
             <Image Source="../Resources/Icons/about.png"></Image>
         </MenuItem.Icon>
     </MenuItem>
+    <MenuItem x:Key="menuCamModeSolid"
+              Header="_Solid"
+              Command="{x:Static local:CustomCommands.CamModeSolid}"
+              ToolTip="Set Polygon Mode to Solid"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmsolid.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuCamModeWireframe"
+              Header="_Wireframe"
+              Command="{x:Static local:CustomCommands.CamModeWireframe}"
+              ToolTip="Set Polygon Mode to Wireframe"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmwireframe.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuCamModePoints"
+              Header="_Points"
+              Command="{x:Static local:CustomCommands.CamModePoints}"
+              ToolTip="Set Polygon Mode to Points"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmpoints.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
 </ResourceDictionary>

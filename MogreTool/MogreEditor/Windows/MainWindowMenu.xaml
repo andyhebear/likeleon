@@ -30,6 +30,17 @@
             <StaticResourceExtension ResourceKey="menuRotate" />
             <StaticResourceExtension ResourceKey="menuScale" />
         </MenuItem>
+        <MenuItem Header="_Camera">
+            <MenuItem Header="_Polygon Mode"
+                      ToolTip="Change Camera Polygon Mode">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/polymode.png"></Image>
+                </MenuItem.Icon>
+                <StaticResourceExtension ResourceKey="menuCamModeSolid" />
+                <StaticResourceExtension ResourceKey="menuCamModeWireframe" />
+                <StaticResourceExtension ResourceKey="menuCamModePoints" />
+            </MenuItem>
+        </MenuItem>
         <MenuItem Header="_Help">
             <StaticResourceExtension ResourceKey="menuAbout" />
         </MenuItem>
