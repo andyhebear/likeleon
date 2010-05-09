@@ -17,6 +17,7 @@ namespace Mogitor.Data
         private readonly EditorObjectFactoryMap editorObjectFactories = new EditorObjectFactoryMap();
         private uint editorObjectTypeIDCounter;
         private BaseEditor selectedEditor;
+        private ViewportEditor activeViewport;
         #endregion
 
         #region Properties
@@ -47,8 +48,12 @@ namespace Mogitor.Data
 
         public ViewportEditor ActiveViewport
         {
-            get;
-            set;
+            get { return this.activeViewport; }
+            set
+            {
+                this.activeViewport = value;
+                OnPropertyChanged("ActiveViewport");
+            }
         }
 
         public EditorObjectFactoryMap EditorObjectFactories

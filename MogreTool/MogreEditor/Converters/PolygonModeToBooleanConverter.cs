@@ -5,8 +5,8 @@ using System.Windows;
 
 namespace Mogitor
 {
-    [ValueConversion(typeof(EditorTools), typeof(bool))]
-    public class EditorToolToBooleanConverter : IValueConverter
+    [ValueConversion(typeof(Mogre.PolygonMode), typeof(bool))]
+    public class PolygonModeToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -26,8 +26,8 @@ namespace Mogitor
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (targetType != typeof(EditorTools))
-                throw new InvalidOperationException("The target must be a EditorTools");
+            if (targetType != typeof(Mogre.PolygonMode))
+                throw new InvalidOperationException("The target must be a Mogre.PolygonMode");
 
             return Enum.Parse(targetType, parameter as string);
         }

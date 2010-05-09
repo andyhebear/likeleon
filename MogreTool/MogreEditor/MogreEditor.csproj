@@ -151,6 +151,7 @@
     <Compile Include="Converters\DoubleToScaleStringConverter.cs" />
     <Compile Include="Converters\EditorToolToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\PolygonModeToBooleanConverter.cs" />
     <Compile Include="CustomCommands.cs" />
     <Compile Include="Data\BaseEditor.cs" />
     <Compile Include="Data\BaseSerializer.cs" />
