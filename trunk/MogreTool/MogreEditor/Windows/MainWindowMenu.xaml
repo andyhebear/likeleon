@@ -31,6 +31,15 @@
             <StaticResourceExtension ResourceKey="menuRotate" />
             <StaticResourceExtension ResourceKey="menuScale" />
         </MenuItem>
+        <MenuItem Header="_View">
+            <StaticResourceExtension ResourceKey="menuToggleScene" />
+            <StaticResourceExtension ResourceKey="menuToggleObjects" />
+            <StaticResourceExtension ResourceKey="menuToggleEntity" />
+            <StaticResourceExtension ResourceKey="menuToggleProperties" />
+            <StaticResourceExtension ResourceKey="menuToggleMaterials" />
+            <StaticResourceExtension ResourceKey="menuToggleTemplates" />
+            <StaticResourceExtension ResourceKey="menuToggleLog" />
+        </MenuItem>
         <MenuItem Header="_Messages">
             <StaticResourceExtension ResourceKey="menuClearLog" />
         </MenuItem>

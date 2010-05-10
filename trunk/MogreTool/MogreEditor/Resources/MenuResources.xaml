@@ -204,4 +204,74 @@
             <Image Source="../Resources/Icons/clear.png"></Image>
         </MenuItem.Icon>
     </MenuItem>
+    <MenuItem x:Key="menuToggleScene"
+              Header="_Scene"
+              Command="{x:Static local:CustomCommands.ToggleScene}"
+              ToolTip="Toggle Scene Panel"
+              InputGestureText="F5"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/scene.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleObjects"
+              Header="_Objects"
+              Command="{x:Static local:CustomCommands.ToggleObjects}"
+              ToolTip="Toggle Objects Panel"
+              InputGestureText="F6"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/objects.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleEntity"
+              Header="_Meshes"
+              Command="{x:Static local:CustomCommands.ToggleEntity}"
+              ToolTip="Toggle meshes Panel"
+              InputGestureText="F7"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/entity.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleProperties"
+              Header="_Properties"
+              Command="{x:Static local:CustomCommands.ToggleProperties}"
+              ToolTip="Toggle Properties Panel"
+              InputGestureText="F8"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/properties.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleLog"
+              Header="_Messages"
+              Command="{x:Static local:CustomCommands.ToggleLog}"
+              ToolTip="Toggle Messages"
+              InputGestureText="F9"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/messages.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleMaterials"
+              Header="Mete_rials"
+              Command="{x:Static local:CustomCommands.ToggleMaterials}"
+              ToolTip="Toggle Materials"
+              InputGestureText="Shift+F5"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/material.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleTemplates"
+              Header="_Templates"
+              Command="{x:Static local:CustomCommands.ToggleTemplates}"
+              ToolTip="Toggle Templates"
+              InputGestureText="Shift+F6"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/template.png" />
+        </MenuItem.Icon>
+    </MenuItem>
 </ResourceDictionary>

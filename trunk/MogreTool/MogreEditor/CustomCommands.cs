@@ -23,6 +23,13 @@ namespace Mogitor
         static readonly RoutedCommand camModeWireframeCommand;
         static readonly RoutedCommand camModePointsCommand;
         static readonly RoutedCommand clearLogCommand;
+        static readonly RoutedCommand toggleSceneCommand;
+        static readonly RoutedCommand toggleObjectsCommand;
+        static readonly RoutedCommand toggleEntityCommand;
+        static readonly RoutedCommand togglePropertiesCommand;
+        static readonly RoutedCommand toggleLogCommand;
+        static readonly RoutedCommand toggleMaterialsCommand;
+        static readonly RoutedCommand toggleTemplatesCommand;
 
         static CustomCommands()
         {
@@ -40,6 +47,13 @@ namespace Mogitor
             camModeWireframeCommand = new RoutedCommand("CamModeWireframe", typeof(CustomCommands));
             camModePointsCommand = new RoutedCommand("CamModePoints", typeof(CustomCommands));
             clearLogCommand = new RoutedCommand("ClearLog", typeof(CustomCommands));
+            toggleSceneCommand = new RoutedCommand("ToggleScene", typeof(CustomCommands));
+            toggleObjectsCommand = new RoutedCommand("ToggleObjects", typeof(CustomCommands));
+            toggleEntityCommand = new RoutedCommand("ToggleEntity", typeof(CustomCommands));
+            togglePropertiesCommand = new RoutedCommand("ToggleProperties", typeof(CustomCommands));
+            toggleLogCommand = new RoutedCommand("ToggleLog", typeof(CustomCommands));
+            toggleMaterialsCommand = new RoutedCommand("ToggleMaterials", typeof(CustomCommands));
+            toggleTemplatesCommand = new RoutedCommand("ToggleTemplates", typeof(CustomCommands));
         }
 
         public static RoutedCommand Exit
@@ -110,6 +124,41 @@ namespace Mogitor
         public static RoutedCommand ClearLog
         {
             get { return clearLogCommand; }
+        }
+
+        public static RoutedCommand ToggleScene
+        {
+            get { return toggleSceneCommand; }
+        }
+
+        public static RoutedCommand ToggleObjects
+        {
+            get { return toggleObjectsCommand; }
+        }
+
+        public static RoutedCommand ToggleEntity
+        {
+            get { return toggleEntityCommand; }
+        }
+
+        public static RoutedCommand ToggleProperties
+        {
+            get { return togglePropertiesCommand; }
+        }
+
+        public static RoutedCommand ToggleLog
+        {
+            get { return toggleLogCommand; }
+        }
+
+        public static RoutedCommand ToggleMaterials
+        {
+            get { return toggleMaterialsCommand; }
+        }
+
+        public static RoutedCommand ToggleTemplates
+        {
+            get { return toggleTemplatesCommand; }
         }
     }
 }
