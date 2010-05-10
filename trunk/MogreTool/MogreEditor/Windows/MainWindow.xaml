@@ -65,6 +65,20 @@
                         CanExecute="CommandBinding_CamModePointsCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.ClearLog}"
                         Executed="CommandBinding_ClearLogCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleScene}"
+                        Executed="CommandBinding_ToggleSceneCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleObjects}"
+                        Executed="CommandBinding_ToggleObjectsCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleEntity}"
+                        Executed="CommandBinding_ToggleEntityCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleProperties}"
+                        Executed="CommandBinding_TogglePropertiesCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleLog}"
+                        Executed="CommandBinding_ToggleLogCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleMaterials}"
+                        Executed="CommandBinding_ToggleMaterialsCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleTemplates}"
+                        Executed="CommandBinding_ToggleTemplatesCmdExecuted"/>
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="F4"
@@ -102,19 +116,19 @@
                 <ad:ResizingPanel Orientation="Vertical">
                     <ad:ResizingPanel Orientation="Horizontal">
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
-                            <ad:DockableContent Title="Templates">
+                            <ad:DockableContent Title="Templates" x:Name="adcTemplates">
                                 <ad:DockableContent.Icon>
                                     <Image Source="../Resources/Icons/template.png" Width="16" />
                                 </ad:DockableContent.Icon>
                                 <MogitorControls:TemplateView x:Name="templateView" />
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Scene">
+                            <ad:DockableContent Title="Scene" x:Name="adcScene">
                                 <ad:DockableContent.Icon>
                                     <Image Source="../Resources/Icons/scene.png" Width="16" />
                                 </ad:DockableContent.Icon>
                                 <MogitorControls:SceneView x:Name="sceneView" />
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Materials">
+                            <ad:DockableContent Title="Materials" x:Name="adcMaterials">
                                 <MogitorControls:MaterialView x:Name="materialView" />
                                 <ad:DockableContent.Icon>
                                     <Image Source="../Resources/Icons/material.png" Width="16" />
@@ -130,24 +144,28 @@
                             </ad:DockableContent>
                         </ad:DocumentPane>
                         <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
-                            <ad:DockableContent Title="Properties">
+                            <ad:DockableContent Title="Properties" x:Name="adcProperties">
                                 <ad:DockableContent.Icon>
                                     <Image Source="../Resources/Icons/preferences.png" Width="16" />
                                 </ad:DockableContent.Icon>
                                 <MogitorControls:PropertiesView x:Name="propertiesView" />
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Meshes">
+                            <ad:DockableContent Title="Meshes" x:Name="adcEntity">
                                 <ad:DockableContent.Icon>
                                     <Image Source="../Resources/Icons/entity.png" Width="16" />
                                 </ad:DockableContent.Icon>
                                 <MogitorControls:EntityViewControl x:Name="entityView"/>
                             </ad:DockableContent>
-                            <ad:DockableContent Title="Objects">
+                            <ad:DockableContent Title="Objects" x:Name="adcObjects">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/objects.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:ObjectsView x:Name="objectsView" />
                             </ad:DockableContent>
                         </ad:DockablePane>
                     </ad:ResizingPanel>
                     <ad:DockablePane ad:ResizingPanel.ResizeHeight="150">
-                        <ad:DockableContent Title="Messages">
+                        <ad:DockableContent Title="Messages" x:Name="adcLog">
                             <MogitorControls:LogControl x:Name="logControl"/>
                         </ad:DockableContent>
                     </ad:DockablePane>

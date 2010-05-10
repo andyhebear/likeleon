@@ -135,6 +135,7 @@
     <Compile Include="Controls\MaterialView.xaml.cs">
       <DependentUpon>MaterialView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ObjectsView.cs" />
     <Compile Include="Controls\OgreControl.cs" />
     <Compile Include="Controls\OgreImage.cs" />
     <Compile Include="Controls\OgreImage.Properties.cs" />

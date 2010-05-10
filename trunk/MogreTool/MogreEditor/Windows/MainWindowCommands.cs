@@ -320,5 +320,47 @@ namespace Mogitor.Windows
             Dispatcher.Invoke((System.Action)delegate() { this.logBuffer.Clear(); });
         }
         #endregion
+
+        #region ToggleScene
+        private void CommandBinding_ToggleSceneCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleObjects
+        private void CommandBinding_ToggleObjectsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleEntity
+        private void CommandBinding_ToggleEntityCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleProperties
+        private void CommandBinding_TogglePropertiesCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleLog
+        private void CommandBinding_ToggleLogCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleMaterials
+        private void CommandBinding_ToggleMaterialsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region ToggleTemplates
+        private void CommandBinding_ToggleTemplatesCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
     }
 }
