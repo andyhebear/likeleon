@@ -23,6 +23,7 @@ namespace Mogitor
         static readonly RoutedCommand camModeWireframeCommand;
         static readonly RoutedCommand camModePointsCommand;
         static readonly RoutedCommand clearLogCommand;
+        static readonly RoutedCommand toggleRenderCommand;
         static readonly RoutedCommand toggleSceneCommand;
         static readonly RoutedCommand toggleObjectsCommand;
         static readonly RoutedCommand toggleEntityCommand;
@@ -47,6 +48,7 @@ namespace Mogitor
             camModeWireframeCommand = new RoutedCommand("CamModeWireframe", typeof(CustomCommands));
             camModePointsCommand = new RoutedCommand("CamModePoints", typeof(CustomCommands));
             clearLogCommand = new RoutedCommand("ClearLog", typeof(CustomCommands));
+            toggleRenderCommand = new RoutedCommand("ToggleRender", typeof(CustomCommands));
             toggleSceneCommand = new RoutedCommand("ToggleScene", typeof(CustomCommands));
             toggleObjectsCommand = new RoutedCommand("ToggleObjects", typeof(CustomCommands));
             toggleEntityCommand = new RoutedCommand("ToggleEntity", typeof(CustomCommands));
@@ -124,6 +126,11 @@ namespace Mogitor
         public static RoutedCommand ClearLog
         {
             get { return clearLogCommand; }
+        }
+
+        public static RoutedCommand ToggleRender
+        {
+            get { return toggleRenderCommand; }
         }
 
         public static RoutedCommand ToggleScene

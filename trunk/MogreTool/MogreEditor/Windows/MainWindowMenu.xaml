@@ -32,6 +32,7 @@
             <StaticResourceExtension ResourceKey="menuScale" />
         </MenuItem>
         <MenuItem Header="_View">
+            <StaticResourceExtension ResourceKey="menuToggleRender" />
             <StaticResourceExtension ResourceKey="menuToggleScene" />
             <StaticResourceExtension ResourceKey="menuToggleObjects" />
             <StaticResourceExtension ResourceKey="menuToggleEntity" />
