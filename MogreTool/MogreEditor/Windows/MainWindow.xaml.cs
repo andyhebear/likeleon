@@ -100,6 +100,7 @@ namespace Mogitor.Windows
             this.panelsByName["Log"] = this.adcLog;
             this.panelsByName["Materials"] = this.adcMaterials;
             this.panelsByName["Templates"] = this.adcTemplates;
+            this.panelsByName["Render"] = this.adcRender;
 
             IsPanelVisible.DockManager = this.dockManager;
             IsPanelVisible.Panels = panelsByName;

@@ -205,6 +205,19 @@
             <Image Source="../Resources/Icons/clear.png"></Image>
         </MenuItem.Icon>
     </MenuItem>
+    <MenuItem x:Key="menuToggleRender"
+              Header="_Render"
+              Command="{x:Static local:CustomCommands.ToggleRender}"
+              ToolTip="Toggle Render"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Render], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/ogscene.png" />
+        </MenuItem.Icon>
+    </MenuItem>
     <MenuItem x:Key="menuToggleScene"
               Header="_Scene"
               Command="{x:Static local:CustomCommands.ToggleScene}"

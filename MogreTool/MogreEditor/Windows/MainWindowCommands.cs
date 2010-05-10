@@ -322,6 +322,12 @@ namespace Mogitor.Windows
         }
         #endregion
 
+        #region ToggleRender
+        private void CommandBinding_ToggleRenderCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+        }
+        #endregion
+
         #region ToggleScene
         private void CommandBinding_ToggleSceneCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {

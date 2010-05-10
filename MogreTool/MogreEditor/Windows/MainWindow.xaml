@@ -65,6 +65,8 @@
                         CanExecute="CommandBinding_CamModePointsCmdCanExecute" />
         <CommandBinding Command="{x:Static local:CustomCommands.ClearLog}"
                         Executed="CommandBinding_ClearLogCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleRender}"
+                        Executed="CommandBinding_ToggleRenderCmdExecuted"/>
         <CommandBinding Command="{x:Static local:CustomCommands.ToggleScene}"
                         Executed="CommandBinding_ToggleSceneCmdExecuted"/>
         <CommandBinding Command="{x:Static local:CustomCommands.ToggleObjects}"
@@ -136,7 +138,7 @@
                             </ad:DockableContent>
                         </ad:DockablePane>
                         <ad:DocumentPane>
-                            <ad:DockableContent Title="Render" IsCloseable="False" Background="Black">
+                            <ad:DockableContent Title="Render" x:Name="adcRender" Background="Black">
                                 <MogitorControls:OgreControl x:Name="ogreControl" 
                                           OgreInitialized="ogreControl_OgreInitialized"
                                           ResourceLoadItemProgress="ogreControl_ResourceLoadItemProgress"
