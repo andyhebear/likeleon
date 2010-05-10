@@ -43,15 +43,12 @@ namespace Mogitor.Controls
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                this.logStringsDisplay.Dispatcher.BeginInvoke((System.Action)(() =>
-                    {
-                        // This code makes the listview scroll up-down and down-up in a infinite loop (in some systems?).
-                        //this.logStringsDisplay.ScrollIntoView(e.NewItems[0]);
+                // This code makes the listview scroll up-down and down-up in a infinite loop (in some systems?).
+                //this.logStringsDisplay.ScrollIntoView(e.NewItems[0]);
 
-                        Decorator border = VisualTreeHelper.GetChild(this.logStringsDisplay, 0) as Decorator;
-                        ScrollViewer scroll = border.Child as ScrollViewer;
-                        scroll.ScrollToBottom();
-                    }));
+                Decorator border = VisualTreeHelper.GetChild(this.logStringsDisplay, 0) as Decorator;
+                ScrollViewer scroll = border.Child as ScrollViewer;
+                scroll.ScrollToBottom();
             }
         }
 
