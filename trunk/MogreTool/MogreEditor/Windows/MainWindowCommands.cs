@@ -233,7 +233,8 @@ namespace Mogitor.Windows
         #region About
         private void CommandBinding_AboutCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("by likeleon.");
+            AboutDialog dlg = new AboutDialog();
+            dlg.ShowDialog();
         }
         #endregion
 
