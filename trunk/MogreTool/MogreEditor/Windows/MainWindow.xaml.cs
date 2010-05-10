@@ -39,7 +39,10 @@ namespace Mogitor.Windows
             Mogre.LogManager.Singleton.DefaultLog.MessageLogged +=
                 (message, lml, maskDebug, logName) =>
                 {
-                    Dispatcher.Invoke((Action)delegate() { this.logBuffer.Add(new LogData(DateTime.Now, lml, message, logName)); });
+                    Dispatcher.Invoke((Action)(() =>
+                    { 
+                        this.logBuffer.Add(new LogData(DateTime.Now, lml, message, logName));
+                    }));
                 };
 
             MogitorsRoot.Instance.SceneLoaded += (s, args) =>
