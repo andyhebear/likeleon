@@ -4,25 +4,78 @@ using System.Collections.ObjectModel;
 using Mogre;
 using Mogitor.Data;
 using System.Windows.Controls;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Mogitor.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MainWindow()
         {
+            Instance = this;
+
             InitializeComponent();
-
-            this.sceneView.MainWindow = this;
-            this.propertiesView.ApplyTemplate();
-            this.entityView.ApplyTemplate();
-
-            MogitorsSystem.Instance.SetWindows(this.ogreControl, this.sceneView.TreeControl, this.propertiesView);
-            MogitorsSystem.Instance.InitTreeIcons();
         }
+
+        #region Indexed Property
+        public class IsPanelVisibleProperty
+        {
+            public bool this[string name]
+            {
+                get
+                {
+                    if (Panels == null || !Panels.Keys.Contains(name))
+                        return false;
+                    return GetPanelVisible(Panels[name]);
+                }
+                set
+                {
+                    if (Panels == null || !Panels.Keys.Contains(name))
+                        return;
+                    SetPanelVisible(Panels[name], value);
+                }
+            }
+
+            public IDictionary<string, AvalonDock.DockableContent> Panels { get; set; }
+            public AvalonDock.DockingManager DockManager { get; set; }
+
+            private bool GetPanelVisible(AvalonDock.DockableContent adc)
+            {
+                return (adc.State != AvalonDock.DockableContentState.Hidden);
+            }
+
+            private void SetPanelVisible(AvalonDock.DockableContent adc, bool bVisible)
+            {
+                if (DockManager == null)
+                    return;
+
+                if (bVisible)
+                    DockManager.Show(adc);
+                else
+                    DockManager.Hide(adc);
+            }
+        }
+
+        public IsPanelVisibleProperty IsPanelVisible
+        {
+            get
+            {
+                return this.isPanelVisible;
+            }
+        }
+        #endregion
+
+        #region Properties
+        public static MainWindow Instance
+        {
+            get;
+            set;
+        }
+        #endregion
 
         #region Private Fields
         private LogBuffer logBuffer = new LogBuffer();
@@ -30,49 +83,87 @@ namespace Mogitor.Windows
         private int frameCounter;
         double totalFrameTime;
         float frameRate;
+        private readonly IsPanelVisibleProperty isPanelVisible = new IsPanelVisibleProperty();
+        private IDictionary<string, AvalonDock.DockableContent> panelsByName = new Dictionary<string, AvalonDock.DockableContent>();
         #endregion
 
         #region Private Methods
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        protected override void OnInitialized(EventArgs e)
         {
+            base.OnInitialized(e);
+
+            #region Avalon DockableContents visibility handling
+            this.panelsByName["Scene"] = this.adcScene;
+            this.panelsByName["Objects"] = this.adcObjects;
+            this.panelsByName["Entity"] = this.adcEntity;
+            this.panelsByName["Properties"] = this.adcProperties;
+            this.panelsByName["Log"] = this.adcLog;
+            this.panelsByName["Materials"] = this.adcMaterials;
+            this.panelsByName["Templates"] = this.adcTemplates;
+
+            IsPanelVisible.DockManager = this.dockManager;
+            IsPanelVisible.Panels = panelsByName;
+            
+            foreach (var iter in this.panelsByName)
+            {
+                iter.Value.StateChanged += (s, args) =>
+                    {
+                        OnPropertyChanged("IsPanelVisible");
+                    };
+            }
+            #endregion
+
+            #region Explicit initializations
+            this.sceneView.MainWindow = this;
+            this.propertiesView.ApplyTemplate();
+            this.entityView.ApplyTemplate();
+
+            MogitorsSystem.Instance.SetWindows(this.ogreControl, this.sceneView.TreeControl, this.propertiesView);
+            MogitorsSystem.Instance.InitTreeIcons();
+            #endregion
+
+            #region Log control event
             this.logControl.LogBuffer = this.logBuffer;
             Mogre.LogManager.Singleton.DefaultLog.MessageLogged +=
                 (message, lml, maskDebug, logName) =>
                 {
                     Dispatcher.Invoke((Action)(() =>
-                    { 
+                    {
                         this.logBuffer.Add(new LogData(DateTime.Now, lml, message, logName));
                     }));
                 };
+            #endregion
 
+            #region MogitorsRoot event
             MogitorsRoot.Instance.SceneLoaded += (s, args) =>
-                {
-                    UpdateWindowTitle();
+            {
+                UpdateWindowTitle();
 
-                    this.entityView.PrepareView();
-                    this.materialView.PrepareView();
-                    this.templateView.PrepareView();
+                this.entityView.PrepareView();
+                this.materialView.PrepareView();
+                this.templateView.PrepareView();
 
-                    this.statusString.Text = "Scene loaded";
-                };
+                this.statusString.Text = "Scene loaded";
+            };
 
             MogitorsRoot.Instance.SceneTerminated += (s, args) =>
-                {
-                    this.entityView.ClearView();
-                    this.materialView.DestroyScene();
-                    this.templateView.DestroyScene();
+            {
+                this.entityView.ClearView();
+                this.materialView.DestroyScene();
+                this.templateView.DestroyScene();
 
-                    UpdateWindowTitle();
+                UpdateWindowTitle();
 
-                    this.statusString.Text = "Scene terminated";
-                };
+                this.statusString.Text = "Scene terminated";
+            };
 
             MogitorsRoot.Instance.IsSceneModifiedChanged += (s, args) =>
-                {
-                    UpdateWindowTitle();
-                };
+            {
+                UpdateWindowTitle();
+            };
+            #endregion
 
-
+            #region Mogre.Root event
             Mogre.Root.Singleton.FrameStarted += (FrameEvent evt) =>
             {
                 DisplayFPS(evt.timeSinceLastFrame);
@@ -92,6 +183,12 @@ namespace Mogitor.Windows
             {
                 return true;
             };
+            #endregion
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            OnPropertyChanged("IsPanelVisible");
         }
 
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
@@ -155,6 +252,18 @@ namespace Mogitor.Windows
             else
             {
                 e.Cancel = true;
+            }
+        }
+        #endregion
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
         #endregion

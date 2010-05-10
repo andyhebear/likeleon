@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Mogitor"
     xmlns:MogitorData="clr-namespace:Mogitor.Data"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
     xmlns:c="clr-namespace:System.Collections;assembly=mscorlib">
     <local:EditorToolToBooleanConverter x:Key="editorToolToBooleanConverter" />
     <local:PolygonModeToBooleanConverter x:Key="polygonModeToBooleanConverter" />
@@ -209,6 +210,10 @@
               Command="{x:Static local:CustomCommands.ToggleScene}"
               ToolTip="Toggle Scene Panel"
               InputGestureText="F5"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Scene], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/scene.png" />
@@ -219,6 +224,10 @@
               Command="{x:Static local:CustomCommands.ToggleObjects}"
               ToolTip="Toggle Objects Panel"
               InputGestureText="F6"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Objects], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/objects.png" />
@@ -229,6 +238,10 @@
               Command="{x:Static local:CustomCommands.ToggleEntity}"
               ToolTip="Toggle meshes Panel"
               InputGestureText="F7"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Entity], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/entity.png" />
@@ -239,6 +252,10 @@
               Command="{x:Static local:CustomCommands.ToggleProperties}"
               ToolTip="Toggle Properties Panel"
               InputGestureText="F8"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Properties], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/properties.png" />
@@ -249,6 +266,10 @@
               Command="{x:Static local:CustomCommands.ToggleLog}"
               ToolTip="Toggle Messages"
               InputGestureText="F9"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Log], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/messages.png" />
@@ -259,6 +280,10 @@
               Command="{x:Static local:CustomCommands.ToggleMaterials}"
               ToolTip="Toggle Materials"
               InputGestureText="Shift+F5"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Materials], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/material.png" />
@@ -269,6 +294,10 @@
               Command="{x:Static local:CustomCommands.ToggleTemplates}"
               ToolTip="Toggle Templates"
               InputGestureText="Shift+F6"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Templates], 
+                                  Mode=TwoWay}"
               x:Shared="False">
         <MenuItem.Icon>
             <Image Source="../Resources/Icons/template.png" />

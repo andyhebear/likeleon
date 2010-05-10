@@ -154,4 +154,26 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Entity View Control Template -->
+    <Style TargetType="{x:Type MogitorControls:ObjectsView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MogitorControls:ObjectsView}">
+                    <Grid>
+                        <ListBox x:Name="PART_ListBox" 
+                                 ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Icons}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                        <TextBlock Text="Not yet supported" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
