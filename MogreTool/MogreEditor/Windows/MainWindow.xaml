@@ -137,7 +137,7 @@
                                 </ad:DockableContent.Icon>
                             </ad:DockableContent>
                         </ad:DockablePane>
-                        <ad:DocumentPane>
+                        <ad:DocumentPane Focusable="False">
                             <ad:DockableContent Title="Render" x:Name="adcRender" Background="Black">
                                 <MogitorControls:OgreControl x:Name="ogreControl" 
                                           OgreInitialized="ogreControl_OgreInitialized"
