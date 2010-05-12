@@ -65,6 +65,14 @@
     <Reference Include="UIAutomationProvider">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UpdateControls, Version=2.0.4.3, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Debug\UpdateControls.dll</HintPath>
+    </Reference>
+    <Reference Include="UpdateControls.XAML, Version=2.0.4.3, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Debug\UpdateControls.XAML.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -173,6 +181,7 @@
     <Compile Include="Data\MogitorsSceneSerializer.cs" />
     <Compile Include="Data\NodeEditor.cs" />
     <Compile Include="Data\ProjectOptions.cs" />
+    <Compile Include="Data\RecentFile.cs" />
     <Compile Include="Data\SceneManagerEditor.cs" />
     <Compile Include="Data\SceneUpdatedEventArgs.cs" />
     <Compile Include="Data\ViewportEditor.cs" />

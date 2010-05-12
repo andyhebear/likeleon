@@ -1,7 +1,9 @@
 ﻿<UserControl x:Class="Mogitor.Windows.MainWindowMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:MogitorData="clr-namespace:Mogitor.Data">
+    xmlns:MogitorData="clr-namespace:Mogitor.Data"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
+    DataContext="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}}">
     <Menu>
         <Menu.Resources>
             <Style TargetType="{x:Type Image}">
@@ -15,6 +17,15 @@
             <StaticResourceExtension ResourceKey="menuSave" />
             <StaticResourceExtension ResourceKey="menuSaveAs" />
             <StaticResourceExtension ResourceKey="menuClose" />
+            <Separator />
+            <MenuItem Header="_Recent Files" ItemsSource="{Binding RecentFiles}">
+                <MenuItem.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="MenuItem.Header" Value="{Binding FileName}" />
+                        <Setter Property="MenuItem.Command" Value="{Binding Open}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
             <Separator />
             <StaticResourceExtension ResourceKey="menuExit" />
         </MenuItem>
