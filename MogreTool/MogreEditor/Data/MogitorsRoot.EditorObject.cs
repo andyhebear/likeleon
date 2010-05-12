@@ -271,6 +271,91 @@ namespace Mogitor.Data
 
             IsSceneModified = true;
         }
+
+        public bool PickEntity(Mogre.RaySceneQuery raySceneQuery, Mogre.Ray ray, out Mogre.Entity result, Mogre.Vector3 hitPoint, string excludedObject, float maxDistance)
+        {
+            result = null;
+
+            raySceneQuery.Ray = ray;
+            raySceneQuery.QueryMask = QueryFlags.Movable;
+            raySceneQuery.SetSortByDistance(true);
+
+            if (raySceneQuery.Execute().Count <= 0)
+            {
+                result = null;
+                return false;
+            }
+
+            // at this point we have raycast to a series of different objects bounding boxes.
+            float closestDistance = maxDistance;
+            Mogre.Vector3 closestResult = Mogre.Vector3.ZERO;
+            foreach (var thisResult in raySceneQuery.GetLastResults())
+            {
+                // stop checking if we have found a raycast hit that is closer
+                // than all remaining entities
+                if ((closestDistance >= 0.0f) && (closestDistance < thisResult.distance))
+                    break;
+
+                // only check this result if its a hit against an entity
+                if ((thisResult.movable != null) && (thisResult.movable.MovableType == "Entity"))
+                {
+                    Mogre.Entity entity = thisResult.movable as Mogre.Entity;
+
+                    if (!entity.Visible || entity.Name == excludedObject)
+                        continue;
+
+                    // mesh data to retrieve
+                    uint vertexCount, indexCount;
+                    Mogre.Vector3[] vertices;
+                    uint[] indices;
+
+                    // get the mesh information
+                    GetMeshInformationEx(entity.GetMesh(), out vertexCount, out vertices, out indexCount, out indices,
+                                         entity.ParentNode._getDerivedPosition(),
+                                         entity.ParentNode._getDerivedOrientation(),
+                                         entity.ParentNode._getDerivedScale());
+
+                    // test for hitting individual triangles on the mesh
+                    bool newClosestFound = false;
+                    for (uint i = 0; i < indexCount; i += 3)
+                    {
+                        // check for a hit against this triangle
+                        Mogre.Pair<bool, float> hit = Mogre.Math.Intersects(ray, vertices[indices[i]], vertices[indices[i + 1]], vertices[indices[i + 2]], true, false);
+
+                        // if it was a hit check if its the closest
+                        if (hit.first)
+                        {
+                            if ((closestDistance < 0.0f) || (hit.second < closestDistance))
+                            {
+                                // this is the closes so far, save it off
+                                closestDistance = hit.second;
+                                newClosestFound = true;
+                            }
+                        }
+                    }
+
+                    // if we found a new closes raycast for this object, update the
+                    // closes_result before moving on to the next object.
+                    if (newClosestFound)
+                    {
+                        closestResult = ray.GetPoint(closestDistance);
+                        result = entity;
+                    }
+                }
+            }
+
+            // Return the result
+            if (closestDistance != maxDistance)
+            {
+                hitPoint = closestResult;
+                return true;
+            }
+            else
+            {
+                // Raycast failed
+                return false;
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -357,6 +442,110 @@ namespace Mogitor.Data
             BaseEditor parent = null;
             Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
             this.rootEditor = BaseEditor.Factory.CreateObject(ref parent, parameters);
+        }
+
+        private unsafe void GetMeshInformationEx(Mogre.MeshPtr mesh, out uint vertexCount, out Mogre.Vector3[] vertices,
+                                          out uint indexCount, out uint[] indices,
+                                          Mogre.Vector3 position, Mogre.Quaternion orient, Mogre.Vector3 scale)
+        {
+            bool addedShared = false;
+
+            vertexCount = indexCount = 0;
+
+            // Calculate how many vertices and indicies we're going to need
+            foreach (var subMesh in mesh.GetSubMeshIterator())
+            {
+                // We only need to add the shared vertices once
+                if (subMesh.useSharedVertices)
+                {
+                    if (!addedShared)
+                    {
+                        vertexCount += mesh.sharedVertexData.vertexCount;
+                        addedShared = true;
+                    }
+                }
+                else
+                {
+                    vertexCount += subMesh.vertexData.vertexCount;
+                }
+
+                // Add the indices
+                indexCount += subMesh.indexData.indexCount;
+            }
+
+            // Allocate space for the vertices and indices
+            vertices = new Mogre.Vector3[vertexCount];
+            indices = new uint[indexCount];
+
+            addedShared = false;
+
+            uint sharedOffset = 0;
+            uint currentOffset = 0;
+            uint nextOffset = 0;
+            uint indexOffset = 0;
+
+            // Run through the submeshes again, adding the data into the arrays
+            foreach (var subMesh in mesh.GetSubMeshIterator())
+            {
+                Mogre.VertexData vertexData = subMesh.useSharedVertices ? mesh.sharedVertexData : subMesh.vertexData;
+
+                if ((!subMesh.useSharedVertices) || (subMesh.useSharedVertices && !addedShared))
+                {
+                    if (subMesh.useSharedVertices)
+                    {
+                        addedShared = true;
+                        sharedOffset = currentOffset;
+                    }
+
+                    Mogre.VertexElement posElem = vertexData.vertexDeclaration.FindElementBySemantic(Mogre.VertexElementSemantic.VES_POSITION);
+
+                    Mogre.HardwareVertexBufferSharedPtr vbuf = vertexData.vertexBufferBinding.GetBuffer(posElem.Source);
+
+                    byte* vertex = (byte *)vbuf.Lock(Mogre.HardwareBuffer.LockOptions.HBL_READ_ONLY);
+                    float* pReal;
+
+                    for (uint j = 0; j < vertexData.vertexCount; ++j, vertex += vbuf.VertexSize)
+                    {
+                        posElem.BaseVertexPointerToElement(vertex, &pReal);
+
+                        Mogre.Vector3 pt = new Mogre.Vector3(pReal[0], pReal[1], pReal[2]);
+
+                        vertices[currentOffset + j] = (orient * (pt * scale)) + position;
+                    }
+
+                    vbuf.Unlock();
+                    nextOffset += vertexData.vertexCount;
+                }
+
+                Mogre.IndexData indexData = subMesh.indexData;
+                uint numTris = indexData.indexCount / 3;
+                Mogre.HardwareIndexBufferSharedPtr ibuf = indexData.indexBuffer;
+
+                bool use32bitIndexes = (ibuf.Type == Mogre.HardwareIndexBuffer.IndexType.IT_32BIT);
+
+                uint* pLong = (uint*)(ibuf.Lock(Mogre.HardwareBuffer.LockOptions.HBL_READ_ONLY));
+                ushort* pShort = (ushort*)(pLong);
+
+                uint offset = (subMesh.useSharedVertices) ? sharedOffset : currentOffset;
+
+                if (use32bitIndexes)
+                {
+                    for (uint k = 0; k < numTris * 3; ++k)
+                    {
+                        indices[indexOffset++] = pLong[k] + (uint)offset;
+                    }
+                }
+                else
+                {
+                    for (uint k = 0; k < numTris * 3; ++k)
+                    {
+                        indices[indexOffset++] = (uint)(pShort[k]) + (uint)offset;
+                    }
+                }
+
+                ibuf.Unlock();
+                currentOffset = nextOffset;
+            }
         }
         #endregion
     }
