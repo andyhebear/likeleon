@@ -245,6 +245,7 @@ namespace Mogitor.Data
         private static EditorTools editorTool = EditorTools.Select;
         private static readonly ViewportEditor instance = new ViewportEditor();
         private CameraEditor activeCamera;
+        private NameObjectPairList highLighted = new NameObjectPairList();
         #endregion
 
         #region Overrides BaseEditor
@@ -504,6 +505,38 @@ namespace Mogitor.Data
                 }
             }
         }
+
+        private bool GetMouseRay(Mogre.Vector2 point, out Mogre.Ray ray)
+        {
+            if (this.activeCamera == null)
+            {
+                ray = new Mogre.Ray();
+                return false;
+            }
+
+            float width = this.handle.ActualWidth;
+            float height = this.handle.ActualHeight;
+            ray = ActiveCamera.Camera.GetCameraToViewportRay(point.x / width, point.y / height);
+            return true;
+        }
+
+        private void HighlightObjectAtPosition(Mogre.Ray mouseRay)
+        {
+            BaseEditor selected = GetObjectUnderMouse(mouseRay, false, false);
+
+            foreach (var iter in this.highLighted)
+            {
+                if (iter.Value != selected)
+                    iter.Value.IsHighLighted = false;
+            }
+            this.highLighted.Clear();
+
+            if (selected != null)
+            {
+                selected.IsHighLighted = true;
+                this.highLighted.Add(selected.Name, selected);
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -576,6 +609,7 @@ namespace Mogitor.Data
             float deltaY = (point.y - lastMouse.y) * 0.5f;
 
             MogitorsRoot mogRoot = MogitorsRoot.Instance;
+            BaseEditor selected = mogRoot.Selected;
 
             if (!imitate)
             {
@@ -607,7 +641,11 @@ namespace Mogitor.Data
                 }
             }
 
-            this.lastMouse = point;
+            Mogre.Ray mouseRay;
+            if (!GetMouseRay(point, out mouseRay))
+                return;
+
+            HighlightObjectAtPosition(mouseRay);
         }
 
         public virtual void OnMouseLeave(Mogre.Vector2 point, MouseDevice mouseDevice)

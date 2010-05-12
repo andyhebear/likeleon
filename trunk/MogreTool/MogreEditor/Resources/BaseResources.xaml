@@ -4,7 +4,7 @@
     xmlns:MogitorControls="clr-namespace:Mogitor.Controls"
     xmlns:swf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
     xmlns:UIControls="clr-namespace:UIControls;assembly=UIControls">
-    
+
     <!-- Log Control Template -->
     <Style TargetType="{x:Type MogitorControls:LogControl}">
         <Setter Property="Template">
