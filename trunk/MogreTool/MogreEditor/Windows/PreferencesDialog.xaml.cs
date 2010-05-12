@@ -15,6 +15,8 @@ namespace Mogitor.Windows
 
             this.chkNotWpfSurface.IsChecked = !MogitorSettings.Instance.UseWpfDisplaySurface;
             this.tboxTargetFps.Text = MogitorSettings.Instance.FrameRate.ToString();
+            this.chkLoadLastProject.IsChecked = MogitorSettings.Instance.LoadLastLoadedScene;
+            this.tboxMaxRecentFiles.Text = MogitorSettings.Instance.MaxRecentFiles.ToString();
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -26,9 +28,13 @@ namespace Mogitor.Windows
                 int newFps;
                 if (int.TryParse(this.tboxTargetFps.Text, out newFps))
                     MogitorSettings.Instance.FrameRate = newFps;
-                else
-                    MessageBox.Show("Failed to parse target FPS, this item will not be saved");
             }
+
+            MogitorSettings.Instance.LoadLastLoadedScene = this.chkLoadLastProject.IsChecked == true? true : false;
+
+            uint maxRecentFiles;
+            if (uint.TryParse(this.tboxMaxRecentFiles.Text, out maxRecentFiles))
+                MogitorSettings.Instance.MaxRecentFiles = maxRecentFiles;
 
             this.DialogResult = true;
         }

@@ -64,5 +64,40 @@ namespace Mogitor.Properties {
                 this["UseWpfDisplaySurface"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection RecentFiles {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RecentFiles"]));
+            }
+            set {
+                this["RecentFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public uint MaxRecentFiles {
+            get {
+                return ((uint)(this["MaxRecentFiles"]));
+            }
+            set {
+                this["MaxRecentFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LoadLastLoadedScene {
+            get {
+                return ((bool)(this["LoadLastLoadedScene"]));
+            }
+            set {
+                this["LoadLastLoadedScene"] = value;
+            }
+        }
     }
 }

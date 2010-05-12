@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using Mogitor.Data;
+using Mogitor.Properties;
 
 namespace Mogitor
 {
@@ -34,6 +35,13 @@ namespace Mogitor
 
             Initialize();
             base.OnStartup(e);
+        }
+
+        protected override void  OnExit(ExitEventArgs e)
+        {
+            Settings.Default.Save();
+
+            base.OnExit(e);
         }
         #endregion
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace Mogitor
 {
@@ -41,6 +43,28 @@ namespace Mogitor
         {
             get { return Properties.Settings.Default.FrameRate; }
             set { Properties.Settings.Default.FrameRate = value; }
+        }
+
+        public StringCollection RecentFiles
+        {
+            get 
+            {
+                if (Properties.Settings.Default.RecentFiles == null)
+                    Properties.Settings.Default.RecentFiles = new System.Collections.Specialized.StringCollection();
+                return Properties.Settings.Default.RecentFiles; 
+            }
+        }
+
+        public uint MaxRecentFiles
+        {
+            get { return Properties.Settings.Default.MaxRecentFiles; }
+            set { Properties.Settings.Default.MaxRecentFiles = value; }
+        }
+
+        public bool LoadLastLoadedScene
+        {
+            get { return Properties.Settings.Default.LoadLastLoadedScene; }
+            set { Properties.Settings.Default.LoadLastLoadedScene = value; }
         }
     }
 }
