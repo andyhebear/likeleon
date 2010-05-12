@@ -20,10 +20,6 @@ namespace Mogitor.Windows
             Instance = this;
 
             InitializeComponent();
-
-            this.recentFiles.Add("test1");
-            this.recentFiles.Add("test2");
-            OnPropertyChanged("RecentFiles");
         }
 
         #region Indexed Property
@@ -86,9 +82,8 @@ namespace Mogitor.Windows
             get
             {
                 // Create a RecentFile for each recent file.
-                return this.recentFiles
-                    .Select((fileName, index) =>
-                        new RecentFile(index, fileName, this));
+                List<string> list = MogitorSettings.Instance.RecentFiles.Cast<string>().ToList();
+                return list.Select((fileName, index) => new RecentFile(index, fileName, this));
             }
         }
         #endregion
@@ -216,6 +211,12 @@ namespace Mogitor.Windows
         private void ogreControl_OgreInitialized(object sender, RoutedEventArgs e)
         {
             this.statusString.Text = "Ready";
+
+            if (MogitorSettings.Instance.LoadLastLoadedScene && MogitorSettings.Instance.RecentFiles.Count > 0)
+            {
+                //Dispatcher.Invoke((Action)(() => OpenSceneFile(MogitorSettings.Instance.RecentFiles[0])));
+                OpenSceneFile(MogitorSettings.Instance.RecentFiles[0]);
+            }
         }
 
         private void ogreControl_ResourceLoadItemProgress(object sender, Mogitor.Controls.ResourceLoadEventArgs e)
@@ -279,8 +280,18 @@ namespace Mogitor.Windows
 
         private void AddToRecentFiles(string entry)
         {
-            this.recentFiles.Add(entry);
+            System.Collections.Specialized.StringCollection recentFiles = MogitorSettings.Instance.RecentFiles;
+
+            if (!recentFiles.Contains(entry))
+                recentFiles.Add(entry);
+
+            while (recentFiles.Count > MogitorSettings.Instance.MaxRecentFiles)
+                recentFiles.RemoveAt(0);
+
             OnPropertyChanged("RecentFiles");
+
+            // To disable "Recent Files" menu, is there any more clever method?
+            OnPropertyChanged("RecentFiles.Count");
         }
         #endregion
 

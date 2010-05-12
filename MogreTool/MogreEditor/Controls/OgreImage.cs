@@ -160,9 +160,6 @@ namespace Mogitor.Controls
                     {
                         IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
 
-                        if (Initialized != null)
-                            Initialized(this, new RoutedEventArgs());
-
                         ReInitRenderTarget();
                         AttachRenderTarget(true);
 
@@ -171,13 +168,19 @@ namespace Mogitor.Controls
                         this.currentThread = null;
                     });
 
-
                 this.root.RenderSystem.EventOccurred += (string eventName, Const_NameValuePairList parameters) =>
                     {
                         if (eventName == "DeviceLost")
                             RestoreLostDevice();
                     };
                 MogitorsRoot.Instance.RenderWindow = this.renderWindow;
+
+                this.Dispatcher.Invoke(
+                    (MethodInvoker)delegate
+                    {
+                        if (Initialized != null)
+                            Initialized(this, new RoutedEventArgs());
+                    });
             }
 
             return true;

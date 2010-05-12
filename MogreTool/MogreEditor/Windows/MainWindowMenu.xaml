@@ -18,9 +18,28 @@
             <StaticResourceExtension ResourceKey="menuSaveAs" />
             <StaticResourceExtension ResourceKey="menuClose" />
             <Separator />
-            <MenuItem Header="_Recent Files" ItemsSource="{Binding RecentFiles}">
+            <MenuItem Header="_Recent Files" ItemsSource="{Binding RecentFiles}" x:Name="menuRecentFiles">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/files.png" />
+                </MenuItem.Icon>
+                <MenuItem.Style>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=RecentFiles.Count}" Value="0">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
                 <MenuItem.ItemContainerStyle>
                     <Style>
+                        <Style.Resources>
+                            <Image x:Key="fileIcon"
+                                   Source="../Resources/Icons/ogscene.png"
+                                   x:Shared="False"
+                                   Width="16" />
+                        </Style.Resources>
+                        <Setter Property="MenuItem.Icon" Value="{DynamicResource fileIcon}" />
                         <Setter Property="MenuItem.Header" Value="{Binding FileName}" />
                         <Setter Property="MenuItem.Command" Value="{Binding Open}" />
                     </Style>
