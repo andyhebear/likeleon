@@ -76,10 +76,21 @@ namespace Mogitor.Windows
         #region Open
         private void CommandBinding_OpenCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
+            OpenSceneFile("");
+        }
+
+        private void OpenSceneFile(string file)
+        {
+            if (file.Length > 0 && !File.Exists(file))
+            {
+                MessageBox.Show("File not found: " + file, "Mogitor", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!(MogitorsRoot.Instance.TerminateScene()))
                 return;
 
-            BaseSerializer.SceneFileResult ret = MogitorsRoot.Instance.LoadScene("");
+            BaseSerializer.SceneFileResult ret = MogitorsRoot.Instance.LoadScene(file);
             if (ret == BaseSerializer.SceneFileResult.Cancel)
                 return;
 

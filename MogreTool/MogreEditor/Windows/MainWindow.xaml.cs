@@ -6,19 +6,24 @@ using Mogitor.Data;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mogitor.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged, IFileHandler
     {
         public MainWindow()
         {
             Instance = this;
 
             InitializeComponent();
+
+            this.recentFiles.Add("test1");
+            this.recentFiles.Add("test2");
+            OnPropertyChanged("RecentFiles");
         }
 
         #region Indexed Property
@@ -75,6 +80,17 @@ namespace Mogitor.Windows
             get;
             set;
         }
+
+        public IEnumerable<RecentFile> RecentFiles
+        {
+            get
+            {
+                // Create a RecentFile for each recent file.
+                return this.recentFiles
+                    .Select((fileName, index) =>
+                        new RecentFile(index, fileName, this));
+            }
+        }
         #endregion
 
         #region Private Fields
@@ -85,6 +101,7 @@ namespace Mogitor.Windows
         float frameRate;
         private readonly IsPanelVisibleProperty isPanelVisible = new IsPanelVisibleProperty();
         private IDictionary<string, AvalonDock.DockableContent> panelsByName = new Dictionary<string, AvalonDock.DockableContent>();
+        private IList<string> recentFiles = new List<string>();
         #endregion
 
         #region Private Methods
@@ -143,6 +160,10 @@ namespace Mogitor.Windows
                 this.entityView.PrepareView();
                 this.materialView.PrepareView();
                 this.templateView.PrepareView();
+
+                ProjectOptions opt = MogitorsRoot.Instance.ProjectOptions;
+                string recentFileEntry = MogitorsSystem.Instance.GetFullPath(opt.ProjectDir + "/" + opt.ProjectName + ".mogscene");
+                AddToRecentFiles(recentFileEntry);
 
                 this.statusString.Text = "Scene loaded";
             };
@@ -255,6 +276,12 @@ namespace Mogitor.Windows
                 e.Cancel = true;
             }
         }
+
+        private void AddToRecentFiles(string entry)
+        {
+            this.recentFiles.Add(entry);
+            OnPropertyChanged("RecentFiles");
+        }
         #endregion
 
         #region INotifyPropertyChanged
@@ -266,6 +293,13 @@ namespace Mogitor.Windows
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+        #endregion
+
+        #region IFileHandler
+        void IFileHandler.Open(string fileName)
+        {
+            OpenSceneFile(fileName);
         }
         #endregion
     }
