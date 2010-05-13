@@ -164,7 +164,9 @@ namespace Mogitor.Controls
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
 
-            if (e.ChangedButton == MouseButton.Right)
+            if (e.ChangedButton == MouseButton.Left)
+                MogitorsRoot.Instance.OnMouseLeftDown(pos, e.MouseDevice);
+            else if (e.ChangedButton == MouseButton.Right)
                 MogitorsRoot.Instance.OnMouseRightDown(pos, e.MouseDevice);
             else if (e.ChangedButton == MouseButton.Middle)
                 MogitorsRoot.Instance.OnMouseMiddleDown(pos, e.MouseDevice);
@@ -179,7 +181,9 @@ namespace Mogitor.Controls
 
             Mogre.Vector2 pos = new Mogre.Vector2((float)e.GetPosition(this).X, (float)e.GetPosition(this).Y);
 
-            if (e.ChangedButton == MouseButton.Right)
+            if (e.ChangedButton == MouseButton.Left)
+                MogitorsRoot.Instance.OnMouseLeftUp(pos, e.MouseDevice);
+            else if (e.ChangedButton == MouseButton.Right)
                 MogitorsRoot.Instance.OnMouseRightUp(pos, e.MouseDevice);
             else if (e.ChangedButton == MouseButton.Middle)
                 MogitorsRoot.Instance.OnMouseMiddleUp(pos, e.MouseDevice);

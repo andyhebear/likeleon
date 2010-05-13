@@ -240,6 +240,7 @@ namespace Mogitor.Data
         private readonly IList<CompositorPush> compositorStorage = new List<CompositorPush>();
         private Mogre.Vector3 newCamPosition = Mogre.Vector3.ZERO;
         private Mogre.Vector2 lastMouse = Mogre.Vector2.ZERO;
+        private Mogre.Vector2 lastClickPoint = Mogre.Vector2.ZERO;
         private MouseDevice lastMouseDevice;
         private static bool isSettingPos = false;
         private static EditorTools editorTool = EditorTools.Select;
@@ -537,6 +538,26 @@ namespace Mogitor.Data
                 this.highLighted.Add(selected.Name, selected);
             }
         }
+
+        private void DoSelect(Mogre.Ray mouseRay)
+        {
+            BaseEditor currentSelection = MogitorsRoot.Instance.Selected;
+            BaseEditor newSelection = GetObjectUnderMouse(mouseRay, true, true);
+
+            if (newSelection != null && newSelection != currentSelection)
+            {
+                newSelection.UpdateTreeView();
+            }
+            else if (currentSelection != null)
+            {
+                ClearSelection();
+            }
+        }
+
+        private void ClearSelection()
+        {
+            MogitorsRoot.Instance.RootEditor.UpdateTreeView();
+        }
         #endregion
 
         #region Public Methods
@@ -650,10 +671,51 @@ namespace Mogitor.Data
 
         public virtual void OnMouseLeave(Mogre.Vector2 point, MouseDevice mouseDevice)
         {
-            this.lastMouseDevice = mouseDevice;
+            this.lastMouseDevice = null;
+
+            foreach (var it in this.highLighted)
+            {
+                it.Value.IsHighLighted = false;
+            }
+            this.highLighted.Clear();
+
             this.lastMouse = new Mogre.Vector2(-1, -1);
 
             MogitorsSystem.Instance.ShowMouseCursor(true);
+        }
+
+        public virtual void OnMouseLeftDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastClickPoint = point;
+            this.lastMouseDevice = mouseDevice;
+
+            if (mouseDevice.RightButton == MouseButtonState.Pressed)
+                return;
+
+            //Mogre.Ray mouseRay;
+            //GetMouseRay(this.lastMouse, out mouseRay);
+
+            //BaseEditor selected = MogitorsRoot.Instance.Selected;
+
+            //if (selected && selected == GetObjectUnderMouse(mouseRay, true, true))
+            //{
+            //}
+        }
+
+        public virtual void OnMouseLeftUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        {
+            this.lastMouse = point;
+            this.lastClickPoint = point;
+            this.lastMouseDevice = mouseDevice;
+
+            Mogre.Ray mouseRay;
+            GetMouseRay(this.lastMouse, out mouseRay);
+
+            if (editorTool >= EditorTools.Select && editorTool <= EditorTools.Scale)
+            {
+                DoSelect(mouseRay);
+            }
         }
 
         public virtual void OnMouseRightDown(Mogre.Vector2 point, MouseDevice mouseDevice)
