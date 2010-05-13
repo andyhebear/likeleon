@@ -548,7 +548,7 @@ namespace Mogitor.Data
             {
                 newSelection.UpdateTreeView();
             }
-            else if (currentSelection != null)
+            else if (newSelection == null && currentSelection != null)
             {
                 ClearSelection();
             }
