@@ -328,9 +328,6 @@ namespace Mogitor.Data
 
         protected BaseEditor GetObjectUnderMouse(Mogre.Ray mouseRay, bool pickWidgets, bool pickTerrain)
         {
-            if (pickWidgets || pickTerrain)
-                throw new System.NotImplementedException("pickWidgets == true");
-
             Mogre.RaySceneQuery raySceneQuery = MogitorsRoot.Instance.SceneManager.CreateRayQuery(new Mogre.Ray());
             raySceneQuery.QueryMask = ~QueryFlags.Widget;
             BaseEditor selected = null;
