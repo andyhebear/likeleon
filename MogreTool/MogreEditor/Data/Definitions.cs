@@ -34,7 +34,9 @@ namespace Mogitor.Data
         Deform,
         Splat,
         Paint,
-        Smooth
+        Smooth,
+
+        None = 256
     };
 
     class QueryFlags
