@@ -196,6 +196,16 @@ namespace Mogitor.Data
                 this.highlightNode.SetVisible(this.isHighLighted);
             }
         }
+
+        public virtual bool UsesGizmos
+        {
+            get { return false; }
+        }
+
+        public virtual bool Update(float timePassed)
+        {
+            return false;
+        }
         #endregion
 
         #region Public Methods

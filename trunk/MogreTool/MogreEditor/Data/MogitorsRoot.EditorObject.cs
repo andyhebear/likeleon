@@ -427,6 +427,7 @@ namespace Mogitor.Data
             IsSceneModified = false;
             IsSceneLoaded = false;
             this.nameList.Clear();
+            this.updateList.Clear();
             SceneUpdated = null;
             
             foreach (KeyValuePair<string, BaseEditorFactory> it in this.editorObjectFactories)

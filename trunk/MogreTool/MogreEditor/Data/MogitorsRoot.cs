@@ -25,6 +25,7 @@ namespace Mogitor.Data
         private readonly IList<EditorType> objectDisplayOrder = new List<EditorType>();
         private bool isSceneModified;
         private bool isSceneLoaded;
+        private readonly NameObjectPairList updateList = new NameObjectPairList();
         #endregion
 
         #region Public Properties
@@ -255,7 +256,7 @@ namespace Mogitor.Data
         public void AfterLoadScene()
         {
             CreateGizmo();
-            SetGizmoMode(EditorTools.Select);
+            GizmoMode = EditorTools.Select;
             ViewportEditor.ResetCommonValues();
 
             if (ActiveViewport == null)
@@ -326,11 +327,8 @@ namespace Mogitor.Data
             {
                 (iter.Value as ViewportEditor).RenderTargetResized(viewportWidth, viewportHeight);
             }
+            UpdateGizmo();
             ClearScreenBackground(true);
-        }
-
-        public void Update(float timePassed)
-        {
         }
 
         public void OnPreRenderTargetChanged()
@@ -463,6 +461,33 @@ namespace Mogitor.Data
 
             ActiveViewport.OnMouseWheel(point - new Mogre.Vector2(rect.x, rect.y), delta, mouseDevice);
         }
+
+        public bool Update(float timePassed)
+        {
+            if (this.gizmoNode != null)
+                UpdateGizmo();
+
+            if (Updated != null)
+                Updated(this, new UpdatedEventArgs(timePassed));
+
+            bool changed = false;
+            foreach (var iter in this.updateList)
+            {
+                changed |= iter.Value.Update(timePassed);
+            }
+            IsSceneModified |= changed;
+            return changed;
+        }
+
+        public void RegisterForUpdates(BaseEditor obj)
+        {
+            this.updateList.Add(obj.Name, obj);
+        }
+
+        public void UnRegisterForUpdates(BaseEditor obj)
+        {
+            this.updateList.Remove(obj.Name);
+        }
         #endregion
 
         #region Private Methods
@@ -547,6 +572,7 @@ namespace Mogitor.Data
         public event EventHandler<EventArgs> SceneTerminated;
         public event EventHandler<EventArgs> IsSceneModifiedChanged;
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<UpdatedEventArgs> Updated;
         #endregion
     }
 }

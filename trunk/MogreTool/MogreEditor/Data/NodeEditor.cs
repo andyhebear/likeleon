@@ -111,7 +111,7 @@ namespace Mogitor.Data
             IsLoaded = true;
             return true;
         }
-
+        
         public override bool UnLoad()
         {
             if (!IsLoaded)
@@ -219,6 +219,14 @@ namespace Mogitor.Data
         }
 
         public override bool IsNodeType
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool UsesGizmos
         {
             get
             {

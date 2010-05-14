@@ -185,6 +185,7 @@
     <Compile Include="Data\RecentFile.cs" />
     <Compile Include="Data\SceneManagerEditor.cs" />
     <Compile Include="Data\SceneUpdatedEventArgs.cs" />
+    <Compile Include="Data\UpdatedEventArgs.cs" />
     <Compile Include="Data\ViewportEditor.cs" />
     <Compile Include="MogitorSettings.cs" />
     <Compile Include="MogreX\AxisAlignedBox.cs" />

@@ -17,6 +17,52 @@ namespace Mogitor.Data
         private EditorTools oldGizmoMode = EditorTools.None;
         #endregion
 
+
+        #region Public Properties
+        public EditorTools GizmoMode
+        {
+            set
+            {
+                if (this.oldGizmoMode == value)
+                    return;
+                this.oldGizmoMode = value;
+
+                Entity wx = this.gizmoEntities[0];
+                Entity wy = this.gizmoEntities[1];
+                Entity wz = this.gizmoEntities[2];
+
+                wx.GetSubEntity(1).SetVisible(false);
+                wx.GetSubEntity(2).SetVisible(false);
+                wx.GetSubEntity(3).SetVisible(false);
+                wy.GetSubEntity(1).SetVisible(false);
+                wy.GetSubEntity(2).SetVisible(false);
+                wy.GetSubEntity(3).SetVisible(false);
+                wz.GetSubEntity(1).SetVisible(false);
+                wz.GetSubEntity(2).SetVisible(false);
+                wz.GetSubEntity(3).SetVisible(false);
+
+                switch (value)
+                {
+                    case EditorTools.Move:
+                        wx.GetSubEntity(1).SetVisible(true);
+                        wy.GetSubEntity(1).SetVisible(true);
+                        wz.GetSubEntity(1).SetVisible(true);
+                        break;
+                    case EditorTools.Rotate:
+                        wx.GetSubEntity(2).SetVisible(true);
+                        wy.GetSubEntity(2).SetVisible(true);
+                        wz.GetSubEntity(2).SetVisible(true);
+                        break;
+                    case EditorTools.Scale:
+                        wx.GetSubEntity(3).SetVisible(true);
+                        wy.GetSubEntity(3).SetVisible(true);
+                        wz.GetSubEntity(3).SetVisible(true);
+                        break;
+                }
+            }
+        }
+        #endregion
+
         #region Private Methods
         private void CreateGizmo()
         {
@@ -47,14 +93,14 @@ namespace Mogitor.Data
             this.gizmoEntities[0].SetMaterialName("mtSCBRED");
             this.gizmoEntities[0].RenderQueueGroup = (byte)RenderQueueGroupID.RENDER_QUEUE_SKIES_LATE;
             this.gizmoEntities[0].QueryFlags = QueryFlags.Widget;
-            this.gizmoZ.AttachObject(this.gizmoEntities[0]);
+            this.gizmoX.AttachObject(this.gizmoEntities[0]);
 
             // YY arrows
             this.gizmoEntities[1].CastShadows = false;
             this.gizmoEntities[1].SetMaterialName("mtSCBGREEN");
             this.gizmoEntities[1].RenderQueueGroup = (byte)RenderQueueGroupID.RENDER_QUEUE_SKIES_LATE;
             this.gizmoEntities[1].QueryFlags = QueryFlags.Widget;
-            this.gizmoZ.AttachObject(this.gizmoEntities[1]);
+            this.gizmoY.AttachObject(this.gizmoEntities[1]);
 
             this.gizmoNode.SetVisible(false);
         }
@@ -83,44 +129,34 @@ namespace Mogitor.Data
             this.gizmoZ = null;
             this.gizmoEntities[0] = this.gizmoEntities[1] = this.gizmoEntities[2] = null;
         }
+        #endregion
 
-        private void SetGizmoMode(EditorTools mode)
+        #region Public Methods
+        void UpdateGizmo()
         {
-            if (this.oldGizmoMode == mode)
+            if (this.gizmoNode == null)
                 return;
-            this.oldGizmoMode = mode;
 
-            Entity wx = this.gizmoEntities[0];
-            Entity wy = this.gizmoEntities[1];
-            Entity wz = this.gizmoEntities[2];
-
-            wx.GetSubEntity(1).SetVisible(false);
-            wx.GetSubEntity(2).SetVisible(false);
-            wx.GetSubEntity(3).SetVisible(false);
-            wy.GetSubEntity(1).SetVisible(false);
-            wy.GetSubEntity(2).SetVisible(false);
-            wy.GetSubEntity(3).SetVisible(false);
-            wz.GetSubEntity(1).SetVisible(false);
-            wz.GetSubEntity(2).SetVisible(false);
-            wz.GetSubEntity(3).SetVisible(false);
-
-            switch (mode)
+            if (Selected != null && Selected.UsesGizmos && Selected != ActiveViewport.CameraEditor)
             {
-                case EditorTools.Move:
-                    wx.GetSubEntity(1).SetVisible(true);
-                    wy.GetSubEntity(1).SetVisible(true);
-                    wz.GetSubEntity(1).SetVisible(true);
-                    break;
-                case EditorTools.Rotate:
-                    wx.GetSubEntity(2).SetVisible(true);
-                    wy.GetSubEntity(2).SetVisible(true);
-                    wz.GetSubEntity(2).SetVisible(true);
-                    break;
-                case EditorTools.Scale:
-                    wx.GetSubEntity(3).SetVisible(true);
-                    wy.GetSubEntity(3).SetVisible(true);
-                    wz.GetSubEntity(3).SetVisible(true);
-                    break;
+                Mogre.Vector3 position = Selected.DerivedPosition;
+
+                Mogre.Vector4 rect = new Vector4();
+                ActiveViewport.GetRect(ref rect);
+
+                float minSize = System.Math.Min(rect.z, rect.w);
+                float distance = (position - ActiveViewport.CameraEditor.DerivedPosition).Length;
+
+                distance /= (minSize / 20.0f);
+
+                this.gizmoNode.SetPosition(position.x, position.y, position.z);
+                this.gizmoNode.SetOrientation(Selected.DerivedOrientation.w, Selected.DerivedOrientation.x, Selected.DerivedOrientation.y, Selected.DerivedOrientation.z);
+                this.gizmoNode.SetScale(distance, distance, distance);
+                this.gizmoNode.SetVisible(true);
+            }
+            else
+            {
+                this.gizmoNode.SetVisible(false);
             }
         }
         #endregion
