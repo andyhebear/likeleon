@@ -321,6 +321,14 @@ namespace Mogitor.Data
                 this.highlightNode.SetVisible(this.isHighLighted);
             }
         }
+
+        public override bool UsesGizmos
+        {
+            get
+            {
+                return true;
+            }
+        }
         #endregion
 
         #region Public Methods

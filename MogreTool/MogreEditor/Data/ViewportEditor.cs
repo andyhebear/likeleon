@@ -205,6 +205,8 @@ namespace Mogitor.Data
             {
                 editorTool = value;
 
+                MogitorsRoot.Instance.GizmoMode = editorTool;
+
                 instance.OnPropertyChanged("EditorTool");
                 OnPropertyChanged("EditorTool");
             }

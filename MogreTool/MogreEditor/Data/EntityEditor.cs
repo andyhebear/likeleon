@@ -193,6 +193,14 @@ namespace Mogitor.Data
 
             this.bBoxNode.SetVisible(bShow);
         }
+
+        public override bool UsesGizmos
+        {
+            get
+            {
+                return true;
+            }
+        }
         #endregion
     }
 
