@@ -254,6 +254,8 @@ namespace Mogitor.Data
 
         public void AfterLoadScene()
         {
+            CreateGizmo();
+            SetGizmoMode(EditorTools.Select);
             ViewportEditor.ResetCommonValues();
 
             if (ActiveViewport == null)

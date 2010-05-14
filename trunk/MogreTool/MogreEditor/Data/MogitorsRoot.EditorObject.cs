@@ -64,7 +64,11 @@ namespace Mogitor.Data
         public BaseEditor Selected
         {
             get { return this.selectedEditor; }
-            set { this.selectedEditor = value; }
+            set 
+            { 
+                this.selectedEditor = value;
+                this.oldGizmoMode = EditorTools.None;
+            }
         }
         #endregion
 
@@ -405,6 +409,8 @@ namespace Mogitor.Data
         {
             this.activeDragData = null;
 
+            DestroyGizmo();
+
             // Make sure to unload all the viewports first, since they are dependent on SceneManager
             // but they share the same parent with scene manager and scene manager may get deleted before they do
             foreach (KeyValuePair<string, BaseEditor> it in this.namesByType[(int)EditorType.Viewport])
@@ -442,6 +448,12 @@ namespace Mogitor.Data
             BaseEditor parent = null;
             Mogre.NameValuePairList parameters = new Mogre.NameValuePairList();
             this.rootEditor = BaseEditor.Factory.CreateObject(ref parent, parameters);
+
+            this.gizmoNode = null;
+            this.gizmoX = null;
+            this.gizmoY = null;
+            this.gizmoZ = null;
+            this.oldGizmoMode = EditorTools.None;
         }
 
         private unsafe void GetMeshInformationEx(Mogre.MeshPtr mesh, out uint vertexCount, out Mogre.Vector3[] vertices,

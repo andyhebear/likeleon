@@ -178,6 +178,7 @@
     <Compile Include="Data\MogitorsRoot.cs" />
     <Compile Include="Data\MogitorsRoot.DragDrop.cs" />
     <Compile Include="Data\MogitorsRoot.EditorObject.cs" />
+    <Compile Include="Data\MogitorsRoot.Gizmo.cs" />
     <Compile Include="Data\MogitorsSceneSerializer.cs" />
     <Compile Include="Data\NodeEditor.cs" />
     <Compile Include="Data\ProjectOptions.cs" />
