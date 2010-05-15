@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Collections;
 using System.Windows;
+using System.Reflection;
 
 namespace Mogitor.Data
 {
@@ -130,6 +131,10 @@ namespace Mogitor.Data
                     newPos /= Parent.DerivedScale;
                     value = qParent * newPos;
                 }
+
+                PropertyInfo prop = this.GetType().GetProperty("Position");
+                if (prop != null)
+                    prop.SetValue(this, value, null);
             }
         }
 
@@ -334,22 +339,6 @@ namespace Mogitor.Data
             this.highlightRenderable.SetupVertices(this.oBBoxData);
             this.highlightNode.AttachObject(this.highlightRenderable);
             this.highlightNode.SetVisible(false);
-        }
-
-        protected BaseEditor GetObjectUnderMouse(Mogre.Ray mouseRay, bool pickWidgets, bool pickTerrain)
-        {
-            Mogre.RaySceneQuery raySceneQuery = MogitorsRoot.Instance.SceneManager.CreateRayQuery(new Mogre.Ray());
-            raySceneQuery.QueryMask = ~QueryFlags.Widget;
-            BaseEditor selected = null;
-
-            Mogre.Entity result;
-            Mogre.Vector3 hitLocation = new Mogre.Vector3();
-            if (MogitorsRoot.Instance.PickEntity(raySceneQuery, mouseRay, out result, hitLocation, "", -1.0f) && result.Name != "HydraxMeshEnt")
-            {
-                selected = MogitorsRoot.Instance.FindObject(result.Name, 0);
-            }
-            MogitorsRoot.Instance.SceneManager.DestroyQuery(raySceneQuery);
-            return selected;
         }
         #endregion
 

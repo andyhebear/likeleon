@@ -68,6 +68,7 @@ namespace Mogitor.Data
             { 
                 this.selectedEditor = value;
                 this.oldGizmoMode = EditorTools.None;
+                this.oldGizmoAxis = AxisType.None;
             }
         }
         #endregion
@@ -308,35 +309,7 @@ namespace Mogitor.Data
                     if (!entity.Visible || entity.Name == excludedObject)
                         continue;
 
-                    // mesh data to retrieve
-                    uint vertexCount, indexCount;
-                    Mogre.Vector3[] vertices;
-                    uint[] indices;
-
-                    // get the mesh information
-                    GetMeshInformationEx(entity.GetMesh(), out vertexCount, out vertices, out indexCount, out indices,
-                                         entity.ParentNode._getDerivedPosition(),
-                                         entity.ParentNode._getDerivedOrientation(),
-                                         entity.ParentNode._getDerivedScale());
-
-                    // test for hitting individual triangles on the mesh
-                    bool newClosestFound = false;
-                    for (uint i = 0; i < indexCount; i += 3)
-                    {
-                        // check for a hit against this triangle
-                        Mogre.Pair<bool, float> hit = Mogre.Math.Intersects(ray, vertices[indices[i]], vertices[indices[i + 1]], vertices[indices[i + 2]], true, false);
-
-                        // if it was a hit check if its the closest
-                        if (hit.first)
-                        {
-                            if ((closestDistance < 0.0f) || (hit.second < closestDistance))
-                            {
-                                // this is the closes so far, save it off
-                                closestDistance = hit.second;
-                                newClosestFound = true;
-                            }
-                        }
-                    }
+                    bool newClosestFound = FindNewClosest(ray, ref closestDistance, entity);
 
                     // if we found a new closes raycast for this object, update the
                     // closes_result before moving on to the next object.
@@ -359,6 +332,40 @@ namespace Mogitor.Data
                 // Raycast failed
                 return false;
             }
+        }
+
+        private bool FindNewClosest(Mogre.Ray ray, ref float closestDistance, Mogre.Entity entity)
+        {
+            // mesh data to retrieve
+            uint vertexCount, indexCount;
+            Mogre.Vector3[] vertices;
+            uint[] indices;
+
+            // get the mesh information
+            GetMeshInformationEx(entity.GetMesh(), out vertexCount, out vertices, out indexCount, out indices,
+                                 entity.ParentNode._getDerivedPosition(),
+                                 entity.ParentNode._getDerivedOrientation(),
+                                 entity.ParentNode._getDerivedScale());
+
+            // test for hitting individual triangles on the mesh
+            bool newClosestFound = false;
+            for (uint i = 0; i < indexCount; i += 3)
+            {
+                // check for a hit against this triangle
+                var hit = Mogre.Math.Intersects(ray, vertices[indices[i]], vertices[indices[i + 1]], vertices[indices[i + 2]], true, false);
+
+                // if it was a hit check if its the closest
+                if (hit.first)
+                {
+                    if ((closestDistance < 0.0f) || (hit.second < closestDistance))
+                    {
+                        // this is the closes so far, save it off
+                        closestDistance = hit.second;
+                        newClosestFound = true;
+                    }
+                }
+            }
+            return newClosestFound;
         }
         #endregion
 
@@ -455,6 +462,7 @@ namespace Mogitor.Data
             this.gizmoY = null;
             this.gizmoZ = null;
             this.oldGizmoMode = EditorTools.None;
+            this.oldGizmoAxis = AxisType.None;
         }
 
         private unsafe void GetMeshInformationEx(Mogre.MeshPtr mesh, out uint vertexCount, out Mogre.Vector3[] vertices,
