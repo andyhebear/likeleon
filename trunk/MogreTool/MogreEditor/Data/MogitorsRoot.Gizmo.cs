@@ -15,8 +15,9 @@ namespace Mogitor.Data
         private SceneNode gizmoZ;
         private readonly Entity[] gizmoEntities = new Entity[3];
         private EditorTools oldGizmoMode = EditorTools.None;
+        private AxisType oldGizmoAxis = AxisType.None;
+        private Vector3 lastTranslationDelta = Vector3.ZERO;
         #endregion
-
 
         #region Public Properties
         public EditorTools GizmoMode
@@ -132,7 +133,7 @@ namespace Mogitor.Data
         #endregion
 
         #region Public Methods
-        void UpdateGizmo()
+        public void UpdateGizmo()
         {
             if (this.gizmoNode == null)
                 return;
@@ -157,6 +158,144 @@ namespace Mogitor.Data
             else
             {
                 this.gizmoNode.SetVisible(false);
+            }
+        }
+
+        public bool PickGizmos(Mogre.Ray ray, ref AxisType axis)
+        {
+            if (this.gizmoEntities[0] == null || !this.gizmoEntities[0].IsVisible())
+                return false;
+
+            float closesDistance = -1.0f;
+
+            for (int widx = 0; widx < 3; ++widx)
+            {
+                // get the entity to check
+                Mogre.Entity entity = this.gizmoEntities[widx];
+
+                var hit = Mogre.Math.Intersects(ray, entity.GetWorldBoundingBox());
+                if (!hit.first)
+                    continue;
+
+                bool newClosestFound = FindNewClosest(ray, ref closesDistance, entity);
+
+                // if we found a new closest raycast for this object, update the
+                // closestResult befor moving on to the next object
+                if (newClosestFound)
+                {
+                    switch (widx)
+                    {
+                        case 0:
+                            axis = AxisType.X;
+                            break;
+                        case 1:
+                            axis = AxisType.Y;
+                            break;
+                        case 2:
+                            axis = AxisType.Z;
+                            break;
+                    }
+                }
+            }
+
+            return (closesDistance >= 0.0f);
+        }
+
+        public void HighlightGizmo(AxisType id)
+        {
+            if (this.oldGizmoAxis == id)
+                return;
+
+            this.oldGizmoAxis = id;
+            Entity wx = this.gizmoEntities[0];
+            Entity wy = this.gizmoEntities[1];
+            Entity wz = this.gizmoEntities[2];
+
+            if ((int)(id & AxisType.X) != 0)
+                wx.SetMaterialName("mtSCBREDL");
+            else
+                wx.SetMaterialName("mtSCBRED");
+            if ((int)(id & AxisType.Y) != 0)
+                wy.SetMaterialName("mtSCBGREENL");
+            else
+                wy.SetMaterialName("mtSCBGREEN");
+            if ((int)(id & AxisType.Z) != 0)
+                wz.SetMaterialName("mtSCBBLUEL");
+            else
+                wz.SetMaterialName("mtSCBBLUE");
+        }
+
+        public Vector3 GetGizmoIntersect(Ray pickRay, Plane planetous, AxisType translationAxis, Vector3 vLastPosition)
+        {
+            var result = pickRay.Intersects(planetous);
+
+            if (result.first)
+            {
+                Vector3 axisX = Vector3.ZERO;
+                Vector3 axisY = Vector3.ZERO;
+                Vector3 axisZ = Vector3.ZERO;
+
+                if (translationAxis != AxisType.None)
+                {
+                    if ((int)(translationAxis & AxisType.X) != 0)
+                        axisX = Selected.DerivedOrientation.XAxis;
+                    if ((int)(translationAxis & AxisType.Y) != 0)
+                        axisY = Selected.DerivedOrientation.YAxis;
+                    if ((int)(translationAxis & AxisType.Z) != 0)
+                        axisZ = Selected.DerivedOrientation.ZAxis;
+                }
+                else
+                {
+                    axisX = Selected.DerivedOrientation.XAxis;
+                    axisY = Selected.DerivedOrientation.YAxis;
+                    axisZ = Selected.DerivedOrientation.ZAxis;
+                }
+
+                Vector3 proj = pickRay.GetPoint(result.second) - vLastPosition;
+                Vector3 vPos1 = (axisX.DotProduct(proj) * axisX);
+                Vector3 vPos2 = (axisY.DotProduct(proj) * axisY);
+                Vector3 vPos3 = (axisZ.DotProduct(proj) * axisZ);
+                Vector3 vPos = vPos1 + vPos2 + vPos3;
+
+                this.lastTranslationDelta = vPos;
+                return vPos;
+            }
+            return this.lastTranslationDelta;
+        }
+
+        public Plane FindGizmoTranslationPlane(Ray pickRay, AxisType translationAxis)
+        {
+            Vector3 vPos = Selected.DerivedPosition;
+            Vector3 vCamBack = ActiveViewport.CameraEditor.Camera.DerivedDirection;
+            vCamBack = -vCamBack;
+
+            if (translationAxis == AxisType.None)
+                return new Plane(vCamBack, vPos);
+
+            Quaternion qOrient = Selected.DerivedOrientation;
+            Plane planeX = new Plane(qOrient.XAxis, vPos);
+            Plane planeY = new Plane(qOrient.YAxis, vPos);
+            Plane planeZ = new Plane(qOrient.ZAxis, vPos);
+
+            float vX = planeX.ProjectVector(pickRay.Direction).Length;
+            float vY = planeY.ProjectVector(pickRay.Direction).Length;
+            float vZ = planeZ.ProjectVector(pickRay.Direction).Length;
+
+            if ((int)(translationAxis & AxisType.X) != 0)
+                vX = 10000.0f;
+            if ((int)(translationAxis & AxisType.Y) != 0)
+                vY = 10000.0f;
+            if ((int)(translationAxis & AxisType.Z) != 0)
+                vZ = 10000.0f;
+
+            if (vX < vY && vX < vZ)
+                return planeX;
+            else
+            {
+                if (vY < vX && vY < vZ)
+                    return planeY;
+                else
+                    return planeZ;
             }
         }
         #endregion

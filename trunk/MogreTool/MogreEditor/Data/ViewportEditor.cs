@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows;
+using Mogre;
 
 namespace Mogitor.Data
 {
@@ -216,6 +217,12 @@ namespace Mogitor.Data
         {
             get { return instance; }
         }
+
+        public static AxisType EditorAxis
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Inner Classes
@@ -248,7 +255,11 @@ namespace Mogitor.Data
         private static EditorTools editorTool = EditorTools.Select;
         private static readonly ViewportEditor instance = new ViewportEditor();
         private CameraEditor activeCamera;
-        private NameObjectPairList highLighted = new NameObjectPairList();
+        private static NameObjectPairList highLighted = new NameObjectPairList();
+        private static bool isEditing = false;
+        private Plane lastUsedPlane;
+        private Vector3 lastDerivedPosition = Vector3.ZERO;
+        private Vector3 last3DDelta = Vector3.ZERO;
         #endregion
 
         #region Overrides BaseEditor
@@ -487,7 +498,7 @@ namespace Mogitor.Data
             //throw new NotImplementedException("LoadEditorObjects");
         }
 
-        private void PushCompositors(Mogre.Camera camera)
+        private void PushCompositors(Camera camera)
         {
             if (this.handle != null && this.handle.Camera == camera)
             {
@@ -509,7 +520,7 @@ namespace Mogitor.Data
             }
         }
 
-        private bool GetMouseRay(Mogre.Vector2 point, out Mogre.Ray ray)
+        private bool GetMouseRay(Vector2 point, out Ray ray)
         {
             if (this.activeCamera == null)
             {
@@ -523,25 +534,25 @@ namespace Mogitor.Data
             return true;
         }
 
-        private void HighlightObjectAtPosition(Mogre.Ray mouseRay)
+        private void HighlightObjectAtPosition(Ray mouseRay)
         {
             BaseEditor selected = GetObjectUnderMouse(mouseRay, false, false);
 
-            foreach (var iter in this.highLighted)
+            foreach (var iter in highLighted)
             {
                 if (iter.Value != selected)
                     iter.Value.IsHighLighted = false;
             }
-            this.highLighted.Clear();
+            highLighted.Clear();
 
             if (selected != null)
             {
                 selected.IsHighLighted = true;
-                this.highLighted.Add(selected.Name, selected);
+                highLighted.Add(selected.Name, selected);
             }
         }
 
-        private void DoSelect(Mogre.Ray mouseRay)
+        private void DoSelect(Ray mouseRay)
         {
             BaseEditor currentSelection = MogitorsRoot.Instance.Selected;
             BaseEditor newSelection = GetObjectUnderMouse(mouseRay, true, true);
@@ -549,6 +560,8 @@ namespace Mogitor.Data
             if (newSelection != null && newSelection != currentSelection)
             {
                 newSelection.UpdateTreeView();
+
+                EditorAxis = AxisType.None;
             }
             else if (newSelection == null && currentSelection != null)
             {
@@ -560,10 +573,46 @@ namespace Mogitor.Data
         {
             MogitorsRoot.Instance.RootEditor.UpdateTreeView();
         }
+
+        private BaseEditor GetObjectUnderMouse(Ray mouseRay, bool pickWidgets, bool pickTerrain)
+        {
+            Mogre.Entity result;
+            Mogre.Vector3 hitLocation = new Mogre.Vector3();
+            Mogre.RaySceneQuery raySceneQuery = MogitorsRoot.Instance.SceneManager.CreateRayQuery(new Mogre.Ray());
+            BaseEditor selected = null;
+
+            AxisType editorAxis = AxisType.None;
+            if (pickWidgets && MogitorsRoot.Instance.PickGizmos(mouseRay, ref editorAxis))
+            {
+                selected = MogitorsRoot.Instance.Selected;
+                EditorAxis = editorAxis;
+            }
+            else
+            {
+                raySceneQuery.QueryMask = ~QueryFlags.Widget;
+                if (MogitorsRoot.Instance.PickEntity(raySceneQuery, mouseRay, out result, hitLocation, "", -1.0f) && result.Name != "HydraxMeshEnt")
+                {
+                    selected = MogitorsRoot.Instance.FindObject(result.Name, 0);
+                }
+            }
+            MogitorsRoot.Instance.SceneManager.DestroyQuery(raySceneQuery);
+            return selected;
+        }
+
+        private void SaveEditorStates(Ray mouseRay)
+        {
+            BaseEditor selected = MogitorsRoot.Instance.Selected;
+            if (selected == null)
+                return;
+
+            this.lastDerivedPosition = selected.DerivedPosition;
+            this.lastUsedPlane = MogitorsRoot.Instance.FindGizmoTranslationPlane(mouseRay, EditorAxis);
+            this.last3DDelta = MogitorsRoot.Instance.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
+        }
         #endregion
 
         #region Public Methods
-        public int GetRect(ref Mogre.Vector4 rect)
+        public int GetRect(ref Vector4 rect)
         {
             if (this.handle != null)
             {
@@ -617,7 +666,7 @@ namespace Mogitor.Data
             }
         }
 
-        public virtual void OnMouseMove(Mogre.Vector2 point, MouseDevice mouseDevice, bool imitate)
+        public virtual void OnMouseMove(Vector2 point, MouseDevice mouseDevice, bool imitate)
         {
             this.lastMouseDevice = mouseDevice;
 
@@ -634,59 +683,98 @@ namespace Mogitor.Data
             MogitorsRoot mogRoot = MogitorsRoot.Instance;
             BaseEditor selected = mogRoot.Selected;
 
+            Ray mouseRay;
+
             if (!imitate)
             {
                 if (mouseDevice.MiddleButton == MouseButtonState.Pressed)
                 {
-                    Mogre.Vector3 vPos = ActiveCamera.DerivedPosition;
-                    Mogre.Vector3 vDelta = new Mogre.Vector3(deltaX * CameraSpeed / 3.0f, -deltaY * CameraSpeed / 3.0f, 0);
+                    Vector3 vPos = ActiveCamera.DerivedPosition;
+                    Vector3 vDelta = new Vector3(deltaX * CameraSpeed / 3.0f, -deltaY * CameraSpeed / 3.0f, 0);
                     ActiveCamera.DerivedPosition = (vPos + (ActiveCamera.DerivedOrientation * vDelta));
-                    this.newCamPosition = Mogre.Vector3.ZERO;
+                    this.newCamPosition = Vector3.ZERO;
                     MogitorsSystem.Instance.ShowMouseCursor(false);
 
                     point.x -= (deltaX * 2.0f);
                     point.y -= (deltaY * 2.0f);
 
                     isSettingPos = true;
-                    MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
+                    MogitorsSystem.Instance.SetMousePosition(point + new Vector2(this.handle.ActualLeft, this.handle.ActualTop));
                 }
                 else if (mouseDevice.RightButton == MouseButtonState.Pressed)
                 {
-                    ActiveCamera.Yaw(new Mogre.Degree(-deltaX / 4.0f));
-                    ActiveCamera.Pitch(new Mogre.Degree(-deltaY / 4.0f));
+                    ActiveCamera.Yaw(new Degree(-deltaX / 4.0f));
+                    ActiveCamera.Pitch(new Degree(-deltaY / 4.0f));
                     MogitorsSystem.Instance.ShowMouseCursor(false);
 
                     point.x -= (deltaX * 2.0f);
                     point.y -= (deltaY * 2.0f);
 
                     isSettingPos = true;
-                    MogitorsSystem.Instance.SetMousePosition(point + new Mogre.Vector2(this.handle.ActualLeft, this.handle.ActualTop));
+                    MogitorsSystem.Instance.SetMousePosition(point + new Vector2(this.handle.ActualLeft, this.handle.ActualTop));
+
+                    if (!GetMouseRay(point, out mouseRay))
+                        return;
+
+                    if (mogRoot.Selected != null)
+                        this.lastUsedPlane = MogitorsRoot.Instance.FindGizmoTranslationPlane(mouseRay, EditorAxis);
                 }
             }
 
-            Mogre.Ray mouseRay;
             if (!GetMouseRay(point, out mouseRay))
                 return;
+
+            if (EditorTool != EditorTools.Rotate || selected == null)
+                this.lastMouse = point;
+
+            if (selected != null)
+            {
+                if (EditorAxis == AxisType.None)
+                {
+                    AxisType axis = AxisType.None;
+                    mogRoot.PickGizmos(mouseRay, ref axis);
+                    mogRoot.HighlightGizmo(axis);
+                }
+                else
+                {
+                    mogRoot.HighlightGizmo(EditorAxis);
+                }
+            }
+
+            if (isEditing && selected != null)
+            {
+                if ((EditorTool == EditorTools.Move) && selected.Supports(EditFlags.CanMove))
+                {
+                    Vector3 vNewPos = Vector3.ZERO;
+
+                    vNewPos = MogitorsRoot.Instance.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
+                    vNewPos = vNewPos - this.last3DDelta + this.lastDerivedPosition;
+
+                    selected.DerivedPosition = vNewPos;
+                }
+            }
 
             HighlightObjectAtPosition(mouseRay);
         }
 
-        public virtual void OnMouseLeave(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseLeave(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouseDevice = null;
 
-            foreach (var it in this.highLighted)
+            foreach (var it in highLighted)
             {
                 it.Value.IsHighLighted = false;
             }
-            this.highLighted.Clear();
+            highLighted.Clear();
 
             this.lastMouse = new Mogre.Vector2(-1, -1);
+
+            isEditing = false;
 
             MogitorsSystem.Instance.ShowMouseCursor(true);
         }
 
-        public virtual void OnMouseLeftDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseLeftDown(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastClickPoint = point;
@@ -695,17 +783,24 @@ namespace Mogitor.Data
             if (mouseDevice.RightButton == MouseButtonState.Pressed)
                 return;
 
-            //Mogre.Ray mouseRay;
-            //GetMouseRay(this.lastMouse, out mouseRay);
+            Mogre.Ray mouseRay;
+            GetMouseRay(this.lastMouse, out mouseRay);
 
-            //BaseEditor selected = MogitorsRoot.Instance.Selected;
+            BaseEditor selected = MogitorsRoot.Instance.Selected;
 
-            //if (selected && selected == GetObjectUnderMouse(mouseRay, true, true))
-            //{
-            //}
+            if (selected != null && selected == GetObjectUnderMouse(mouseRay, true, true))
+            {
+                SaveEditorStates(mouseRay);
+
+                isEditing = true;
+            }
+            else
+            {
+                isEditing = false;
+            }
         }
 
-        public virtual void OnMouseLeftUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseLeftUp(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastClickPoint = point;
@@ -714,19 +809,27 @@ namespace Mogitor.Data
             Mogre.Ray mouseRay;
             GetMouseRay(this.lastMouse, out mouseRay);
 
-            if (editorTool >= EditorTools.Select && editorTool <= EditorTools.Scale)
+            EditorAxis = AxisType.None;
+
+            MogitorsRoot.Instance.HighlightGizmo(AxisType.None);
+
+            if (!isEditing)
             {
-                DoSelect(mouseRay);
+                if (editorTool >= EditorTools.Select && editorTool <= EditorTools.Scale)
+                {
+                    DoSelect(mouseRay);
+                }
             }
+            isEditing = false;
         }
 
-        public virtual void OnMouseRightDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseRightDown(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;
         }
 
-        public virtual void OnMouseRightUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseRightUp(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;
@@ -734,20 +837,20 @@ namespace Mogitor.Data
             MogitorsSystem.Instance.ShowMouseCursor(true);
         }
 
-        public virtual void OnMouseMiddleDown(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseMiddleDown(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;
         }
 
-        public virtual void OnMouseMiddleUp(Mogre.Vector2 point, MouseDevice mouseDevice)
+        public virtual void OnMouseMiddleUp(Vector2 point, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;
             MogitorsSystem.Instance.ShowMouseCursor(true);
         }
 
-        public virtual void OnMouseWheel(Mogre.Vector2 point, float delta, MouseDevice mouseDevice)
+        public virtual void OnMouseWheel(Vector2 point, float delta, MouseDevice mouseDevice)
         {
             this.lastMouse = point;
             this.lastMouseDevice = mouseDevice;
@@ -763,8 +866,11 @@ namespace Mogitor.Data
 
         public static void ResetCommonValues()
         {
-            CameraSpeed = 1.0f;
+            highLighted.Clear();
             Instance.EditorTool = EditorTools.Select;
+            EditorAxis = AxisType.None;
+            CameraSpeed = 1.0f;
+            isEditing = false;
             isSettingPos = false;
         }
 
@@ -800,6 +906,8 @@ namespace Mogitor.Data
                 throw new System.NotImplementedException("Delete MultiSelEditor");
             else
                 MogitorsRoot.Instance.DestroyEditorObject(delEd, true);
+
+            EditorAxis = AxisType.None;
         }
         #endregion
 
@@ -829,7 +937,7 @@ namespace Mogitor.Data
             }
         }
 
-        public override BaseEditor CreateObject(ref BaseEditor parent, Mogre.NameValuePairList parameters)
+        public override BaseEditor CreateObject(ref BaseEditor parent, NameValuePairList parameters)
         {
             ViewportEditor obj = new ViewportEditor();
 

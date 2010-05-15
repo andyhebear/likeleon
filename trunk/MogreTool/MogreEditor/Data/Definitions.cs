@@ -65,6 +65,21 @@ namespace Mogitor.Data
         CanAcceptPaste = 2048
     }
 
+    /// <summary>
+    ///  The Axis enumeration
+    /// </summary>
+    enum AxisType
+    {
+        None = 0,
+        X = 1,
+        Y = 2,
+        XY = 3,
+        Z = 4,
+        XZ = 5,
+        YZ = 6,
+        All = 7
+    }
+
     class EditorObjectFactoryMap : Dictionary<string, BaseEditorFactory>
     {
     }
