@@ -241,11 +241,11 @@ namespace Mogitor.Data
         public override void GetObjectProperties(Mogre.NameValuePairList retList)
         {
             retList.Clear();
-            retList["Name"] = this.name;
-            retList["Position"] = Mogre.StringConverter.ToString(this.position);
-            retList["Orientation"] = Mogre.StringConverter.ToString(this.orientation);
-            retList["ClipDistance"] = Mogre.StringConverter.ToString(this.clipDistance);
-            retList["FOV"] = Mogre.StringConverter.ToString(this.fov);
+            retList["Name"] = Name;
+            retList["Position"] = Mogre.StringConverter.ToString(Position);
+            retList["Orientation"] = Mogre.StringConverter.ToString(Orientation);
+            retList["ClipDistance"] = Mogre.StringConverter.ToString(ClipDistance);
+            retList["FOV"] = Mogre.StringConverter.ToString(FOV);
         }
 
         public override Mogre.Vector3 DerivedPosition
