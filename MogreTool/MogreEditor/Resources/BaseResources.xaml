@@ -119,12 +119,12 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="3,8">
-                                        <Image Source="{Binding Path=ImgFile}" 
+                                        <Image Source="{Binding Path=Icon}" 
                                                Width="55" 
                                                LayoutTransform="{StaticResource transform}">
                                             <Image.ToolTip>
                                                 <StackPanel>
-                                                    <Image Source="{Binding Path=ImgFile}" />
+                                                    <Image Source="{Binding Path=Icon}" />
                                                     <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Center" FontWeight="Bold" />
                                                 </StackPanel>
                                             </Image.ToolTip>
@@ -155,7 +155,7 @@
         </Setter>
     </Style>
 
-    <!-- Entity View Control Template -->
+    <!-- Object View Control Template -->
     <Style TargetType="{x:Type MogitorControls:ObjectsView}">
         <Setter Property="Template">
             <Setter.Value>
@@ -169,8 +169,16 @@
                                     <WrapPanel/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="3,8">
+                                        <Image Source="{Binding Path=Icon}" 
+                                               Width="35" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
-                        <TextBlock Text="Not yet supported" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

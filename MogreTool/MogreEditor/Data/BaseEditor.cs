@@ -504,6 +504,27 @@ namespace Mogitor.Data
         {
             get { return ""; }
         }
+
+        public virtual bool AddToObjectList
+        {
+            get { return false; }
+        }
+
+        public virtual bool RequirePlacement
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public virtual string PlaceHolderName
+        {
+            get
+            {
+                return "";
+            }
+        }
         #endregion
 
         public BaseEditorFactory()

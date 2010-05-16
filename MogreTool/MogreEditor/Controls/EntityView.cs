@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using Mogitor.Data;
 
 namespace Mogitor.Controls
@@ -14,19 +13,6 @@ namespace Mogitor.Controls
     [TemplatePart(Name = "PART_CloseScalePopupBtn", Type = typeof(Button))]
     class EntityViewControl : Control, MogitorsRoot.IDragDropHandler
     {
-        #region Inner Class
-        public class ImageEntry
-        {
-            public string Name { get; private set; }
-            public string ImgFile { get; private set; }
-            public ImageEntry(string name, string imgFile)
-            {
-                Name = name;
-                ImgFile = imgFile;
-            }
-        };
-        #endregion
-
         #region Fields
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(string), typeof(EntityViewControl), new PropertyMetadata(OnFilterChanged));
@@ -48,10 +34,10 @@ namespace Mogitor.Controls
             this.iconsListBox.PreviewMouseLeftButtonDown += (s, e) =>
                 {
                     ListBox listBox = s as ListBox;
-                    ImageEntry imageEntry = GetObjectDataFromPoint(listBox, e.GetPosition(listBox)) as ImageEntry;
-                    if (imageEntry != null)
+                    IconTextItem item = ControlHelper.GetObjectDataFromPoint(listBox, e.GetPosition(listBox)) as IconTextItem;
+                    if (item != null)
                     {
-                        DragDrop.DoDragDrop(listBox, new DragData(this, imageEntry), DragDropEffects.Copy);
+                        DragDrop.DoDragDrop(listBox, new DragData(this, item), DragDropEffects.Copy);
                     }
                 };
 
@@ -72,14 +58,14 @@ namespace Mogitor.Controls
         #region Constructor
         public EntityViewControl()
         {
-            Icons = new ObservableCollection<ImageEntry>();
+            Icons = new ObservableCollection<IconTextItem>();
 
             MogitorsRoot.Instance.RegisterDragDropHandler(this, this);
         }
         #endregion
 
         #region Public Properties
-        public ObservableCollection<ImageEntry> Icons { get; private set; }
+        public ObservableCollection<IconTextItem> Icons { get; private set; }
         public string Filter
         {
             get { return (string)GetValue(FilterProperty); }
@@ -88,7 +74,7 @@ namespace Mogitor.Controls
         #endregion
 
         #region Private Methods
-        private void CreateImages(ObservableCollection<ImageEntry> retlist, bool skipCached)
+        private void CreateImages(ObservableCollection<IconTextItem> retlist, bool skipCached)
         {
             retlist.Clear();
 
@@ -156,7 +142,7 @@ namespace Mogitor.Controls
                     sceneMgr.DestroyEntity(entity);
                 }
 
-                retlist.Add(new ImageEntry(addstr.Remove(addstr.Length - 5, 5), addstrFile));
+                retlist.Add(new IconTextItem(addstr.Remove(addstr.Length - 5, 5), addstrFile));
             }
 
             rttTex.RemoveAllViewports();
@@ -182,8 +168,8 @@ namespace Mogitor.Controls
                         return true;
                     }
 
-                    ImageEntry imageEntry = o as ImageEntry;
-                    return imageEntry.Name.ToLower().Contains(filter.ToLower());
+                    IconTextItem item = o as IconTextItem;
+                    return item.Name.ToLower().Contains(filter.ToLower());
                 };
         }
         #endregion
@@ -191,13 +177,13 @@ namespace Mogitor.Controls
         #region Implements IDragDropHandlerref 
         bool MogitorsRoot.IDragDropHandler.OnDrageEnter(DragData dragData)
         {
-            ImageEntry imageEntry = dragData.SourceObject as ImageEntry;
-            if (imageEntry == null)
+            IconTextItem item = dragData.SourceObject as IconTextItem;
+            if (item == null)
                 return false;
 
             dragData.ObjectType = "Entity Object";
             dragData.Parameters["Init"] = "true";
-            dragData.Parameters["MeshFile"] = imageEntry.Name + ".mesh";
+            dragData.Parameters["MeshFile"] = item.Name + ".mesh";
             dragData.Parameters["Position"] = "999999 999999 999999";
 
             BaseEditor parent = MogitorsRoot.Instance.SceneManagerEditor;
@@ -273,39 +259,6 @@ namespace Mogitor.Controls
                 vPos = vp.Camera.DerivedPosition + ((vPos - vp.Camera.DerivedPosition).NormalisedCopy * distance);
 
             entity.Position = vPos;
-        }
-        #endregion
-
-        #region Helpers
-        //gets the object for the element selected (from the point) in the listbox (source)
-        private static object GetObjectDataFromPoint(ListBox source, Point point)
-        {
-            UIElement element = source.InputHitTest(point) as UIElement;
-            if (element != null)
-            {
-                //get the object from the element
-                object data = DependencyProperty.UnsetValue;
-                while (data == DependencyProperty.UnsetValue)
-                {
-                    // try to get the object value for the corresponding element
-                    data = source.ItemContainerGenerator.ItemFromContainer(element);
-
-                    //get the parent and we will iterate again
-                    if (data == DependencyProperty.UnsetValue)
-                        element = VisualTreeHelper.GetParent(element) as UIElement;
-
-                    //if we reach the actual listbox then we must break to avoid an infinite loop
-                    if (element == source)
-                        return null;
-                }
-
-                //return the data that we fetched only if it is not Unset value, 
-                //which would mean that we did not find the data
-                if (data != DependencyProperty.UnsetValue)
-                    return data;
-            }
-
-            return null;
         }
         #endregion
     }

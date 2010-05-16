@@ -367,6 +367,13 @@ namespace Mogitor.Data
             }
             return newClosestFound;
         }
+
+        public BaseEditorFactory GetEditorObjectFactory(string typeName)
+        {
+            if (this.editorObjectFactories.ContainsKey(typeName) == false)
+                return null;
+            return this.editorObjectFactories[typeName];
+        }
         #endregion
 
         #region Private Methods
@@ -403,13 +410,6 @@ namespace Mogitor.Data
                 this.editorObjectFactories.Add(factory.TypeName, factory);
                 factory.TypeID = this.editorObjectTypeIDCounter++;
             }
-        }
-
-        private BaseEditorFactory GetEditorObjectFactory(string typeName)
-        {
-            if (this.editorObjectFactories.ContainsKey(typeName) == false)
-                return null;
-            return this.editorObjectFactories[typeName];
         }
 
         private void ClearEditors()
