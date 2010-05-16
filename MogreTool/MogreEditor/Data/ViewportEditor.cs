@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows;
 using Mogre;
+using System.Reflection;
 
 namespace Mogitor.Data
 {
@@ -260,6 +261,7 @@ namespace Mogitor.Data
         private Plane lastUsedPlane;
         private Vector3 lastDerivedPosition = Vector3.ZERO;
         private Vector3 last3DDelta = Vector3.ZERO;
+        private Vector3 lastScale = Vector3.ZERO;
         #endregion
 
         #region Overrides BaseEditor
@@ -605,6 +607,12 @@ namespace Mogitor.Data
             if (selected == null)
                 return;
 
+            PropertyInfo prop = selected.GetType().GetProperty("Scale");
+            if (prop != null)
+                this.lastScale = (Vector3)prop.GetValue(selected, null);
+            else
+                this.lastScale = new Vector3(1, 1, 1);
+
             this.lastDerivedPosition = selected.DerivedPosition;
             this.lastUsedPlane = MogitorsRoot.Instance.FindGizmoTranslationPlane(mouseRay, EditorAxis);
             this.last3DDelta = MogitorsRoot.Instance.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
@@ -747,10 +755,28 @@ namespace Mogitor.Data
                 {
                     Vector3 vNewPos = Vector3.ZERO;
 
-                    vNewPos = MogitorsRoot.Instance.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
+                    vNewPos = mogRoot.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
                     vNewPos = vNewPos - this.last3DDelta + this.lastDerivedPosition;
 
                     selected.DerivedPosition = vNewPos;
+                }
+                else if ((EditorTool == EditorTools.Scale) && selected.Supports(EditFlags.CanScale))
+                {
+                    Vector3 vNewDist = mogRoot.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
+                    Vector3 vScale = this.lastScale;
+                    float fNewDist = vNewDist.Length;
+                    float fLength = this.last3DDelta.Length;
+
+                    if ((int)(EditorAxis & AxisType.X) != 0)
+                        vScale.x *= (fNewDist / fLength);
+                    if ((int)(EditorAxis & AxisType.Y) != 0)
+                        vScale.y *= (fNewDist / fLength);
+                    if ((int)(EditorAxis & AxisType.Z) != 0)
+                        vScale.z *= (fNewDist / fLength);
+
+                    PropertyInfo prop = selected.GetType().GetProperty("Scale");
+                    if (prop != null)
+                        prop.SetValue(selected, vScale, null);
                 }
             }
 
