@@ -393,6 +393,7 @@ namespace Mogitor.Data
             RegisterEditorFactory(Mogitor.Data.SceneManagerEditor.Factory);
             RegisterEditorFactory(ViewportEditor.Factory);
             RegisterEditorFactory(EntityEditor.Factory);
+            RegisterEditorFactory(LightEditor.Factory);
             RegisterEditorFactory(CameraEditor.Factory);
             RegisterEditorFactory(NodeEditor.Factory);
 
