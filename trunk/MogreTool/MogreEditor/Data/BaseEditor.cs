@@ -141,6 +141,17 @@ namespace Mogitor.Data
         public virtual Mogre.Quaternion DerivedOrientation
         {
             get { return Mogre.Quaternion.IDENTITY; }
+            set
+            {
+                if (Parent != null)
+                {
+                    value = Parent.DerivedOrientation.Inverse() * value;
+                }
+
+                PropertyInfo prop = this.GetType().GetProperty("Orientation");
+                if (prop != null)
+                    prop.SetValue(this, value, null);
+            }
         }
 
         public virtual Mogre.Vector3 DerivedScale
