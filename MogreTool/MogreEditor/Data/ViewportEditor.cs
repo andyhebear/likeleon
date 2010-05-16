@@ -262,6 +262,7 @@ namespace Mogitor.Data
         private Vector3 lastDerivedPosition = Vector3.ZERO;
         private Vector3 last3DDelta = Vector3.ZERO;
         private Vector3 lastScale = Vector3.ZERO;
+        private Quaternion lastDerivedOrient = Quaternion.IDENTITY;
         #endregion
 
         #region Overrides BaseEditor
@@ -613,6 +614,7 @@ namespace Mogitor.Data
             else
                 this.lastScale = new Vector3(1, 1, 1);
 
+            this.lastDerivedOrient = selected.DerivedOrientation;
             this.lastDerivedPosition = selected.DerivedPosition;
             this.lastUsedPlane = MogitorsRoot.Instance.FindGizmoTranslationPlane(mouseRay, EditorAxis);
             this.last3DDelta = MogitorsRoot.Instance.GetGizmoIntersect(mouseRay, this.lastUsedPlane, EditorAxis, this.lastDerivedPosition);
@@ -777,6 +779,25 @@ namespace Mogitor.Data
                     PropertyInfo prop = selected.GetType().GetProperty("Scale");
                     if (prop != null)
                         prop.SetValue(selected, vScale, null);
+                }
+                else if ((EditorTool == EditorTools.Rotate) && selected.Supports(EditFlags.CanRotate))
+                {
+                    Quaternion q1 = this.lastDerivedOrient;
+
+                    switch (EditorAxis)
+                    {
+                        case AxisType.X:
+                            q1 = q1 * new Quaternion(new Degree(-deltaY), new Vector3(1, 0, 0));
+                            break;
+                        case AxisType.Y:
+                            q1 = q1 * new Quaternion(new Degree(-deltaY), new Vector3(0, 1, 0));
+                            break;
+                        case AxisType.Z:
+                            q1 = q1 * new Quaternion(new Degree(-deltaY), new Vector3(0, 0, 1));
+                            break;
+                    }
+
+                    selected.DerivedOrientation = q1;
                 }
             }
 
