@@ -260,5 +260,29 @@ namespace Mogitor.Data
                 return "Icons/node.png";
             }
         }
+
+        public override bool AddToObjectList
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool RequirePlacement
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override string PlaceHolderName
+        {
+            get
+            {
+                return "scbLight_Omni.mesh";
+            }
+        }
     }
 }

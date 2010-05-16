@@ -141,6 +141,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ControlHelper.cs" />
     <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\EntityView.cs" />
     <Compile Include="Controls\LogControl.cs" />

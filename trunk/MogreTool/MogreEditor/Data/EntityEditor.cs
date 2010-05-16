@@ -248,5 +248,13 @@ namespace Mogitor.Data
                 return "Icons/entity.png";
             }
         }
+
+        public override bool RequirePlacement
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 }
