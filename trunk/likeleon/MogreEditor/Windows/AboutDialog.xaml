@@ -1,0 +1,92 @@
+﻿<Window x:Class="Mogitor.Windows.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    Title="About Mogitor" SizeToContent="WidthAndHeight">
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Offset="0" Color="White" />
+            <GradientStop Offset="2" Color="RoyalBlue" />
+        </RadialGradientBrush>
+    </Window.Background>
+    <StackPanel>
+        <StackPanel.Resources>
+            <System:Double x:Key="NameWidth">130</System:Double>
+        </StackPanel.Resources>
+        <Label FontWeight="Bold" FontSize="20">
+            Mogitor (Version 1.0)
+        </Label>
+        <Label>ⓒ 2010 likeleon</Label>
+        <Label FontWeight="Bold">Project Summary:</Label>
+        <ListBox>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Project Home" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://code.google.com/p/likeleon/">
+                            http://code.google.com/p/likeleon/
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Source Code (SVN)" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://likeleon.googlecode.com/svn/trunk/likeleon-read-only">
+                            http://likeleon.googlecode.com/svn/trunk/likeleon-read-only
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Source Code (Web)" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate"
+                                   NavigateUri="http://code.google.com/p/likeleon/source/browse/#svn/trunk/MogreTool">
+                            http://code.google.com/p/likeleon/source/browse/#svn/trunk/MogreTool
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <Label FontWeight="Bold">Project Referenced:</Label>
+        <ListBox>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ogitor v0.3.2" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://www.ogitor.org">
+                            http://www.ogitor.org
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <Label FontWeight="Bold">Components Depends:</Label>
+        <ListBox>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Mogre" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://www.ogre3d.org/wiki/index.php/MOGRE">
+                            http://www.ogre3d.org/wiki/index.php/MOGRE
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel></ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="AvalonDock" Width="{StaticResource NameWidth}"/>
+                    <TextBlock>
+                        <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="http://avalondock.codeplex.com/">
+                            http://avalondock.codeplex.com/
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <Button HorizontalAlignment="Center" MinWidth="75" Margin="10" IsDefault="True" IsCancel="True">OK</Button>
+        <StatusBar>Open-source, Non-commercial Project</StatusBar>
+    </StackPanel>
+</Window>

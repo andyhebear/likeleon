@@ -1,0 +1,178 @@
+﻿<Window x:Class="Mogitor.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:MogitorData="clr-namespace:Mogitor.Data"
+    xmlns:MogitorControls="clr-namespace:Mogitor.Controls"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
+    xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+    xmlns:local="clr-namespace:Mogitor"
+    Title="Mogitor" Width="1200" Height="800" 
+    Loaded="Window_Loaded"
+    Closing="Window_Closing">
+    <Window.Resources>
+        <local:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter" />
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New"
+                        Executed="CommandBinding_NewCmdExecuted" />
+        <CommandBinding Command="ApplicationCommands.Open"
+                        Executed="CommandBinding_OpenCmdExecuted" />
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CommandBinding_CloseCmdExecuted"
+                        CanExecute="CommandBinding_CloseCmdCanExecute" />
+        <CommandBinding Command="ApplicationCommands.Save"
+                        Executed="CommandBinding_SaveCmdExecuted"
+                        CanExecute="CommandBinding_SaveCmdCanExecute" />
+        <CommandBinding Command="ApplicationCommands.SaveAs"
+                        Executed="CommandBinding_SaveAsCmdExecuted"
+                        CanExecute="CommandBinding_SaveAsCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Exit}"
+                        Executed="CommandBinding_ExitCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.EditDelete}"
+                        Executed="CommandBinding_EditDeleteCmdExecuted"
+                        CanExecute="CommandBinding_EditDeleteCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.EditRename}"
+                        Executed="CommandBinding_EditRenameCmdExecuted"
+                        CanExecute="CommandBinding_EditRenameCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Settings}"
+                        Executed="CommandBinding_SettingsCmdExecuted"
+                        CanExecute="CommandBinding_SettingsCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Preferences}"
+                        Executed="CommandBinding_PreferencesCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.About}"
+                        Executed="CommandBinding_AboutCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Select}"
+                        Executed="CommandBinding_SelectCmdExecuted"
+                        CanExecute="CommandBinding_SelectCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Move}"
+                        Executed="CommandBinding_MoveCmdExecuted"
+                        CanExecute="CommandBinding_MoveCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Rotate}"
+                        Executed="CommandBinding_RotateCmdExecuted"
+                        CanExecute="CommandBinding_RotateCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.Scale}"
+                        Executed="CommandBinding_ScaleCmdExecuted"
+                        CanExecute="CommandBinding_ScaleCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModeSolid}"
+                        Executed="CommandBinding_CamModeSolidCmdExecuted"
+                        CanExecute="CommandBinding_CamModeSolidCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModeWireframe}"
+                        Executed="CommandBinding_CamModeWireframeCmdExecuted"
+                        CanExecute="CommandBinding_CamModeWireframeCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.CamModePoints}"
+                        Executed="CommandBinding_CamModePointsCmdExecuted"
+                        CanExecute="CommandBinding_CamModePointsCmdCanExecute" />
+        <CommandBinding Command="{x:Static local:CustomCommands.ClearLog}"
+                        Executed="CommandBinding_ClearLogCmdExecuted" />
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleRender}"
+                        Executed="CommandBinding_ToggleRenderCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleScene}"
+                        Executed="CommandBinding_ToggleSceneCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleObjects}"
+                        Executed="CommandBinding_ToggleObjectsCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleEntity}"
+                        Executed="CommandBinding_ToggleEntityCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleProperties}"
+                        Executed="CommandBinding_TogglePropertiesCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleLog}"
+                        Executed="CommandBinding_ToggleLogCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleMaterials}"
+                        Executed="CommandBinding_ToggleMaterialsCmdExecuted"/>
+        <CommandBinding Command="{x:Static local:CustomCommands.ToggleTemplates}"
+                        Executed="CommandBinding_ToggleTemplatesCmdExecuted"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="F4"
+                    Modifiers="Ctrl"
+                    Command="{x:Static local:CustomCommands.Exit}" />
+    </Window.InputBindings>
+    <DockPanel>
+        <MogitorWindows:MainWindowMenu x:Name="mainWindowMenu" DockPanel.Dock="Top"/>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem DockPanel.Dock="Right">
+                <ProgressBar x:Name="statusProgress" Height="15" Width="100" />
+            </StatusBarItem>
+            <StatusBarItem DockPanel.Dock="Right"
+                           Visibility="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, Path=IsSceneLoaded, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="15" Text="FPS: " />
+                    <TextBlock x:Name="fpsLabel" Height="15" Width="50" />
+                </StackPanel>
+            </StatusBarItem>
+            <!--<Separator DockPanel.Dock="Right" />-->
+            <StatusBarItem DockPanel.Dock="Right" 
+                           Visibility="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, Path=IsSceneLoaded, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="15" Text="Camera Position: " />
+                    <TextBlock x:Name="camPosLabel" Height="15" Width="150" />
+                </StackPanel>
+            </StatusBarItem>
+            <!--<Separator DockPanel.Dock="Right" />-->
+            <StatusBarItem>
+                <TextBlock x:Name="statusString" Text="Ready"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <ad:DockingManager x:Name="dockManager">
+                <ad:ResizingPanel Orientation="Vertical">
+                    <ad:ResizingPanel Orientation="Horizontal">
+                        <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
+                            <ad:DockableContent Title="Templates" x:Name="adcTemplates">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/template.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:TemplateView x:Name="templateView" />
+                            </ad:DockableContent>
+                            <ad:DockableContent Title="Scene" x:Name="adcScene">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/scene.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:SceneView x:Name="sceneView" />
+                            </ad:DockableContent>
+                            <ad:DockableContent Title="Materials" x:Name="adcMaterials">
+                                <MogitorControls:MaterialView x:Name="materialView" />
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/material.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                            </ad:DockableContent>
+                        </ad:DockablePane>
+                        <ad:DocumentPane Focusable="False">
+                            <ad:DockableContent Title="Render" x:Name="adcRender" Background="Black" Focusable="False">
+                                <MogitorControls:OgreControl x:Name="ogreControl" 
+                                          OgreInitialized="ogreControl_OgreInitialized"
+                                          ResourceLoadItemProgress="ogreControl_ResourceLoadItemProgress"
+                                          ResourceReloaded="ogreControl_ResourceReloaded" Focusable="False"/>
+                            </ad:DockableContent>
+                        </ad:DocumentPane>
+                        <ad:DockablePane ad:ResizingPanel.ResizeWidth="200" ad:ResizingPanel.ResizeHeight="200">
+                            <ad:DockableContent Title="Properties" x:Name="adcProperties">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/preferences.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:PropertiesView x:Name="propertiesView" />
+                            </ad:DockableContent>
+                            <ad:DockableContent Title="Meshes" x:Name="adcEntity">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/entity.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:EntityViewControl x:Name="entityView"/>
+                            </ad:DockableContent>
+                            <ad:DockableContent Title="Objects" x:Name="adcObjects">
+                                <ad:DockableContent.Icon>
+                                    <Image Source="../Resources/Icons/objects.png" Width="16" />
+                                </ad:DockableContent.Icon>
+                                <MogitorControls:ObjectsView x:Name="objectsView" />
+                            </ad:DockableContent>
+                        </ad:DockablePane>
+                    </ad:ResizingPanel>
+                    <ad:DockablePane ad:ResizingPanel.ResizeHeight="150">
+                        <ad:DockableContent Title="Messages" x:Name="adcLog">
+                            <MogitorControls:LogControl x:Name="logControl"/>
+                        </ad:DockableContent>
+                    </ad:DockablePane>
+                </ad:ResizingPanel>
+            </ad:DockingManager>
+        </Grid>
+    </DockPanel>
+</Window>

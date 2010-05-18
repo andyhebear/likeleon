@@ -1,0 +1,319 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Mogitor"
+    xmlns:MogitorData="clr-namespace:Mogitor.Data"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
+    xmlns:c="clr-namespace:System.Collections;assembly=mscorlib">
+    <local:EditorToolToBooleanConverter x:Key="editorToolToBooleanConverter" />
+    <local:PolygonModeToBooleanConverter x:Key="polygonModeToBooleanConverter" />
+    <MenuItem x:Key="menuNew"
+              Header="_New" 
+              Command="ApplicationCommands.New"
+              ToolTip="Create a new Mogitor scene"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/ogscene.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuOpen"
+              Header="_Open" 
+              Command="ApplicationCommands.Open"
+              ToolTip="Open an Mogitor scene"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/fileopen.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuSave"
+              Header="_Save"
+              Command="ApplicationCommands.Save"
+              ToolTip="Save Mogitor scene"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/filesave.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuSaveAs"
+              Header="Save _As"
+              Command="ApplicationCommands.SaveAs"
+              ToolTip="Save Mogitor scene As"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/filesaveas.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuClose"
+              Header="_Close"
+              Command="ApplicationCommands.Close"
+              ToolTip="Close Mogitor scene"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/fileclose.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuExit"
+              Header="E_xit"
+              Command="{x:Static local:CustomCommands.Exit}"
+              ToolTip="Exit Application"
+              InputGestureText="Ctrl+F4"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/exit.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="_Delete"
+              Command="{x:Static local:CustomCommands.EditDelete}"
+              ToolTip="Delete Selected Object"
+              x:Key="menuEditDelete"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/editdelete.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="_Rename"
+              Command="{x:Static local:CustomCommands.EditRename}"
+              ToolTip="Rename Selected Object"
+              InputGestureText="F2"
+              x:Key="menuEditRename"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/editrename.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Project _Settings"
+              Command="{x:Static local:CustomCommands.Settings}"
+              ToolTip="Mogitor scene Settings"
+              x:Key="menuSettings"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/settings.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="_Preferences"
+              Command="{x:Static local:CustomCommands.Preferences}"
+              ToolTip="Preferences"
+              x:Key="menuPreferences"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/preferences.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuSelect"
+              Header="Selec_t"
+              Command="{x:Static local:CustomCommands.Select}"
+              ToolTip="Select"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Select, Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/select.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuMove"
+              Header="_Move"
+              Command="{x:Static local:CustomCommands.Move}"
+              ToolTip="Move"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Move, Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/translate.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuRotate"
+              Header="_Rotate"
+              Command="{x:Static local:CustomCommands.Rotate}"
+              ToolTip="Rotate"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Rotate, Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/rotate.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuScale"
+              Header="Sc_ale"
+              Command="{x:Static local:CustomCommands.Scale}"
+              ToolTip="Scale"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:ViewportEditor.Instance}, Path=EditorTool, Converter={StaticResource editorToolToBooleanConverter}, ConverterParameter=Scale, Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/scale.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuAbout"
+              Header="_About"
+              Command="{x:Static local:CustomCommands.About}"
+              ToolTip="Mogitor Help"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/about.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuCamModeSolid"
+              Header="_Solid"
+              Command="{x:Static local:CustomCommands.CamModeSolid}"
+              ToolTip="Set Polygon Mode to Solid"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=ActiveViewport.CamPolyMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_SOLID,
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmsolid.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuCamModeWireframe"
+              Header="_Wireframe"
+              Command="{x:Static local:CustomCommands.CamModeWireframe}"
+              ToolTip="Set Polygon Mode to Wireframe"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=ActiveViewport.CamPolyMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_WIREFRAME,
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmwireframe.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuCamModePoints"
+              Header="_Points"
+              Command="{x:Static local:CustomCommands.CamModePoints}"
+              ToolTip="Set Polygon Mode to Points"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, 
+                                  Path=ActiveViewport.CamPolyMode, 
+                                  Converter={StaticResource polygonModeToBooleanConverter}, 
+                                  ConverterParameter=PM_POINTS,
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/pmpoints.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuClearLog"
+              Header="_Clear"
+              Command="{x:Static local:CustomCommands.ClearLog}"
+              ToolTip="Clear Message Log"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/clear.png"></Image>
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleRender"
+              Header="_Render"
+              Command="{x:Static local:CustomCommands.ToggleRender}"
+              ToolTip="Toggle Render"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Render], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/ogscene.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleScene"
+              Header="_Scene"
+              Command="{x:Static local:CustomCommands.ToggleScene}"
+              ToolTip="Toggle Scene Panel"
+              InputGestureText="F5"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Scene], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/scene.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleObjects"
+              Header="_Objects"
+              Command="{x:Static local:CustomCommands.ToggleObjects}"
+              ToolTip="Toggle Objects Panel"
+              InputGestureText="F6"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Objects], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/objects.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleEntity"
+              Header="_Meshes"
+              Command="{x:Static local:CustomCommands.ToggleEntity}"
+              ToolTip="Toggle meshes Panel"
+              InputGestureText="F7"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Entity], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/entity.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleProperties"
+              Header="_Properties"
+              Command="{x:Static local:CustomCommands.ToggleProperties}"
+              ToolTip="Toggle Properties Panel"
+              InputGestureText="F8"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Properties], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/properties.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleLog"
+              Header="_Messages"
+              Command="{x:Static local:CustomCommands.ToggleLog}"
+              ToolTip="Toggle Messages"
+              InputGestureText="F9"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Log], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/messages.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleMaterials"
+              Header="Mete_rials"
+              Command="{x:Static local:CustomCommands.ToggleMaterials}"
+              ToolTip="Toggle Materials"
+              InputGestureText="Shift+F5"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Materials], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/material.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem x:Key="menuToggleTemplates"
+              Header="_Templates"
+              Command="{x:Static local:CustomCommands.ToggleTemplates}"
+              ToolTip="Toggle Templates"
+              InputGestureText="Shift+F6"
+              IsCheckable="True"
+              IsChecked="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}, 
+                                  Path=IsPanelVisible[Templates], 
+                                  Mode=TwoWay}"
+              x:Shared="False">
+        <MenuItem.Icon>
+            <Image Source="../Resources/Icons/template.png" />
+        </MenuItem.Icon>
+    </MenuItem>
+</ResourceDictionary>
