@@ -1,1 +1,0 @@
-makensis.exe MogreSDK.nsi
