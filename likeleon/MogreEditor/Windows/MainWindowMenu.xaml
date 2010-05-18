@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Mogitor.Windows.MainWindowMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:MogitorData="clr-namespace:Mogitor.Data"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
+    DataContext="{Binding Source={x:Static MogitorWindows:MainWindow.Instance}}">
+    <Menu>
+        <Menu.Resources>
+            <Style TargetType="{x:Type Image}">
+                <Setter Property="Width" Value="16" />
+                <Setter Property="Height" Value="16" />
+            </Style>
+        </Menu.Resources>
+        <MenuItem Header="_File">
+            <StaticResourceExtension ResourceKey="menuNew" />
+            <StaticResourceExtension ResourceKey="menuOpen" />
+            <StaticResourceExtension ResourceKey="menuSave" />
+            <StaticResourceExtension ResourceKey="menuSaveAs" />
+            <StaticResourceExtension ResourceKey="menuClose" />
+            <Separator />
+            <MenuItem Header="_Recent Files" ItemsSource="{Binding RecentFiles}" x:Name="menuRecentFiles">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/files.png" />
+                </MenuItem.Icon>
+                <MenuItem.Style>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=RecentFiles.Count}" Value="0">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+                <MenuItem.ItemContainerStyle>
+                    <Style>
+                        <Style.Resources>
+                            <Image x:Key="fileIcon"
+                                   Source="../Resources/Icons/ogscene.png"
+                                   x:Shared="False"
+                                   Width="16" />
+                        </Style.Resources>
+                        <Setter Property="MenuItem.Icon" Value="{DynamicResource fileIcon}" />
+                        <Setter Property="MenuItem.Header" Value="{Binding FileName}" />
+                        <Setter Property="MenuItem.Command" Value="{Binding Open}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+            <Separator />
+            <StaticResourceExtension ResourceKey="menuExit" />
+        </MenuItem>
+        <MenuItem Header="_Edit">
+            <StaticResourceExtension ResourceKey="menuEditDelete" />
+            <StaticResourceExtension ResourceKey="menuEditRename" />
+            <Separator />
+            <StaticResourceExtension ResourceKey="menuSettings" />
+            <StaticResourceExtension ResourceKey="menuPreferences" />
+        </MenuItem>
+        <MenuItem Header="_Tool">
+            <StaticResourceExtension ResourceKey="menuSelect" />
+            <StaticResourceExtension ResourceKey="menuMove" />
+            <StaticResourceExtension ResourceKey="menuRotate" />
+            <StaticResourceExtension ResourceKey="menuScale" />
+        </MenuItem>
+        <MenuItem Header="_View">
+            <StaticResourceExtension ResourceKey="menuToggleRender" />
+            <StaticResourceExtension ResourceKey="menuToggleScene" />
+            <StaticResourceExtension ResourceKey="menuToggleObjects" />
+            <StaticResourceExtension ResourceKey="menuToggleEntity" />
+            <StaticResourceExtension ResourceKey="menuToggleProperties" />
+            <StaticResourceExtension ResourceKey="menuToggleMaterials" />
+            <StaticResourceExtension ResourceKey="menuToggleTemplates" />
+            <StaticResourceExtension ResourceKey="menuToggleLog" />
+        </MenuItem>
+        <MenuItem Header="_Messages">
+            <StaticResourceExtension ResourceKey="menuClearLog" />
+        </MenuItem>
+        <MenuItem Header="_Camera">
+            <MenuItem Header="_Polygon Mode"
+                      ToolTip="Change Camera Polygon Mode"
+                      IsEnabled="{Binding Source={x:Static MogitorData:MogitorsRoot.Instance}, Path=IsSceneLoaded}">
+                <MenuItem.Icon>
+                    <Image Source="../Resources/Icons/polymode.png"></Image>
+                </MenuItem.Icon>
+                <StaticResourceExtension ResourceKey="menuCamModeSolid" />
+                <StaticResourceExtension ResourceKey="menuCamModeWireframe" />
+                <StaticResourceExtension ResourceKey="menuCamModePoints" />
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="_Help">
+            <StaticResourceExtension ResourceKey="menuAbout" />
+        </MenuItem>
+    </Menu>
+</UserControl>

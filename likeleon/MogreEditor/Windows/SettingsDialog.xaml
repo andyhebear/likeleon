@@ -1,0 +1,101 @@
+﻿<Window x:Class="Mogitor.Windows.SettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Mogitor="clr-namespace:Mogitor"
+    xmlns:MogitorWindows="clr-namespace:Mogitor.Windows"
+    Title="Project Settings" SizeToContent="WidthAndHeight">
+    <DockPanel Margin="10">
+        <StackPanel Margin="0,10" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="60" x:Name="btnOk" Click="btnOk_Click" IsDefault="True" />
+            <Button Content="Cancel" Margin="10,0,0,0" Width="60" x:Name="btnCancel" Click="btnCancel_Click" IsCancel="True" />
+        </StackPanel>
+        <TabControl>
+            <TabControl.Resources>
+                <Mogitor:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            </TabControl.Resources>
+            <TabItem Header="General" 
+                     DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type MogitorWindows:SettingsDialog}}, Path=Options}">
+                <Grid VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="*" MinWidth="200" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="TextBox.VerticalAlignment" Value="Center" />
+                            <Setter Property="ComboBox.VerticalAlignment" Value="Center" />
+                            <Setter Property="Button.VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <Setter Property="ComboBox.VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Button.VerticalAlignment" Value="Center" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <!-- Project Directory -->
+                    <Label Content="Project Directory" />
+                    <TextBox Grid.Column="1" 
+                             x:Name="txtBoxProjectDir"
+                             Text="{Binding Path=ProjectDir, Mode=OneWay}" 
+                             IsReadOnly="{Binding Path=IsNewProject, Converter={StaticResource InverseBooleanConverter}}" />
+                    <Button Grid.Column="2" Margin="5,0,0,0" 
+                            x:Name="btnBrowse"
+                            Content="..." 
+                            IsEnabled="{Binding Path=IsNewProject}" 
+                            Click="btnBrowse_Click"/>
+
+                    <!-- Project Name -->
+                    <Label Grid.Row="1" Content="Project Name" />
+                    <TextBox Grid.Row="1" Grid.Column="1" 
+                             x:Name="txtBoxProjectName"
+                             Text="{Binding Path=ProjectName, Mode=OneWay}"
+                             IsReadOnly="{Binding Path=IsNewProject, Converter={StaticResource InverseBooleanConverter}}" />
+
+                    <!-- Scene Manager -->
+                    <Label Grid.Row="2" Content="Scene Manager" />
+                    <TextBox Grid.Row="2" Grid.Column="1" 
+                             x:Name="txtBoxSceneManager"
+                             Text="{Binding Path=SceneManagerName, Mode=OneWay}"
+                             IsReadOnly="True" />
+
+                    <!-- Configuration File -->
+                    <Label Grid.Row="3" Content="Configuration File" />
+                    <TextBox Grid.Row="3" Grid.Column="1" 
+                             IsReadOnly="{Binding Path=IsNewProject, Converter={StaticResource InverseBooleanConverter}}" />
+
+                    <!-- Terrain Directory -->
+                    <Label Grid.Row="4" Content="Terrain Directory" />
+                    <TextBox Grid.Row="4" Grid.Column="1"
+                             x:Name="txtBoxTerrainDir"
+                             Text="{Binding Path=TerrainDirectory, Mode=OneWay}"
+                             IsReadOnly="{Binding Path=IsNewProject, Converter={StaticResource InverseBooleanConverter}}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Assets">
+                <DockPanel>
+                    <TextBlock Text="Project Resources (Right Click in Listbox to Add Resources) :" DockPanel.Dock="Top" />
+                    <ListBox x:Name="lbResources" Margin="0,5" MinWidth="400" MinHeight="200" MaxHeight="600">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="_Add Directory" x:Name="menuAddDir" Click="menuAddDir_Click" />
+                                <MenuItem Header="Add Directories _Recursively" x:Name="menuAddDirRecursive" Click="menuAddDirRecursive_Click" />
+                                <MenuItem Header="Remove _Entry" x:Name="menuRemoveEntry" Click="menuRemoveEntry_Click" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
