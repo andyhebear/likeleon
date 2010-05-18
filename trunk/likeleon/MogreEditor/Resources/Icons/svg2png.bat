@@ -1,1 +1,0 @@
-java -jar C:\Users\likeleon\Documents\Downloads\batik-1.7\batik-1.7\batik-rasterizer.jar %1
